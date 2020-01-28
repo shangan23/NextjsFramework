@@ -125,7 +125,7 @@ export default function Header(props) {
           )}
         </IconButton>
         <Typography variant="h6" weight="small" className={classes.logotype}>
-          NextJs Material UI Admin Theme
+          NextJs Material UI
       </Typography>
         <div className={classes.grow} />
         <div

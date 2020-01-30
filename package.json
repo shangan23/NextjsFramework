@@ -1,0 +1,33 @@
+{
+  "name": "nextjs-material-ui",
+  "version": "1.0.0",
+  "scripts": {
+    "dev": "node server.js",
+    "build": "next build",
+    "start": "NODE_ENV=production node server.js"
+  },
+  "dependencies": {
+    "@material-ui/core": "latest",
+    "@material-ui/icons": "latest",
+    "@types/next": "latest",
+    "axios": "^0.17.1",
+    "classnames": "^2.2.6",
+    "cookie-parser": "^1.4.3",
+    "express": "^4.14.0",
+    "js-cookie": "^2.2.0",
+    "next": "latest",
+    "next-redux-wrapper": "^2.0.0",
+    "prop-types": "^15.7.2",
+    "react": "^16.8.0",
+    "react-dom": "^16.8.0",
+    "react-redux": "^6.0.0",
+    "redux": "^4.0.1",
+    "redux-thunk": "^2.3.0"
+  },
+  "devDependencies": {
+    "babel-eslint": "^8.2.1",
+    "eslint": "^4.17.0",
+    "eslint-loader": "^2.0.0",
+    "eslint-plugin-react": "^7.6.1"
+  }
+}

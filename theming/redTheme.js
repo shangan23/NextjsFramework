@@ -8,10 +8,6 @@ const theme = createMuiTheme({
       default: '#f7f7f7',
     },
   },
-  root: {
-    flexGrow: 1,
-    height: '100%'
-  },
 });
 
 export default theme;

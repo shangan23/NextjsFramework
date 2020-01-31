@@ -1,23 +1,11 @@
 import Head from 'next/head';
 import Container from '@material-ui/core/Container';
 import Avatar from '@material-ui/core/Avatar';
-import Link from '@material-ui/core/Link';
+import CssBaseline from '@material-ui/core/CssBaseline';
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
-
-function Copyright() {
-  return (
-    <Typography variant="body2" color="textSecondary" align="center">
-      {'Copyright © '}
-      <Link color="inherit" href="https://material-ui.com/">
-        Your Website
-      </Link>{' '}
-      {new Date().getFullYear()}
-      {'.'}
-    </Typography>
-  );
-}
+import Footer from '../../components/Footer';
 
 const useStyles = makeStyles(theme => ({
   paper: {
@@ -39,12 +27,6 @@ const useStyles = makeStyles(theme => ({
     marginTop: theme.spacing(8),
     marginBottom: theme.spacing(2),
   },
-  footer: {
-    padding: theme.spacing(3, 2),
-    marginTop: 'auto',
-    backgroundColor:
-      theme.palette.type === 'dark' ? theme.palette.grey[800] : theme.palette.grey[200],
-  },
 }));
 
 export default function Anonymous({ children, title }) {
@@ -56,8 +38,9 @@ export default function Anonymous({ children, title }) {
       <meta charSet="utf-8" />
       <meta name="viewport" content="initial-scale=1.0, width=device-width" />
     </Head>
-    <div>
+    <div className={classes.root}>
       <Container component="main" maxWidth="xs">
+        <CssBaseline />
         <div className={classes.paper}>
           <Avatar className={classes.avatar}>
             <LockOutlinedIcon />
@@ -68,12 +51,7 @@ export default function Anonymous({ children, title }) {
           {children}
         </div>
       </Container>
-      <footer className={classes.footer}>
-        <Container maxWidth="sm">
-          <Typography variant="body1" align="center">My sticky footer can be found here.</Typography>
-          <Copyright />
-        </Container>
-      </footer>
+      <Footer />
     </div>
   </div>);
 }

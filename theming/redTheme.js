@@ -12,13 +12,6 @@ const theme = createMuiTheme({
     flexGrow: 1,
     height: '100%'
   },
-  paper: {
-    textAlign: 'center',
-    color: '#000',
-    background: {
-      default: '#f7f7f7',
-    },
-  }
 });
 
 export default theme;

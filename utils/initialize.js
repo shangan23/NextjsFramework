@@ -12,7 +12,7 @@ export default function(ctx) {
   } else {
     const token = ctx.store.getState().authentication.token;
 
-    if(token && (ctx.pathname === '/signin' || ctx.pathname === '/signup')) {
+    if(token && (ctx.pathname === '/forgotpassword' || ctx.pathname === '/signin' || ctx.pathname === '/signup')) {
       setTimeout(function() {
         Router.push('/');
       }, 0);

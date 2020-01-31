@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import actions from '../redux/actions';
 import initialize from '../utils/initialize';
-import SignIn from '../theming/layouts/signin';
+import Anonymous from '../theming/layouts/anonymous';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
 import Grid from '@material-ui/core/Grid';
@@ -34,7 +34,7 @@ class Signin extends React.Component {
 
   render() {
     return (
-      <SignIn title="Sign In">
+      <Anonymous title="Sign In">
         <form noValidate onSubmit={this.handleSubmit.bind(this)}>
           <TextField
             variant="outlined"
@@ -76,7 +76,7 @@ class Signin extends React.Component {
           </Button>
           <Grid container>
             <Grid item xs>
-              <Link href="#" variant="body2">
+              <Link href="/forgotpassword" variant="body2">
                 Forgot password?
               </Link>
             </Grid>
@@ -87,7 +87,7 @@ class Signin extends React.Component {
             </Grid>
           </Grid>
         </form>
-      </SignIn >
+      </Anonymous >
     );
   }
 }

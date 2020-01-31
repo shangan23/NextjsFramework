@@ -1,7 +1,6 @@
 import Head from 'next/head';
 import Container from '@material-ui/core/Container';
 import Avatar from '@material-ui/core/Avatar';
-import CssBaseline from '@material-ui/core/CssBaseline';
 import Link from '@material-ui/core/Link';
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Typography from '@material-ui/core/Typography';
@@ -48,7 +47,7 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-export default function SignIn({ children, title }) {
+export default function Anonymous({ children, title }) {
   const classes = useStyles();
 
   return (<div>
@@ -57,15 +56,14 @@ export default function SignIn({ children, title }) {
       <meta charSet="utf-8" />
       <meta name="viewport" content="initial-scale=1.0, width=device-width" />
     </Head>
-    <div className={classes.root}>
+    <div>
       <Container component="main" maxWidth="xs">
-        <CssBaseline />
         <div className={classes.paper}>
           <Avatar className={classes.avatar}>
             <LockOutlinedIcon />
           </Avatar>
           <Typography component="h1" variant="h5">
-            Sign in
+            {title}
           </Typography>
           {children}
         </div>

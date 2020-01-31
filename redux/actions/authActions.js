@@ -32,6 +32,11 @@ const reauthenticate = (token) => {
   };
 };
 
+// gets the token from the cookie and saves it in the store
+const forgotPassword = (email) => {
+  return email;
+};
+
 // removing the token
 const deauthenticate = () => {
   return (dispatch) => {
@@ -46,4 +51,5 @@ export default {
   authenticate,
   reauthenticate,
   deauthenticate,
+  forgotPassword,
 };

@@ -1,7 +1,7 @@
 import Container from '@material-ui/core/Container';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import { makeStyles } from '@material-ui/core/styles';
-import Header from '../../components/Sidebar';
+import Header from '../../components/Header';
 import Footer from '../../components/Footer';
 import Head from 'next/head';
 import { connect } from 'react-redux';

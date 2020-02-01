@@ -8,7 +8,7 @@ function Copyright() {
     <Typography variant="body2" color="textSecondary" align="center">
       {'Copyright © '}
       <Link color="inherit" href="https://material-ui.com/">
-        Your Website
+        DynamX
       </Link>{' '}
       {new Date().getFullYear()}
       {'.'}
@@ -30,8 +30,8 @@ export default function Footer() {
   return (
     <footer className={classes.footer}>
       <Container maxWidth="sm">
-        <Typography variant="body1" align="center">My sticky footer can be found here.</Typography>
         <Copyright />
+        <Typography variant="body2" align="center">A product of GarlInfo</Typography>
       </Container>
     </footer>
   );

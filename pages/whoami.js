@@ -2,10 +2,10 @@
 import { connect } from 'react-redux';
 //import { API } from '../config';
 import initialize from '../utils/initialize';
-import Layout from '../components/Layout';
+import User from '../theming/layouts/user';
 
 const Whoami = ({ user }) => (
-  <Layout title="Who Am I">
+  <User title="Who Am I">
     {(user && (
       <h3 className="title is-3">
         You are logged in as{' '}
@@ -14,7 +14,7 @@ const Whoami = ({ user }) => (
     )) || (
       <h3 className="title is-3 has-text-danger	">You are not authenticated.</h3>
     )}
-  </Layout>
+  </User>
 );
 
 Whoami.getInitialProps = async ctx => {

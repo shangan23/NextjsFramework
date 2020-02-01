@@ -11,7 +11,7 @@ const authenticate = ({ email, password }, type) => {
   }
   return (dispatch) => {
     setCookie('token', email+'--'+ password );
-    Router.push('/');
+    Router.push('/dashboard');
     dispatch({ type: AUTHENTICATE, payload: email+'--'+ password });
     /*axios.post(`${API}/${type}`, { email, password })
       .then((response) => {
@@ -41,7 +41,7 @@ const forgotPassword = (email) => {
 const deauthenticate = () => {
   return (dispatch) => {
     removeCookie('token');
-    Router.push('/');
+    Router.push('/signin');
     dispatch({ type: DEAUTHENTICATE });
   };
 };

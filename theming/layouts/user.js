@@ -2,20 +2,23 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import AppBar from '@material-ui/core/AppBar';
 import CssBaseline from '@material-ui/core/CssBaseline';
+//import ViewModuleSharpIcon from '@material-ui/icons/ViewModuleSharp';
 import Divider from '@material-ui/core/Divider';
 import Drawer from '@material-ui/core/Drawer';
 import Hidden from '@material-ui/core/Hidden';
 import IconButton from '@material-ui/core/IconButton';
-import InboxIcon from '@material-ui/icons/MoveToInbox';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
-import ListItemIcon from '@material-ui/core/ListItemIcon';
-import ListItemText from '@material-ui/core/ListItemText';
 import MailIcon from '@material-ui/icons/Mail';
 import MenuIcon from '@material-ui/icons/Menu';
 import Toolbar from '@material-ui/core/Toolbar';
+import ExitToAppSharpIcon from '@material-ui/icons/ExitToAppSharp';
+import BuildSharpIcon from '@material-ui/icons/BuildSharp';
+import AddCircleSharpIcon from '@material-ui/icons/AddCircleSharp';
+import DashboardSharpIcon from '@material-ui/icons/DashboardSharp';
+import AssignmentIndSharpIcon from '@material-ui/icons/AssignmentIndSharp';
 import Typography from '@material-ui/core/Typography';
-import Menu from '@material-ui/core/Menu';  
+import Menu from '@material-ui/core/Menu';
 import AccountCircle from '@material-ui/icons/AccountCircle';
 import MenuItem from '@material-ui/core/MenuItem';
 import Badge from '@material-ui/core/Badge';
@@ -24,8 +27,9 @@ import MoreIcon from '@material-ui/icons/MoreVert';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
 import { connect } from 'react-redux';
 import actions from '../../redux/actions';
+import Button from '@material-ui/core/Button';
 
-const drawerWidth = 240;
+const drawerWidth = 100;
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -90,6 +94,14 @@ const useStyles = makeStyles(theme => ({
       display: 'none',
     },
   },
+  label: {
+    // Aligns the content of the button vertically.
+    flexDirection: 'column',
+  },
+  icon: {
+    fontSize: '25px !important',
+    marginBottom: theme.spacing(0.5)
+  }
 }));
 
 function User({ children, title, deauthenticate, container }) {
@@ -126,22 +138,19 @@ function User({ children, title, deauthenticate, container }) {
 
   const drawer = (
     <div>
-      <div className={classes.toolbar} />
+      <div className={classes.toolbar}>test</div>
       <Divider />
       <List>
-        {['Inbox', 'Starred', 'Send email', 'Drafts'].map((text, index) => (
+        {['Dashboard', 'Sales', 'Marketting', 'Call Center'].map((text) => (
           <ListItem button key={text}>
-            <ListItemIcon>{index % 2 === 0 ? <InboxIcon /> : <MailIcon />}</ListItemIcon>
-            <ListItemText primary={text} />
-          </ListItem>
-        ))}
-      </List>
-      <Divider />
-      <List>
-        {['All mail', 'Trash', 'Spam'].map((text, index) => (
-          <ListItem button key={text}>
-            <ListItemIcon>{index % 2 === 0 ? <InboxIcon /> : <MailIcon />}</ListItemIcon>
-            <ListItemText primary={text} />
+            <Button
+              /* Use classes property to inject custom styles */
+              classes={{ root: classes.button, label: classes.label }}
+              color="primary"
+              disableRipple={true}
+            ><DashboardSharpIcon className={classes.icon} />
+              <Typography variant="overline" display="block" gutterBottom>{text}</Typography>
+            </Button>
           </ListItem>
         ))}
       </List>
@@ -159,9 +168,9 @@ function User({ children, title, deauthenticate, container }) {
       open={isMenuOpen}
       onClose={handleMenuClose}
     >
-      <MenuItem onClick={handleMenuClose}>Profile</MenuItem>
-      <MenuItem onClick={handleMenuClose}>My account</MenuItem>
-      <MenuItem onClick={deauthenticate}>Sign Out</MenuItem>
+      <MenuItem onClick={handleMenuClose}><AssignmentIndSharpIcon/>&nbsp;My account</MenuItem>
+      <MenuItem onClick={handleMenuClose}><BuildSharpIcon/>&nbsp;Admin</MenuItem>
+      <MenuItem onClick={deauthenticate}><ExitToAppSharpIcon/>&nbsp;Sign Out</MenuItem>
     </Menu>
   );
 
@@ -215,9 +224,7 @@ function User({ children, title, deauthenticate, container }) {
           <div className={classes.grow} />
           <div className={classes.sectionDesktop}>
             <IconButton aria-label="show 4 new mails" color="inherit">
-              <Badge badgeContent={4} color="secondary">
-                <MailIcon />
-              </Badge>
+              <AddCircleSharpIcon/>
             </IconButton>
             <IconButton aria-label="show 17 new notifications" color="inherit">
               <Badge badgeContent={17} color="secondary">

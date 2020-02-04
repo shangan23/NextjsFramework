@@ -3,19 +3,15 @@ import PropTypes from 'prop-types';
 import AppBar from '@material-ui/core/AppBar';
 import CssBaseline from '@material-ui/core/CssBaseline';
 //import ViewModuleSharpIcon from '@material-ui/icons/ViewModuleSharp';
-import Divider from '@material-ui/core/Divider';
 import Drawer from '@material-ui/core/Drawer';
 import Hidden from '@material-ui/core/Hidden';
 import IconButton from '@material-ui/core/IconButton';
-import List from '@material-ui/core/List';
-import ListItem from '@material-ui/core/ListItem';
 import MailIcon from '@material-ui/icons/Mail';
 import MenuIcon from '@material-ui/icons/Menu';
 import Toolbar from '@material-ui/core/Toolbar';
 import ExitToAppSharpIcon from '@material-ui/icons/ExitToAppSharp';
 import BuildSharpIcon from '@material-ui/icons/BuildSharp';
 import AddCircleSharpIcon from '@material-ui/icons/AddCircleSharp';
-import DashboardSharpIcon from '@material-ui/icons/DashboardSharp';
 import AssignmentIndSharpIcon from '@material-ui/icons/AssignmentIndSharp';
 import Typography from '@material-ui/core/Typography';
 import Menu from '@material-ui/core/Menu';
@@ -27,7 +23,7 @@ import MoreIcon from '@material-ui/icons/MoreVert';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
 import { connect } from 'react-redux';
 import actions from '../../redux/actions';
-import Button from '@material-ui/core/Button';
+import SideMenu from '../../components/SideMenu';
 
 const drawerWidth = 100;
 
@@ -94,14 +90,6 @@ const useStyles = makeStyles(theme => ({
       display: 'none',
     },
   },
-  label: {
-    // Aligns the content of the button vertically.
-    flexDirection: 'column',
-  },
-  icon: {
-    fontSize: '25px !important',
-    marginBottom: theme.spacing(0.5)
-  }
 }));
 
 function User({ children, title, deauthenticate, container }) {
@@ -135,27 +123,6 @@ function User({ children, title, deauthenticate, container }) {
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen);
   };
-
-  const drawer = (
-    <div>
-      <div className={classes.toolbar}>test</div>
-      <Divider />
-      <List>
-        {['Dashboard', 'Sales', 'Marketting', 'Call Center'].map((text) => (
-          <ListItem button key={text}>
-            <Button
-              /* Use classes property to inject custom styles */
-              classes={{ root: classes.button, label: classes.label }}
-              color="primary"
-              disableRipple={true}
-            ><DashboardSharpIcon className={classes.icon} />
-              <Typography variant="overline" display="block" gutterBottom>{text}</Typography>
-            </Button>
-          </ListItem>
-        ))}
-      </List>
-    </div>
-  );
 
   const menuId = 'primary-search-account-menu';
   const renderMenu = (
@@ -284,7 +251,7 @@ function User({ children, title, deauthenticate, container }) {
               keepMounted: true, // Better open performance on mobile.
             }}
           >
-            {drawer}
+            <SideMenu />
           </Drawer>
         </Hidden>
         <Hidden xsDown implementation="css">
@@ -295,7 +262,7 @@ function User({ children, title, deauthenticate, container }) {
             variant="permanent"
             open
           >
-            {drawer}
+            <SideMenu />
           </Drawer>
         </Hidden>
       </nav>

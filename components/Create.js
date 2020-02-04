@@ -3,9 +3,6 @@ import TextField from '@material-ui/core/TextField';
 import 'date-fns';
 import React from 'react';
 import Grid from '@material-ui/core/Grid';
-import Fab from '@material-ui/core/Fab';
-import AddIcon from '@material-ui/icons/Add';
-import EditIcon from '@material-ui/icons/Edit';
 import DateFnsUtils from '@date-io/date-fns';
 import {
   MuiPickersUtilsProvider,
@@ -35,12 +32,6 @@ export default function CreateLayout() {
 
   return (
     <div className={classes.root}>
-      <Fab color="primary" aria-label="add">
-        <AddIcon />
-      </Fab>
-      <Fab color="secondary" aria-label="edit">
-        <EditIcon />
-      </Fab>
       <Grid container justify="space-around">
         <TextField
           id="standard-full-width"

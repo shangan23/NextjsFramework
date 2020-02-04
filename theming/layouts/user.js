@@ -1,5 +1,6 @@
 import React from 'react';
 import Head from 'next/head';
+import Divider from '@material-ui/core/Divider';
 import PropTypes from 'prop-types';
 import AppBar from '@material-ui/core/AppBar';
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -24,6 +25,10 @@ import { makeStyles, useTheme } from '@material-ui/core/styles';
 import { connect } from 'react-redux';
 import actions from '../../redux/actions';
 import SideMenu from '../../components/SideMenu';
+import Paper from '@material-ui/core/Paper';
+import Link from '@material-ui/core/Link';
+import Breadcrumbs from '@material-ui/core/Breadcrumbs';
+import NavigateNextIcon from '@material-ui/icons/NavigateNext';
 
 const drawerWidth = 100;
 
@@ -89,6 +94,23 @@ const useStyles = makeStyles(theme => ({
     [theme.breakpoints.up('md')]: {
       display: 'none',
     },
+  },
+  paperBreadcrumb: {
+    display: 'flex',
+    '& > *': {
+      margin: theme.spacing(1),
+      height: theme.spacing(3),
+    },
+  },
+  paperContainer: {
+    display: 'flex',
+    '& > *': {
+      margin: theme.spacing(1),
+    },
+  },
+  divider: {
+    margin: theme.spacing(0.5),
+    backgroundColor: '#f7f7f7',
   },
 }));
 
@@ -273,7 +295,21 @@ function User({ children, title, deauthenticate, container }) {
       </nav>
       <main className={classes.content}>
         <div className={classes.toolbar} />
-        {children}
+        <Paper elevation={1} className={classes.paperBreadcrumb}>
+          <Breadcrumbs separator={<NavigateNextIcon fontSize="small" />} aria-label="breadcrumb">
+            <Link color="inherit" href="/">
+              Home
+            </Link>
+            <Link color="inherit" href="/getting-started/installation/">
+              Module
+            </Link>
+            <Typography color="textPrimary">Breadcrumb</Typography>
+          </Breadcrumbs>
+        </Paper>
+        <Divider className={classes.divider} variant="middle" />
+        <Paper elevation={2} className={classes.paperContainer}>
+          {children}
+        </Paper>
       </main>
     </div>
   );

@@ -32,7 +32,7 @@ function SideMenu() {
     'id': 'dashboard'
   }, {
     'name': 'Sales',
-    'link': '/sales',
+    'link': '/module/list',
     'icon': <BusinessIcon className={classes.icon} />,
     'id': 'sales'
   }, {
@@ -49,7 +49,8 @@ function SideMenu() {
   case '/marketting':
     active = 'marketting';
     break;
-  case '/sales':
+  case '/module/list':
+  case '/module/create':
     active = 'sales';
     break;
   }
@@ -64,9 +65,8 @@ function SideMenu() {
             <Button
               /* Use classes property listto inject custom styles */
               classes={{ root: classes.button, label: classes.label }}
-              color={(active == menuList[index]['id']) ? 'secondary' : ''}
+              color={(active == menuList[index]['id']) ? 'secondary' : 'default'}
               size="large"
-              fullWidth="true"
               href={menuList[index]['link']}
             > {menuList[index]['icon']}
               <Typography variant="caption" display="block" gutterBottom>

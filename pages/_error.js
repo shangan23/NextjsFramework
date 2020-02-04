@@ -1,10 +1,11 @@
+import User from '../theming/layouts/user';
 function Error({ statusCode }) {
   return (
-    <p>
+    <User title="Dashboard">
       {statusCode
-        ? 'An error ' + statusCode +' occurred on server'
+        ? 'An error ' + statusCode + ' occurred on server'
         : 'An error occurred on client'}
-    </p>
+    </User>
   );
 }
 

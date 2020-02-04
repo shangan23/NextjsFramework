@@ -1,8 +1,8 @@
 import React from 'react';
+import Head from 'next/head';
 import PropTypes from 'prop-types';
 import AppBar from '@material-ui/core/AppBar';
 import CssBaseline from '@material-ui/core/CssBaseline';
-//import ViewModuleSharpIcon from '@material-ui/icons/ViewModuleSharp';
 import Drawer from '@material-ui/core/Drawer';
 import Hidden from '@material-ui/core/Hidden';
 import IconButton from '@material-ui/core/IconButton';
@@ -135,9 +135,9 @@ function User({ children, title, deauthenticate, container }) {
       open={isMenuOpen}
       onClose={handleMenuClose}
     >
-      <MenuItem onClick={handleMenuClose}><AssignmentIndSharpIcon/>&nbsp;My account</MenuItem>
-      <MenuItem onClick={handleMenuClose}><BuildSharpIcon/>&nbsp;Admin</MenuItem>
-      <MenuItem onClick={deauthenticate}><ExitToAppSharpIcon/>&nbsp;Sign Out</MenuItem>
+      <MenuItem onClick={handleMenuClose}><AssignmentIndSharpIcon />&nbsp;My account</MenuItem>
+      <MenuItem onClick={handleMenuClose}><BuildSharpIcon />&nbsp;Admin</MenuItem>
+      <MenuItem onClick={deauthenticate}><ExitToAppSharpIcon />&nbsp;Sign Out</MenuItem>
     </Menu>
   );
 
@@ -173,6 +173,11 @@ function User({ children, title, deauthenticate, container }) {
 
   return (
     <div className={classes.root}>
+      <Head>
+        <title>{title}</title>
+        <meta charSet="utf-8" />
+        <meta name="viewport" content="initial-scale=1.0, width=device-width" />
+      </Head>
       <CssBaseline />
       <AppBar position="fixed" className={classes.appBar}>
         <Toolbar>
@@ -191,7 +196,7 @@ function User({ children, title, deauthenticate, container }) {
           <div className={classes.grow} />
           <div className={classes.sectionDesktop}>
             <IconButton aria-label="show 4 new mails" color="inherit">
-              <AddCircleSharpIcon/>
+              <AddCircleSharpIcon />
             </IconButton>
             <IconButton aria-label="show 17 new notifications" color="inherit">
               <Badge badgeContent={17} color="secondary">

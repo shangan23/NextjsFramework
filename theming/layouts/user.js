@@ -213,7 +213,7 @@ function User({ children, title, deauthenticate, container }) {
             <MenuIcon />
           </IconButton>
           <Typography variant="h6" noWrap>
-            {title}
+            DeskX
           </Typography>
           <div className={classes.grow} />
           <div className={classes.sectionDesktop}>
@@ -278,7 +278,7 @@ function User({ children, title, deauthenticate, container }) {
               keepMounted: true, // Better open performance on mobile.
             }}
           >
-            <SideMenu />
+            <SideMenu display="mobile"/>
           </Drawer>
         </Hidden>
         <Hidden xsDown implementation="css">
@@ -289,7 +289,7 @@ function User({ children, title, deauthenticate, container }) {
             variant="permanent"
             open
           >
-            <SideMenu />
+            <SideMenu display="desktop"/>
           </Drawer>
         </Hidden>
       </nav>

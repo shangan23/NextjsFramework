@@ -8,6 +8,12 @@ import {
   MuiPickersUtilsProvider,
   KeyboardDatePicker,
 } from '@material-ui/pickers';
+import FormControl from '@material-ui/core/FormControl';
+import Select from '@material-ui/core/Select';
+import InputLabel from '@material-ui/core/InputLabel';
+import MenuItem from '@material-ui/core/MenuItem';
+import FormHelperText from '@material-ui/core/FormHelperText';
+import Button from '@material-ui/core/Button';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -30,59 +36,154 @@ export default function CreateLayout() {
     setSelectedDate(date);
   };
 
+  const fieldsToRender = [
+    {
+      'Type': 'Text',
+      'required': true,
+      'id': 'standard',
+      'label': 'first name'
+    },
+    {
+      'Type': 'Date',
+      'required': true,
+      'id': 'standard',
+      'label': 'first name'
+    },
+    {
+      'Type': 'Select',
+      'required': true,
+      'id': 'standard',
+      'label': 'first name'
+    },
+    {
+      'Type': 'Text',
+      'required': true,
+      'id': 'standard',
+      'label': 'first name'
+    },
+    {
+      'Type': 'Date',
+      'required': true,
+      'id': 'standard',
+      'label': 'first name'
+    },
+    {
+      'Type': 'Select',
+      'required': true,
+      'id': 'standard',
+      'label': 'first name'
+    },
+    {
+      'Type': 'Text',
+      'required': true,
+      'id': 'standard',
+      'label': 'first name'
+    },
+    {
+      'Type': 'Date',
+      'required': true,
+      'id': 'standard',
+      'label': 'first name'
+    },
+    {
+      'Type': 'Select',
+      'required': true,
+      'id': 'standard',
+      'label': 'first name'
+    },
+    {
+      'Type': 'Text',
+      'required': true,
+      'id': 'standard',
+      'label': 'first name'
+    },
+    {
+      'Type': 'Date',
+      'required': true,
+      'id': 'standard',
+      'label': 'first name'
+    },
+    {
+      'Type': 'Select',
+      'required': true,
+      'id': 'standard',
+      'label': 'first name'
+    }
+  ];
+
+  const renderFields = (
+    <Grid container spacing={3}>
+      {fieldsToRender.map((data, index) => (
+        <Grid item xs={12} md={4}>
+          {(fieldsToRender[index]['Type'] == 'Text') &&
+            <TextField
+              required={fieldsToRender[index]['required']}
+              id={fieldsToRender[index]['id']}
+              label={fieldsToRender[index]['label']}
+              style={{ margin: 8 }}
+              fullWidth
+            />
+            || (fieldsToRender[index]['Type'] == 'Date') &&
+            <MuiPickersUtilsProvider utils={DateFnsUtils}>
+              <KeyboardDatePicker
+                disableToolbar
+                variant="inline"
+                format="MM/dd/yyyy"
+                style={{ margin: 8 }}
+                margin="normal"
+                id="date-picker-inline"
+                fullWidth
+                //helperText="e.g. 05/23/1992"
+                label="Date of Birth"
+                value={selectedDate}
+                onChange={handleDateChange}
+                KeyboardButtonProps={{
+                  'aria-label': 'change date',
+                }}
+              />
+            </MuiPickersUtilsProvider>
+            || (fieldsToRender[index]['Type'] == 'Select') &&
+            <FormControl className={classes.formControl} fullWidth>
+              <InputLabel id="demo-simple-select-helper-label" >Industry</InputLabel>
+              <Select
+                labelId="demo-simple-select-helper-label"
+                id="demo-simple-select-helper"
+              >
+                <MenuItem value="">
+                  <em>None</em>
+                </MenuItem>
+                <MenuItem value={10}>Textile</MenuItem>
+                <MenuItem value={20}>Service</MenuItem>
+                <MenuItem value={30}>Manufacturing</MenuItem>
+              </Select>
+              <FormHelperText>e.g. Manufacturing</FormHelperText>
+            </FormControl>
+          }
+        </Grid>
+      ))}
+    </Grid>
+  );
+
   return (
     <div className={classes.root}>
       <Grid container justify="space-around">
-        <TextField
-          id="standard-full-width"
-          label="First Name"
-          style={{ margin: 8 }}
-          placeholder="Your First Name"
-          helperText="e.g. Shankar"
-          margin="normal"
-          InputLabelProps={{
-            shrink: true,
-          }}
-        />
-        <TextField
-          id="standard-full-width"
-          label="Middle Name"
-          style={{ margin: 8 }}
-          placeholder="Your Middle Name"
-          helperText="e.g. Ganesh"
-          margin="normal"
-          InputLabelProps={{
-            shrink: true,
-          }}
-        />
-        <TextField
-          id="standard-full-width"
-          label="Last Name"
-          style={{ margin: 8 }}
-          placeholder="Your Last Name"
-          helperText="e.g. Jayaraman"
-          margin="normal"
-          InputLabelProps={{
-            shrink: true,
-          }}
-        />
-        <MuiPickersUtilsProvider utils={DateFnsUtils}>
-          <KeyboardDatePicker
-            disableToolbar
-            variant="inline"
-            format="MM/dd/yyyy"
-            style={{ margin: 8 }}
-            margin="normal"
-            id="date-picker-inline"
-            helperText="e.g. 05/23/1992"
-            label="Date of Birth"
-            value={selectedDate}
-            onChange={handleDateChange}
-            KeyboardButtonProps={{
-              'aria-label': 'change date',
-            }}
-          />
-        </MuiPickersUtilsProvider>
+        {renderFields}
+      </Grid>
+      <Grid container justify="space-around">
+        <Button
+          variant="contained"
+          color="primary"
+          className={classes.button}
+        >
+          Save
+        </Button>
+        <Button
+          variant="contained"
+          color="secondary"
+          className={classes.button}
+        >
+          Cancel
+        </Button>
       </Grid>
     </div>
   );

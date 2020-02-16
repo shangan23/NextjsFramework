@@ -1,15 +1,12 @@
 import { Radios } from 'mui-rff';
 
-export default function FieldRadio() {
+export default function FieldRadio({fieldsToRender, index}) {
   return (<Radios
-    label="Best Stooge"
-    name="stooge"
+    label={fieldsToRender[index]['label']}
+    name={fieldsToRender[index]['name']}
+    required={fieldsToRender[index]['required']}
     formControlProps={{ margin: 'none' }}
     radioGroupProps={{ row: true }}
-    data={[
-      { label: 'Larry', value: 'larry' },
-      { label: 'Moe', value: 'moe' },
-      { label: 'Curly', value: 'curly' },
-    ]}
+    data={fieldsToRender[index]['data']}
   />);
 }

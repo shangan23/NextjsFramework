@@ -7,6 +7,8 @@ import FieldSelect from './Fields/FieldSelect';
 import FieldText from './Fields/FieldText';
 import FieldTextArea from './Fields/FieldTextArea';
 import FieldTime from './Fields/FieldTime';
+import FieldEmail from './Fields/FieldEmail';
+import FieldPassword from './Fields/FieldPassword';
 import {
   Grid,
   Button,
@@ -20,66 +22,73 @@ const onSubmit = async values => {
 
 const planet = [{ 'id': 1, value: 'Neptune' }, { 'id': 2, value: 'Mars' }, { 'id': 3, value: 'Pluto' }];
 
-const validate = values => {
-  const errors = {};
-  if (!values.firstName) {
-    errors.firstName = 'Required';
-  }
-  if (!values.lastName) {
-    errors.lastName = 'Required';
-  }
-  if (!values.email) {
-    errors.email = 'Required';
-  }
-  if (!values.best) {
-    errors.best = 'Required';
-  }
-  if (values.planet.length <= 0) {
-    errors.planet = 'Required';
-  }
-
-  return errors;
-};
-
-const SwitchData = [
+/*const SwitchData = [
   { label: 'Item 1', value: 'item1' },
   { label: 'Item 2', value: 'item2' }
-];
+];*/
 
 const fieldsToRender = [
   {
-    'Type': 'Text',
-    'required': true,
-    'id': 'standard',
-    'label': 'First Name'
-  },
-  {
-    'Type': 'Autocomplete',
+    'type': 'Text',
     'required': true,
     'id': 'standard',
     'label': 'First Name',
+    'name': 'firstName'
+  },
+  {
+    'type': 'Email',
+    'required': true,
+    'id': 'standard',
+    'name': 'email',
+    'label': 'Email'
+  },
+  {
+    'type': 'Password',
+    'required': true,
+    'id': 'standard',
+    'name': 'password',
+    'label': 'Password'
+  },
+  {
+    'type': 'Autocomplete',
+    'required': true,
+    'id': 'standard',
+    'label': 'User Details',
     'name': 'planet',
     'data': planet
   },
   {
-    'Type': 'Date',
+    'type': 'Date',
     'required': true,
     'id': 'standard',
-    'label': 'First Name'
+    'name': 'dob',
+    'label': 'Date Of Birth'
   },
   {
-    'Type': 'Radio',
+    'type': 'Radio',
     'required': true,
-    'id': 'standard',
-    'label': 'First Name'
+    'id': 'gender',
+    'name': 'gender',
+    'label': 'Gender',
+    'data': [
+      { label: 'Male', value: 'M' },
+      { label: 'Female', value: 'F' },
+      { label: 'Other', value: 'O' },
+    ]
   },
   {
-    'Type': 'Select',
+    'type': 'Select',
     'required': true,
-    'id': 'standard',
-    'label': 'first name'
+    'id': 'role',
+    'name': 'role',
+    'label': 'Role',
+    'data': [
+      { id: 'CallcenterHead', value: 'Callcenter Head' },
+      { id: 'MarkettingHead', value: 'Marketting Head' },
+      { id: 'SalesHead', value: 'Sales Head' }
+    ]
   },
-  {
+  /*{
     'Type': 'Switch',
     'required': true,
     'id': 'standard',
@@ -103,30 +112,53 @@ const fieldsToRender = [
     'required': true,
     'id': 'standard',
     'label': 'first name'
-  }
+  }*/
 ];
 
+const validate = values => {
+  const errors = {};
+  fieldsToRender.map((data, index) => {
+    let name = (fieldsToRender[index]['name']).toString();
+    let type = (fieldsToRender[index]['type']).toString();
+    switch (type) {
+    case 'Autocomplete':
+      if (values[name].length == 0)
+        errors[name] = 'Required';
+      break;
+    default:
+      if (!values[name])
+        errors[name] = 'Required';
+      break;
+    }
+  }
+  );
+  return errors;
+};
 
 const renderFields = (
   <Grid container spacing={2}>
     {fieldsToRender.map((data, index) => (
       <Grid item xs={12} md={4} key={index}>
-        {(fieldsToRender[index]['Type'] == 'Text') &&
+        {(fieldsToRender[index]['type'] == 'Text') &&
           <FieldText index={index} fieldsToRender={fieldsToRender} />
-          || (fieldsToRender[index]['Type'] == 'Date') &&
+          || (fieldsToRender[index]['type'] == 'Date') &&
           <FieldDate index={index} fieldsToRender={fieldsToRender} />
-          || (fieldsToRender[index]['Type'] == 'Select') &&
+          || (fieldsToRender[index]['type'] == 'Select') &&
           <FieldSelect index={index} fieldsToRender={fieldsToRender} />
-          || (fieldsToRender[index]['Type'] == 'Checkbox') &&
+          || (fieldsToRender[index]['type'] == 'Checkbox') &&
           <FieldCheckbox index={index} fieldsToRender={fieldsToRender} />
-          || (fieldsToRender[index]['Type'] == 'Time') &&
+          || (fieldsToRender[index]['type'] == 'Time') &&
           <FieldTime index={index} fieldsToRender={fieldsToRender} />
-          || (fieldsToRender[index]['Type'] == 'TextArea') &&
+          || (fieldsToRender[index]['type'] == 'TextArea') &&
           <FieldTextArea index={index} fieldsToRender={fieldsToRender} />
-          || (fieldsToRender[index]['Type'] == 'Radio') &&
+          || (fieldsToRender[index]['type'] == 'Radio') &&
           <FieldRadio index={index} fieldsToRender={fieldsToRender} />
-          || (fieldsToRender[index]['Type'] == 'Autocomplete') &&
+          || (fieldsToRender[index]['type'] == 'Autocomplete') &&
           <FieldAutocomplete index={index} fieldsToRender={fieldsToRender} />
+          || (fieldsToRender[index]['type'] == 'Email') &&
+          <FieldEmail index={index} fieldsToRender={fieldsToRender} />
+          || (fieldsToRender[index]['type'] == 'Password') &&
+          <FieldPassword index={index} fieldsToRender={fieldsToRender} />
         }
       </Grid>
     ))}
@@ -136,12 +168,12 @@ const renderFields = (
 function CreateLayout() {
   return (
     <Form
-      onSubmit={onSubmit}
-      initialValues={{ employed: true, stooge: 'larry', planet }}
+      onSubmit={onSubmit} style={{ marginTop: 16 }}
+      initialValues={{ planet: [] }}
       validate={validate}
       render={({ handleSubmit, reset, submitting, pristine, values }) => (
         <form onSubmit={handleSubmit} noValidate>
-          <Grid container alignItems="flex-start" spacing={2}>
+          <Grid container alignItems="flex-start" spacing={2} style={{ margin: 4 }}>
             {renderFields}
             <Grid item style={{ marginTop: 16 }}>
               <Button

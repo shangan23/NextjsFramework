@@ -1,14 +1,15 @@
 import { Select } from 'mui-rff';
-import { MenuItem} from '@material-ui/core';
+import { MenuItem } from '@material-ui/core';
 
-export default function FieldSelect() {
+export default function FieldSelect({ fieldsToRender, index }) {
+  const data = fieldsToRender[index]['data'];
   return (<Select
-    name="city"
-    label="Select a City"
+    label={fieldsToRender[index]['label']}
+    name={fieldsToRender[index]['name']}
+    required={fieldsToRender[index]['required']}
     formControlProps={{ margin: 'none' }}
-  >
-    <MenuItem value="London">London</MenuItem>
-    <MenuItem value="Paris">Paris</MenuItem>
-    <MenuItem value="Budapest">A city with a very long Name</MenuItem>
+  > {data.map((item, idx) => (
+      <MenuItem value={data[idx]['id']}>{data[idx]['value']}</MenuItem>
+    ))}
   </Select>);
 }

@@ -1,11 +1,12 @@
 import { DatePicker } from 'mui-rff';
 import DateFnsUtils from '@date-io/date-fns';
 
-export default function FieldDate() {
+export default function FieldDate({fieldsToRender, index}) {
   return (<DatePicker
-    name="rendez-vous"
+    required={fieldsToRender[index]['required']}
+    name={fieldsToRender[index]['name']}
     margin="normal"
-    label="Rendez-vous"
+    label={fieldsToRender[index]['label']}
     dateFunsUtils={DateFnsUtils}
   />);
 }

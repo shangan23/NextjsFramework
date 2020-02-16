@@ -6,7 +6,7 @@ import User from '../../theming/layouts/user';
 import EnhancedTable from '../../components/Table';
 
 const Dashboard = () => (
-  <User title="Sales">
+  <User title="Sales" actions="list">
     <EnhancedTable />.
   </User>
 );

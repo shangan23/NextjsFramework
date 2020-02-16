@@ -1,190 +1,174 @@
-import { makeStyles } from '@material-ui/core/styles';
-import TextField from '@material-ui/core/TextField';
-import 'date-fns';
-import React from 'react';
-import Grid from '@material-ui/core/Grid';
-import DateFnsUtils from '@date-io/date-fns';
+import { Form } from 'react-final-form';
+import FieldAutocomplete from './Fields/FieldAutocomplete';
+import FieldCheckbox from './Fields/FieldCheckbox';
+import FieldDate from './Fields/FieldDate';
+import FieldRadio from './Fields/FieldRadio';
+import FieldSelect from './Fields/FieldSelect';
+import FieldText from './Fields/FieldText';
+import FieldTextArea from './Fields/FieldTextArea';
+import FieldTime from './Fields/FieldTime';
 import {
-  MuiPickersUtilsProvider,
-  KeyboardDatePicker,
-} from '@material-ui/pickers';
-import FormControl from '@material-ui/core/FormControl';
-import Select from '@material-ui/core/Select';
-import InputLabel from '@material-ui/core/InputLabel';
-import MenuItem from '@material-ui/core/MenuItem';
-import FormHelperText from '@material-ui/core/FormHelperText';
-import Button from '@material-ui/core/Button';
+  Grid,
+  Button,
+} from '@material-ui/core';
 
-const useStyles = makeStyles(theme => ({
-  root: {
-    display: 'flex',
-    flexWrap: 'wrap',
+const onSubmit = async values => {
+  const sleep = ms => new Promise(resolve => setTimeout(resolve, ms));
+  await sleep(300);
+  window.alert(JSON.stringify(values, 0, 2));
+};
+
+const planet = [{ 'id': 1, value: 'Neptune' }, { 'id': 2, value: 'Mars' }, { 'id': 3, value: 'Pluto' }];
+
+const validate = values => {
+  const errors = {};
+  if (!values.firstName) {
+    errors.firstName = 'Required';
+  }
+  if (!values.lastName) {
+    errors.lastName = 'Required';
+  }
+  if (!values.email) {
+    errors.email = 'Required';
+  }
+  if (!values.best) {
+    errors.best = 'Required';
+  }
+  if (values.planet.length <= 0) {
+    errors.planet = 'Required';
+  }
+
+  return errors;
+};
+
+const SwitchData = [
+  { label: 'Item 1', value: 'item1' },
+  { label: 'Item 2', value: 'item2' }
+];
+
+const fieldsToRender = [
+  {
+    'Type': 'Text',
+    'required': true,
+    'id': 'standard',
+    'label': 'First Name'
   },
-  textField: {
-    marginLeft: theme.spacing(1),
-    marginRight: theme.spacing(1),
-    width: 200,
+  {
+    'Type': 'Autocomplete',
+    'required': true,
+    'id': 'standard',
+    'label': 'First Name',
+    'name': 'planet',
+    'data': planet
   },
-}));
+  {
+    'Type': 'Date',
+    'required': true,
+    'id': 'standard',
+    'label': 'First Name'
+  },
+  {
+    'Type': 'Radio',
+    'required': true,
+    'id': 'standard',
+    'label': 'First Name'
+  },
+  {
+    'Type': 'Select',
+    'required': true,
+    'id': 'standard',
+    'label': 'first name'
+  },
+  {
+    'Type': 'Switch',
+    'required': true,
+    'id': 'standard',
+    'label': 'first name',
+    'data': SwitchData
+  },
+  {
+    'Type': 'TextArea',
+    'required': true,
+    'id': 'standard',
+    'label': 'first name'
+  },
+  {
+    'Type': 'Time',
+    'required': true,
+    'id': 'standard',
+    'label': 'first name'
+  },
+  {
+    'Type': 'Checkbox',
+    'required': true,
+    'id': 'standard',
+    'label': 'first name'
+  }
+];
 
-export default function CreateLayout() {
-  const classes = useStyles();
-  // The first commit of Material-UI
-  const [selectedDate, setSelectedDate] = React.useState();
 
-  const handleDateChange = date => {
-    setSelectedDate(date);
-  };
+const renderFields = (
+  <Grid container spacing={2}>
+    {fieldsToRender.map((data, index) => (
+      <Grid item xs={12} md={4} key={index}>
+        {(fieldsToRender[index]['Type'] == 'Text') &&
+          <FieldText index={index} fieldsToRender={fieldsToRender} />
+          || (fieldsToRender[index]['Type'] == 'Date') &&
+          <FieldDate index={index} fieldsToRender={fieldsToRender} />
+          || (fieldsToRender[index]['Type'] == 'Select') &&
+          <FieldSelect index={index} fieldsToRender={fieldsToRender} />
+          || (fieldsToRender[index]['Type'] == 'Checkbox') &&
+          <FieldCheckbox index={index} fieldsToRender={fieldsToRender} />
+          || (fieldsToRender[index]['Type'] == 'Time') &&
+          <FieldTime index={index} fieldsToRender={fieldsToRender} />
+          || (fieldsToRender[index]['Type'] == 'TextArea') &&
+          <FieldTextArea index={index} fieldsToRender={fieldsToRender} />
+          || (fieldsToRender[index]['Type'] == 'Radio') &&
+          <FieldRadio index={index} fieldsToRender={fieldsToRender} />
+          || (fieldsToRender[index]['Type'] == 'Autocomplete') &&
+          <FieldAutocomplete index={index} fieldsToRender={fieldsToRender} />
+        }
+      </Grid>
+    ))}
+  </Grid>
+);
 
-  const fieldsToRender = [
-    {
-      'Type': 'Text',
-      'required': true,
-      'id': 'standard',
-      'label': 'first name'
-    },
-    {
-      'Type': 'Date',
-      'required': true,
-      'id': 'standard',
-      'label': 'first name'
-    },
-    {
-      'Type': 'Select',
-      'required': true,
-      'id': 'standard',
-      'label': 'first name'
-    },
-    {
-      'Type': 'Text',
-      'required': true,
-      'id': 'standard',
-      'label': 'first name'
-    },
-    {
-      'Type': 'Date',
-      'required': true,
-      'id': 'standard',
-      'label': 'first name'
-    },
-    {
-      'Type': 'Select',
-      'required': true,
-      'id': 'standard',
-      'label': 'first name'
-    },
-    {
-      'Type': 'Text',
-      'required': true,
-      'id': 'standard',
-      'label': 'first name'
-    },
-    {
-      'Type': 'Date',
-      'required': true,
-      'id': 'standard',
-      'label': 'first name'
-    },
-    {
-      'Type': 'Select',
-      'required': true,
-      'id': 'standard',
-      'label': 'first name'
-    },
-    {
-      'Type': 'Text',
-      'required': true,
-      'id': 'standard',
-      'label': 'first name'
-    },
-    {
-      'Type': 'Date',
-      'required': true,
-      'id': 'standard',
-      'label': 'first name'
-    },
-    {
-      'Type': 'Select',
-      'required': true,
-      'id': 'standard',
-      'label': 'first name'
-    }
-  ];
-
-  const renderFields = (
-    <Grid container spacing={3}>
-      {fieldsToRender.map((data, index) => (
-        <Grid item xs={12} md={4}>
-          {(fieldsToRender[index]['Type'] == 'Text') &&
-            <TextField
-              required={fieldsToRender[index]['required']}
-              id={fieldsToRender[index]['id']}
-              label={fieldsToRender[index]['label']}
-              style={{ margin: 8 }}
-              fullWidth
-            />
-            || (fieldsToRender[index]['Type'] == 'Date') &&
-            <MuiPickersUtilsProvider utils={DateFnsUtils}>
-              <KeyboardDatePicker
-                disableToolbar
-                variant="inline"
-                format="MM/dd/yyyy"
-                style={{ margin: 8 }}
-                margin="normal"
-                id="date-picker-inline"
-                fullWidth
-                //helperText="e.g. 05/23/1992"
-                label="Date of Birth"
-                value={selectedDate}
-                onChange={handleDateChange}
-                KeyboardButtonProps={{
-                  'aria-label': 'change date',
-                }}
-              />
-            </MuiPickersUtilsProvider>
-            || (fieldsToRender[index]['Type'] == 'Select') &&
-            <FormControl className={classes.formControl} fullWidth>
-              <InputLabel id="demo-simple-select-helper-label" >Industry</InputLabel>
-              <Select
-                labelId="demo-simple-select-helper-label"
-                id="demo-simple-select-helper"
-              >
-                <MenuItem value="">
-                  <em>None</em>
-                </MenuItem>
-                <MenuItem value={10}>Textile</MenuItem>
-                <MenuItem value={20}>Service</MenuItem>
-                <MenuItem value={30}>Manufacturing</MenuItem>
-              </Select>
-              <FormHelperText>e.g. Manufacturing</FormHelperText>
-            </FormControl>
-          }
-        </Grid>
-      ))}
-    </Grid>
-  );
-
+function CreateLayout() {
   return (
-    <div className={classes.root}>
-      <Grid container justify="space-around">
-        {renderFields}
-      </Grid>
-      <Grid container justify="space-around">
-        <Button
-          variant="contained"
-          color="primary"
-          className={classes.button}
-        >
-          Save
-        </Button>
-        <Button
-          variant="contained"
-          color="secondary"
-          className={classes.button}
-        >
-          Cancel
-        </Button>
-      </Grid>
-    </div>
+    <Form
+      onSubmit={onSubmit}
+      initialValues={{ employed: true, stooge: 'larry', planet }}
+      validate={validate}
+      render={({ handleSubmit, reset, submitting, pristine, values }) => (
+        <form onSubmit={handleSubmit} noValidate>
+          <Grid container alignItems="flex-start" spacing={2}>
+            {renderFields}
+            <Grid item style={{ marginTop: 16 }}>
+              <Button
+                type="button"
+                variant="contained"
+                onClick={reset}
+                disabled={submitting || pristine}
+              >
+                Reset
+              </Button>
+            </Grid>
+            <Grid item style={{ marginTop: 16 }}>
+              <Button
+                variant="contained"
+                color="primary"
+                type="submit"
+                disabled={submitting}
+              >
+                Submit
+              </Button>
+            </Grid>
+          </Grid>
+          <pre>{JSON.stringify(values, 0, 2)}</pre>
+        </form>
+      )}
+    />
   );
 }
+
+export default CreateLayout;

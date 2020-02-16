@@ -5,7 +5,7 @@ import initialize from '../utils/initialize';
 import User from '../theming/layouts/user';
 
 const Dashboard = () => (
-  <User title="Dashboard">
+  <User title="Dashboard" actions="dashlets">
     <strong className="is-size-2 has-text-primary">test</strong>.
   </User>
 );

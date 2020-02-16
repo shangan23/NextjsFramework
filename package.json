@@ -13,7 +13,7 @@
     "@material-ui/lab": "^4.0.0-alpha.42",
     "@material-ui/pickers": "^3.2.10",
     "@types/next": "latest",
-    "axios": "^0.17.1",
+    "axios": "^0.19.2",
     "classnames": "^2.2.6",
     "cookie-parser": "^1.4.3",
     "date-fns": "^2.9.0",

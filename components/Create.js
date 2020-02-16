@@ -9,6 +9,7 @@ import FieldTextArea from './Fields/FieldTextArea';
 import FieldTime from './Fields/FieldTime';
 import FieldEmail from './Fields/FieldEmail';
 import FieldPassword from './Fields/FieldPassword';
+import FieldSwitch from './Fields/FieldSwitch';
 import {
   Grid,
   Button,
@@ -19,13 +20,6 @@ const onSubmit = async values => {
   await sleep(300);
   window.alert(JSON.stringify(values, 0, 2));
 };
-
-const planet = [{ 'id': 1, value: 'Neptune' }, { 'id': 2, value: 'Mars' }, { 'id': 3, value: 'Pluto' }];
-
-/*const SwitchData = [
-  { label: 'Item 1', value: 'item1' },
-  { label: 'Item 2', value: 'item2' }
-];*/
 
 const fieldsToRender = [
   {
@@ -55,7 +49,7 @@ const fieldsToRender = [
     'id': 'standard',
     'label': 'User Details',
     'name': 'planet',
-    'data': planet
+    'data': [{ 'id': 1, value: 'Neptune' }, { 'id': 2, value: 'Mars' }, { 'id': 3, value: 'Pluto' }]
   },
   {
     'type': 'Date',
@@ -88,46 +82,58 @@ const fieldsToRender = [
       { id: 'SalesHead', value: 'Sales Head' }
     ]
   },
-  /*{
-    'Type': 'Switch',
+  {
+    'type': 'Switch',
     'required': true,
-    'id': 'standard',
-    'label': 'first name',
-    'data': SwitchData
+    'id': 'notification',
+    'name':'notification',
+    'label': 'Notification',
+    'data': [
+      { label: 'Email', value: 'Email' },
+      { label: 'SMS', value: 'SMS' }
+    ]
   },
   {
-    'Type': 'TextArea',
+    'type': 'TextArea',
     'required': true,
-    'id': 'standard',
-    'label': 'first name'
+    'id': 'address',
+    'name':'address',
+    'label': 'Address'
   },
   {
-    'Type': 'Time',
+    'type': 'Time',
     'required': true,
-    'id': 'standard',
-    'label': 'first name'
+    'id': 'dayStartTime',
+    'name':'address',
+    'label': 'Day Start Timing'
   },
   {
-    'Type': 'Checkbox',
+    'type': 'Checkbox',
     'required': true,
-    'id': 'standard',
-    'label': 'first name'
-  }*/
+    'id': 'availedLoan',
+    'name':'availedLoan',
+    'label': 'Availed Loan?',
+    'data': [
+      { label: 'Yes', value: 'Yes' },
+      { label: 'No', value: 'No' }
+    ]
+  }
 ];
 
 const validate = values => {
   const errors = {};
   fieldsToRender.map((data, index) => {
     let name = (fieldsToRender[index]['name']).toString();
+    let label = (fieldsToRender[index]['label']).toString();
     let type = (fieldsToRender[index]['type']).toString();
     switch (type) {
     case 'Autocomplete':
       if (values[name].length == 0)
-        errors[name] = 'Required';
+        errors[name] = label+' required';
       break;
     default:
       if (!values[name])
-        errors[name] = 'Required';
+        errors[name] = label+' required';
       break;
     }
   }
@@ -159,6 +165,8 @@ const renderFields = (
           <FieldEmail index={index} fieldsToRender={fieldsToRender} />
           || (fieldsToRender[index]['type'] == 'Password') &&
           <FieldPassword index={index} fieldsToRender={fieldsToRender} />
+          || (fieldsToRender[index]['type'] == 'Switch') &&
+          <FieldSwitch index={index} fieldsToRender={fieldsToRender} />
         }
       </Grid>
     ))}

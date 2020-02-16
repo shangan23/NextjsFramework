@@ -1,9 +1,11 @@
 import { Checkboxes } from 'mui-rff';
 
-export default function FieldCheckbox() {
+export default function FieldCheckbox({ fieldsToRender, index }) {
   return (<Checkboxes
-    name="employed"
+    label={fieldsToRender[index]['label']}
+    name={fieldsToRender[index]['name']}
+    required={fieldsToRender[index]['required']}
     formControlProps={{ margin: 'none' }}
-    data={{ label: 'Employed', value: true }}
+    data={fieldsToRender[index]['data']}
   />);
 }

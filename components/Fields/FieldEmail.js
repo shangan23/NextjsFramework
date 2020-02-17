@@ -6,6 +6,6 @@ export default function FieldEmail({fieldsToRender, index}) {
     type="email"
     name={fieldsToRender[index]['name']}
     margin="none"
-    required={true}
+    required={fieldsToRender[index]['required']}
   />);
 }

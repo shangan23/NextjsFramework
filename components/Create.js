@@ -10,10 +10,18 @@ import FieldTime from './Fields/FieldTime';
 import FieldEmail from './Fields/FieldEmail';
 import FieldPassword from './Fields/FieldPassword';
 import FieldSwitch from './Fields/FieldSwitch';
+import FieldAutoCompleteSingle from './Fields/FieldAutocompleteSingle';
+import Divider from '@material-ui/core/Divider';
 import {
   Grid,
   Button,
+  Hidden,
 } from '@material-ui/core';
+import Paper from '@material-ui/core/Paper';
+import Link from '@material-ui/core/Link';
+import Typography from '@material-ui/core/Typography';
+import Breadcrumbs from '@material-ui/core/Breadcrumbs';
+import NavigateNextIcon from '@material-ui/icons/NavigateNext';
 
 const onSubmit = async values => {
   const sleep = ms => new Promise(resolve => setTimeout(resolve, ms));
@@ -31,7 +39,7 @@ const fieldsToRender = [
   },
   {
     'type': 'Email',
-    'required': true,
+    'required': false,
     'id': 'standard',
     'name': 'email',
     'label': 'Email'
@@ -49,6 +57,14 @@ const fieldsToRender = [
     'id': 'standard',
     'label': 'User Details',
     'name': 'planet',
+    'data': [{ 'id': 1, value: 'Neptune' }, { 'id': 2, value: 'Mars' }, { 'id': 3, value: 'Pluto' }]
+  },
+  {
+    'type': 'AutocompleteSingle',
+    'required': false,
+    'id': 'User',
+    'label': 'User',
+    'name': 'User',
     'data': [{ 'id': 1, value: 'Neptune' }, { 'id': 2, value: 'Mars' }, { 'id': 3, value: 'Pluto' }]
   },
   {
@@ -86,7 +102,7 @@ const fieldsToRender = [
     'type': 'Switch',
     'required': true,
     'id': 'notification',
-    'name':'notification',
+    'name': 'notification',
     'label': 'Notification',
     'data': [
       { label: 'Email', value: 'Email' },
@@ -97,21 +113,21 @@ const fieldsToRender = [
     'type': 'TextArea',
     'required': true,
     'id': 'address',
-    'name':'address',
+    'name': 'address',
     'label': 'Address'
   },
   {
     'type': 'Time',
     'required': true,
     'id': 'dayStartTime',
-    'name':'address',
+    'name': 'dayStartTime',
     'label': 'Day Start Timing'
   },
   {
     'type': 'Checkbox',
     'required': true,
     'id': 'availedLoan',
-    'name':'availedLoan',
+    'name': 'availedLoan',
     'label': 'Availed Loan?',
     'data': [
       { label: 'Yes', value: 'Yes' },
@@ -122,18 +138,28 @@ const fieldsToRender = [
 
 const validate = values => {
   const errors = {};
+  var regex = /^\w+([-+.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$/;
   fieldsToRender.map((data, index) => {
     let name = (fieldsToRender[index]['name']).toString();
     let label = (fieldsToRender[index]['label']).toString();
     let type = (fieldsToRender[index]['type']).toString();
+    let required = (fieldsToRender[index]['required']);
     switch (type) {
     case 'Autocomplete':
-      if (values[name].length == 0)
-        errors[name] = label+' required';
+      if ((values[name].length == 0) && required)
+        errors[name] = label + ' required';
+      break;
+    case 'Email':
+      if ((!values[name]) && required)
+        errors[name] = label + ' required';
+      else {
+        if (!regex.test(values[name]) && values[name])
+          errors[name] = label + ' invalid';
+      }
       break;
     default:
-      if (!values[name])
-        errors[name] = label+' required';
+      if (!values[name] && required)
+        errors[name] = label + ' required';
       break;
     }
   }
@@ -142,9 +168,9 @@ const validate = values => {
 };
 
 const renderFields = (
-  <Grid container spacing={2}>
+  <Grid container spacing={2} style={{ margin: 4 }}>
     {fieldsToRender.map((data, index) => (
-      <Grid item xs={12} md={4} key={index}>
+      <Grid item xs={12} md={6} key={index}>
         {(fieldsToRender[index]['type'] == 'Text') &&
           <FieldText index={index} fieldsToRender={fieldsToRender} />
           || (fieldsToRender[index]['type'] == 'Date') &&
@@ -167,6 +193,8 @@ const renderFields = (
           <FieldPassword index={index} fieldsToRender={fieldsToRender} />
           || (fieldsToRender[index]['type'] == 'Switch') &&
           <FieldSwitch index={index} fieldsToRender={fieldsToRender} />
+          || (fieldsToRender[index]['type'] == 'AutocompleteSingle') &&
+          <FieldAutoCompleteSingle index={index} fieldsToRender={fieldsToRender} />
         }
       </Grid>
     ))}
@@ -175,39 +203,57 @@ const renderFields = (
 
 function CreateLayout() {
   return (
-    <Form
-      onSubmit={onSubmit} style={{ marginTop: 16 }}
-      initialValues={{ planet: [] }}
-      validate={validate}
-      render={({ handleSubmit, reset, submitting, pristine, values }) => (
-        <form onSubmit={handleSubmit} noValidate>
-          <Grid container alignItems="flex-start" spacing={2} style={{ margin: 4 }}>
-            {renderFields}
-            <Grid item style={{ marginTop: 16 }}>
-              <Button
-                type="button"
-                variant="contained"
-                onClick={reset}
-                disabled={submitting || pristine}
-              >
-                Reset
-              </Button>
-            </Grid>
-            <Grid item style={{ marginTop: 16 }}>
-              <Button
-                variant="contained"
-                color="primary"
-                type="submit"
-                disabled={submitting}
-              >
-                Submit
-              </Button>
-            </Grid>
-          </Grid>
-          <pre>{JSON.stringify(values, 0, 2)}</pre>
-        </form>
-      )}
-    />
+    <div>
+      <Paper elevation={1}>
+        <Breadcrumbs separator={<NavigateNextIcon fontSize="small" />} aria-label="breadcrumb">
+          <Link color="inherit" href="/">
+            Home
+          </Link>
+          <Link color="inherit" href="/getting-started/installation/">
+            Module
+          </Link>
+          <Typography variant="h6" color="textPrimary">Breadcrumb</Typography>
+        </Breadcrumbs>
+      </Paper>
+      <Divider variant="middle" />
+      <Paper elevation={2}>
+        <Form
+          onSubmit={onSubmit} style={{ marginTop: 16 }}
+          initialValues={{ planet: [] }}
+          validate={validate}
+          render={({ handleSubmit, reset, submitting, pristine, values }) => (
+            <form onSubmit={handleSubmit} noValidate>
+              <Grid container alignItems="flex-start" spacing={2}>
+                {renderFields}
+                <Grid item style={{ marginTop: 16 }}>
+                  <Button
+                    type="button"
+                    variant="contained"
+                    onClick={reset}
+                    disabled={submitting || pristine}
+                  >
+                    Reset
+                  </Button>
+                </Grid>
+                <Grid item style={{ marginTop: 16 }}>
+                  <Button
+                    variant="contained"
+                    color="primary"
+                    type="submit"
+                    disabled={submitting}
+                  >
+                    Submit
+                  </Button>
+                </Grid>
+              </Grid>
+              <Hidden>
+                <pre>{JSON.stringify(values, 0, 2)}</pre>
+              </Hidden>
+            </form>
+          )}
+        />
+      </Paper>
+    </div>
   );
 }
 

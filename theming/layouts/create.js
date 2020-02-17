@@ -1,6 +1,5 @@
 import React from 'react';
 import Head from 'next/head';
-import Divider from '@material-ui/core/Divider';
 import PropTypes from 'prop-types';
 import AppBar from '@material-ui/core/AppBar';
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -25,10 +24,6 @@ import { makeStyles, useTheme } from '@material-ui/core/styles';
 import { connect } from 'react-redux';
 import actions from '../../redux/actions';
 import SideMenu from '../../components/SideMenu';
-import Paper from '@material-ui/core/Paper';
-import Link from '@material-ui/core/Link';
-import Breadcrumbs from '@material-ui/core/Breadcrumbs';
-import NavigateNextIcon from '@material-ui/icons/NavigateNext';
 
 const drawerWidth = 100;
 
@@ -125,7 +120,7 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-function User({ children, title, deauthenticate, container, actions }) {
+function CreateLayout({ children, title, deauthenticate, container }) {
   const classes = useStyles();
   const theme = useTheme();
   const [mobileOpen, setMobileOpen] = React.useState(false);
@@ -306,29 +301,13 @@ function User({ children, title, deauthenticate, container, actions }) {
       </nav>
       <main className={classes.content}>
         <div className={classes.toolbar} />
-        {actions != 'create' ? (
-          <Paper elevation={1} className={classes.paperBreadcrumb}>
-            <Breadcrumbs separator={<NavigateNextIcon fontSize="small" />} aria-label="breadcrumb">
-              <Link color="inherit" href="/">
-                Home
-              </Link>
-              <Link color="inherit" href="/getting-started/installation/">
-                Module
-              </Link>
-              <Typography variant="h6" color="textPrimary">Breadcrumb</Typography>
-            </Breadcrumbs>
-          </Paper>
-        ) : ('')}
-        <Divider className={classes.divider} variant="middle" />
-        <Paper elevation={2} className={classes.paperContainer}>
-          {children}
-        </Paper>
+        {children}
       </main>
     </div>
   );
 }
 
-User.propTypes = {
+CreateLayout.propTypes = {
   /**
    * Injected by the documentation to work in an iframe.
    * You won't need it on your project.
@@ -340,4 +319,4 @@ const mapStateToProps = (state) => (
   { isAuthenticated: !!state.authentication.token }
 );
 
-export default connect(mapStateToProps, actions)(User);
+export default connect(mapStateToProps, actions)(CreateLayout);

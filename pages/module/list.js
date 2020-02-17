@@ -3,11 +3,11 @@ import { connect } from 'react-redux';
 //import { API } from '../config';
 import initialize from '../../utils/initialize';
 import User from '../../theming/layouts/user';
-import EnhancedTable from '../../components/Table';
+import RespTable from '../../components/Table';
 
 const Dashboard = () => (
   <User title="Sales" actions="list">
-    <EnhancedTable />.
+    <RespTable />
   </User>
 );
 

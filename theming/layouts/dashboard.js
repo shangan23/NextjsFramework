@@ -116,8 +116,10 @@ const useStyles = makeStyles(theme => ({
   paperContainer: {
     display: 'flex',
     '& > *': {
-      margin: theme.spacing(1),
+      margin: theme.spacing(0.5),
+      
     },
+    backgroundColor: '#f7f7f7',
   },
   divider: {
     margin: theme.spacing(0.5),
@@ -125,7 +127,7 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-function User({ children, title, deauthenticate, container, actions }) {
+function Dashboard({ children, title, deauthenticate, container, actions }) {
   const classes = useStyles();
   const theme = useTheme();
   const [mobileOpen, setMobileOpen] = React.useState(false);
@@ -320,7 +322,7 @@ function User({ children, title, deauthenticate, container, actions }) {
           </Paper>
         ) : ('')}
         <Divider className={classes.divider} variant="middle" />
-        <Paper elevation={2} className={classes.paperContainer}>
+        <Paper elevation={0} className={classes.paperContainer}>
           {children}
         </Paper>
       </main>
@@ -328,7 +330,7 @@ function User({ children, title, deauthenticate, container, actions }) {
   );
 }
 
-User.propTypes = {
+Dashboard.propTypes = {
   /**
    * Injected by the documentation to work in an iframe.
    * You won't need it on your project.
@@ -340,4 +342,4 @@ const mapStateToProps = (state) => (
   { isAuthenticated: !!state.authentication.token }
 );
 
-export default connect(mapStateToProps, actions)(User);
+export default connect(mapStateToProps, actions)(Dashboard);

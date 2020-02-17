@@ -1,14 +1,14 @@
 //import axios from 'axios';
 import { connect } from 'react-redux';
 import initialize from '../../utils/initialize';
-import User from '../../theming/layouts/user';
-import CreateLayout from '../../components/Create';
+import CreateLayout from '../../theming/layouts/create';
+import CreateComponent from '../../components/Create';
 //import CreateLayout from '../../components/CreateRFF';
 
 const Dashboard = () => (
-  <User title="Dashboard" actions="create">
-    <CreateLayout />
-  </User>
+  <CreateLayout title="Dashboard" actions="create">
+    <CreateComponent />
+  </CreateLayout>
 );
 
 Dashboard.getInitialProps = async ctx => {

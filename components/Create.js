@@ -204,19 +204,19 @@ const renderFields = (
 function CreateLayout() {
   return (
     <div>
-      <Paper elevation={1}>
+      <Paper elevation={1} style={{padding:5}}>
         <Breadcrumbs separator={<NavigateNextIcon fontSize="small" />} aria-label="breadcrumb">
           <Link color="inherit" href="/">
-            Home
+            List
           </Link>
           <Link color="inherit" href="/getting-started/installation/">
-            Module
+            Create
           </Link>
-          <Typography variant="h6" color="textPrimary">Breadcrumb</Typography>
+          <Typography variant="h6" color="textPrimary">Module</Typography>
         </Breadcrumbs>
       </Paper>
-      <Divider variant="middle" />
-      <Paper elevation={2}>
+      <Divider variant="fullWidth" style={{margin:5}} />
+      <Paper elevation={2} style={{padding:5}}>
         <Form
           onSubmit={onSubmit} style={{ marginTop: 16 }}
           initialValues={{ planet: [] }}

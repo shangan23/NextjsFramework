@@ -4,16 +4,17 @@ export default function RespTable() {
     {
       key: 'id',
       label: 'ID',
-      primary: true,
     },
     {
       key: 'name',
       label: 'Name',
+      primary: true,
     },
     {
       key: 'authors',
       label: 'Author(s)',
-      render: (value) => value.join(', ')
+      render: (value) => value.join(', '),
+      primary: true,
     },
   ];
 

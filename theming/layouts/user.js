@@ -23,12 +23,9 @@ import NotificationsIcon from '@material-ui/icons/Notifications';
 import MoreIcon from '@material-ui/icons/MoreVert';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
 import { connect } from 'react-redux';
-import actions from '../../redux/actions';
 import SideMenu from '../../components/SideMenu';
 import Paper from '@material-ui/core/Paper';
-import Link from '@material-ui/core/Link';
-import Breadcrumbs from '@material-ui/core/Breadcrumbs';
-import NavigateNextIcon from '@material-ui/icons/NavigateNext';
+import Breadcrumb from '../../components/Breadcrumb';
 
 const drawerWidth = 100;
 
@@ -95,24 +92,6 @@ const useStyles = makeStyles(theme => ({
       display: 'none',
     },
   },
-  paperBreadcrumb: {
-    display: 'flex',
-    '& > *': {
-      margin: theme.spacing(1),
-      height: theme.spacing(4),
-    },
-  },
-  paperBreadcrumbCreate: {
-    display: 'flex',
-    '& > *': {
-      margin: theme.spacing(1),
-      height: theme.spacing(4),
-    },
-    //position: 'fixed',
-    width: '100%',
-    top: 50,
-    flexWrap: 'wrap',
-  },
   paperContainer: {
     display: 'flex',
     '& > *': {
@@ -125,7 +104,7 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-function User({ children, title, deauthenticate, container, actions }) {
+function User({ children, title, deauthenticate, container }) {
   const classes = useStyles();
   const theme = useTheme();
   const [mobileOpen, setMobileOpen] = React.useState(false);
@@ -306,19 +285,7 @@ function User({ children, title, deauthenticate, container, actions }) {
       </nav>
       <main className={classes.content}>
         <div className={classes.toolbar} />
-        {actions != 'create' ? (
-          <Paper elevation={1} className={classes.paperBreadcrumb}>
-            <Breadcrumbs separator={<NavigateNextIcon fontSize="small" />} aria-label="breadcrumb">
-              <Link color="inherit" href="/">
-                Home
-              </Link>
-              <Link color="inherit" href="/getting-started/installation/">
-                Module
-              </Link>
-              <Typography variant="h6" color="textPrimary">Breadcrumb</Typography>
-            </Breadcrumbs>
-          </Paper>
-        ) : ('')}
+        <Breadcrumb />
         <Divider className={classes.divider} variant="middle" />
         <Paper elevation={2} className={classes.paperContainer}>
           {children}
@@ -340,4 +307,4 @@ const mapStateToProps = (state) => (
   { isAuthenticated: !!state.authentication.token }
 );
 
-export default connect(mapStateToProps, actions)(User);
+export default connect(mapStateToProps)(User);

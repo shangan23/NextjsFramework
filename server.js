@@ -2,7 +2,7 @@ const express = require('express');
 const next = require('next');
 const cookieParser = require('cookie-parser');
 
-const port = parseInt(process.env.PORT, 10) || 3000;
+const port = parseInt(process.env.PORT, 10) || 3001;
 const dev = process.env.NODE_ENV !== 'production';
 const app = next({ dev });
 const handle = app.getRequestHandler();
@@ -12,9 +12,12 @@ app.prepare()
     const server = express();
 
     server.use(cookieParser());
+    server.use(express.json());
+
+    require("./server/routes/users")(server);
 
     server.get('/signin', (req, res) => {
-      if(req.cookies.token) {
+      if (req.cookies.token) {
         res.redirect('/');
       } else {
         return app.render(req, res, '/signin', req.query);
@@ -22,7 +25,7 @@ app.prepare()
     });
 
     server.get('/signup', (req, res) => {
-      if(req.cookies.token) {
+      if (req.cookies.token) {
         res.redirect('/');
       } else {
         return app.render(req, res, '/signup', req.query);

@@ -1,22 +1,27 @@
 import React from 'react';
 import { loadCSS } from 'fg-loadcss';
 import Divider from '@material-ui/core/Divider';
-import DashboardIcon from '@material-ui/icons/Dashboard';
-import BusinessIcon from '@material-ui/icons/Business';
-import DehazeIcon from '@material-ui/icons/Dehaze';
+
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import Button from '@material-ui/core/Button';
 import { makeStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 import { useRouter } from 'next/router';
-import Icon from '@material-ui/core/Icon';
+
+import DashboardIcon from '@material-ui/icons/Dashboard';
+import AccountBoxSharpIcon from '@material-ui/icons/AccountBoxSharp';
+import ContactPhoneSharpIcon from '@material-ui/icons/ContactPhoneSharp';
+import ListAltSharpIcon from '@material-ui/icons/ListAltSharp';
+import SecuritySharpIcon from '@material-ui/icons/SecuritySharp';
+import AppsSharpIcon from '@material-ui/icons/AppsSharp';
 
 const useStyles = makeStyles(theme => ({
   toolbar: theme.mixins.toolbar,
   label: {
     // Aligns the content of the button vertically.
     flexDirection: 'column',
+    textAlign: 'center'
   },
   icon: {
     fontSize: '30px !important',
@@ -42,19 +47,29 @@ function SideMenu({display}) {
     'icon': <DashboardIcon className={classes.icon} />,
     'id': 'dashboard'
   }, {
-    'name': 'Leads',
+    'name': 'Customers',
     'link': '/module/list',
-    'icon': <Icon className="fa fa-funnel-dollar" fontSize="small" />,
-    'id': 'leads'
+    'icon': <AccountBoxSharpIcon className={classes.icon} />,
+    'id': 'leads' 
   }, {
-    'name': 'Sales',
+    'name': 'Products',
     'link': '/module/list',
-    'icon': <BusinessIcon className={classes.icon} />,
+    'icon': <AppsSharpIcon className={classes.icon} />,
     'id': 'sales'
   }, {
-    'name': 'Marketting',
+    'name': 'Servivce Calls',
     'link': '/marketting',
-    'icon': <DehazeIcon className={classes.icon} />,
+    'icon': <ContactPhoneSharpIcon   className={classes.icon} />,
+    'id': 'marketting'
+  },{
+    'name': 'Annual Maintenance Contract',
+    'link': '/marketting',
+    'icon': <ListAltSharpIcon className={classes.icon} />,
+    'id': 'marketting'
+  },{
+    'name': 'Gaurentee Services',
+    'link': '/marketting',
+    'icon': <SecuritySharpIcon className={classes.icon} />,
     'id': 'marketting'
   },];
 

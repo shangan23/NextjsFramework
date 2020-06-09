@@ -25,7 +25,7 @@ import { makeStyles, useTheme } from '@material-ui/core/styles';
 import { connect } from 'react-redux';
 import SideMenu from '../../components/SideMenu';
 //import Paper from '@material-ui/core/Paper';
-import Breadcrumb from '../../components/Breadcrumb';
+//import Breadcrumb from '../../components/Breadcrumb';
 
 const drawerWidth = 100;
 
@@ -285,7 +285,6 @@ function User({ children, title, deauthenticate, container }) {
       </nav>
       <main className={classes.content}>
         <div className={classes.toolbar} />
-        <Breadcrumb />
         <Divider className={classes.divider} variant="middle" />
         {children}
       </main>

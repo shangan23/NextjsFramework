@@ -43,16 +43,16 @@ class Signin extends React.Component {
 
     if (this.props.message) {
       alert = <Alert variant="filled" severity={this.props.messageType}>{this.props.message}</Alert>;
-    } else {
-      alert = '';
     }
 
     return (
-      <Anonymous title="Sign In">
-        <br></br>
-        <TwoColumn fieldsToRender={fieldsToRender} onSubmit={onSubmit} />
+      <div>
         {alert}
-      </Anonymous >
+        <Anonymous title="Sign In">
+          <br></br>
+          <TwoColumn fieldsToRender={fieldsToRender} onSubmit={onSubmit} buttonCancelText="Cancel" buttonSubmitText="Login"/>
+        </Anonymous >
+      </div>
     );
   }
 }

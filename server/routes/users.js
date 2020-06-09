@@ -11,7 +11,6 @@ module.exports = function (router) {
             ]
         })
             .then(users => {
-                console.log(users);
                 res.json(users);
             })
             .catch(err => res.json(err));
@@ -28,13 +27,7 @@ module.exports = function (router) {
     });
 
     router.post(bucket, (req, res) => {
-        console.log(req.body)
-        User.create({
-            uname: req.body.uname,
-            password: req.body.password,
-            fullName: req.body.fullName,
-            email: req.body.email
-        })
+        User.create(req.body)
             .then(res => {
                 res.json(res);
             })
@@ -73,5 +66,35 @@ module.exports = function (router) {
                 res.json(users);
             })
             .catch(err => res.json(err));
+    });
+
+    router.post(`${bucket}/upload`, (req, res) => {
+        try {
+            if (!req.files) {
+                res.send({
+                    status: false,
+                    message: 'No file uploaded'
+                });
+            } else {
+                //Use the name of the input field (i.e. "avatar") to retrieve the uploaded file
+                let avatar = req.files.avatar;
+
+                //Use the mv() method to place the file in upload directory (i.e. "uploads")
+                avatar.mv('./server/uploads/' + avatar.name);
+
+                //send response
+                res.send({
+                    status: true,
+                    message: 'File is uploaded',
+                    data: {
+                        name: avatar.name,
+                        mimetype: avatar.mimetype,
+                        size: avatar.size
+                    }
+                });
+            }
+        } catch (err) {
+            res.status(500).send(err);
+        }
     });
 };

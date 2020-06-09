@@ -1,5 +1,5 @@
 import { Form } from 'react-final-form';
-
+import React from 'react';
 import {
   Grid,
   Button
@@ -17,9 +17,10 @@ import FieldEmail from '../Fields/FieldEmail';
 import FieldPassword from '../Fields/FieldPassword';
 import FieldSwitch from '../Fields/FieldSwitch';
 import FieldAutoCompleteSingle from '../Fields/FieldAutocompleteSingle';
+import { DropzoneDialog } from 'material-ui-dropzone';
 import Breadcrumb from '../Breadcrumb';
 
-export default function TwoColumn({ fieldsToRender, onSubmit, showBreadcrumb }) {
+export default function TwoColumn({ fieldsToRender, onSubmit, showBreadcrumb, buttonCancelText, buttonSubmitText, onFileUpload }) {
 
   const validate = values => {
     const errors = {};
@@ -52,10 +53,12 @@ export default function TwoColumn({ fieldsToRender, onSubmit, showBreadcrumb }) 
     return errors;
   };
 
+  const [open, setOpen] = React.useState(false);
+
   const renderFields = (
     <Grid container spacing={2} style={{ margin: 4 }}>
       {fieldsToRender.map((data, index) => (
-        <Grid item xs={12} md={12} key={index}>
+        <Grid item xs={6} md={6} key={index}>
           {(fieldsToRender[index]['type'] == 'Text') &&
             <FieldText index={index} fieldsToRender={fieldsToRender} />
             || (fieldsToRender[index]['type'] == 'Date') &&
@@ -80,6 +83,28 @@ export default function TwoColumn({ fieldsToRender, onSubmit, showBreadcrumb }) 
             <FieldSwitch index={index} fieldsToRender={fieldsToRender} />
             || (fieldsToRender[index]['type'] == 'AutocompleteSingle') &&
             <FieldAutoCompleteSingle index={index} fieldsToRender={fieldsToRender} />
+            || (fieldsToRender[index]['type'] == 'Upload') &&
+            <div>
+              <Button variant="contained" color="primary" onClick={() => setOpen(true)}>
+                Upload Logo
+              </Button>
+
+              <DropzoneDialog
+                acceptedFiles={['image/*']}
+                cancelButtonText={'cancel'}
+                submitButtonText={'submit'}
+                maxFileSize={5000000}
+                open={open}
+                onClose={() => setOpen(false)}
+                onSave={(files) => {
+                  onFileUpload(files);
+                  console.log('Files:', files);
+                  setOpen(false);
+                }}
+                showPreviews={true}
+                showFileNamesInPreview={true}
+              />
+            </div>
           }
         </Grid>
       ))}
@@ -87,7 +112,7 @@ export default function TwoColumn({ fieldsToRender, onSubmit, showBreadcrumb }) 
   );
 
   let bcrumb;
-  if(showBreadcrumb){
+  if (showBreadcrumb) {
     bcrumb = <Breadcrumb />;
   }
 
@@ -100,26 +125,29 @@ export default function TwoColumn({ fieldsToRender, onSubmit, showBreadcrumb }) 
           validate={validate}
           render={({ handleSubmit, reset, submitting, pristine }) => (
             <form onSubmit={handleSubmit} noValidate>
-              <Grid container alignItems="flex-start" spacing={1}>
+              <Grid container alignItems="flex-end" spacing={1}>
                 {renderFields}
-                <Grid item style={{ marginTop: 16 }}>
+                <Grid container
+                  direction="row"
+                  justify="flex-end"
+                  alignItems="flex-end"
+                  item style={{ marginTop: 16 }}>
                   <Button
                     type="button"
                     variant="contained"
                     onClick={reset}
                     disabled={submitting || pristine}
                   >
-                    Reset
+                    {buttonCancelText}
                   </Button>
-                </Grid>
-                <Grid item style={{ marginTop: 16 }}>
                   <Button
                     variant="contained"
                     color="primary"
                     type="submit"
                     disabled={submitting}
+                    fullWidth
                   >
-                    Submit
+                    {buttonSubmitText}
                   </Button>
                 </Grid>
               </Grid>

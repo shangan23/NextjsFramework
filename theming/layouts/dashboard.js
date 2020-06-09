@@ -27,6 +27,7 @@ import SideMenu from '../../components/SideMenu';
 import Paper from '@material-ui/core/Paper';
 import Breadcrumb from '../../components/Breadcrumb';
 import actions from '../../redux/actions';
+import Router from 'next/router';
 
 const drawerWidth = 100;
 
@@ -127,6 +128,7 @@ function Dashboard({ children, title, deauthenticate, container }) {
   };
 
   const handleMenuClose = () => {
+    Router.push('/admin');
     setAnchorEl(null);
     handleMobileMenuClose();
   };

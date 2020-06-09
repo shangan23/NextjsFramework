@@ -6,5 +6,6 @@ export default function FieldTextArea({ fieldsToRender, index }){
     name={fieldsToRender[index]['name']}
     required={fieldsToRender[index]['required']}
     multiline  
+    value={fieldsToRender[index]['value']}
     margin="none" />);
 }

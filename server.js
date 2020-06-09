@@ -1,5 +1,10 @@
 const express = require('express');
 const next = require('next');
+const fileUpload = require('express-fileupload');
+const cors = require('cors');
+const bodyParser = require('body-parser');
+const morgan = require('morgan');
+const _ = require('lodash');
 const cookieParser = require('cookie-parser');
 const authMiddleware = require('./server/middlewares/authentication')
 
@@ -14,8 +19,20 @@ app.prepare()
 
     server.use(cookieParser());
     server.use(express.json());
+
+    // middlewares
+    server.use(fileUpload({  
+      createParentPath: true
+    }));
     server.use(authMiddleware);
+    server.use(cors());
+    server.use(bodyParser.json());
+    server.use(bodyParser.urlencoded({extended: true}));
+    server.use(morgan('dev'));
+
+    //routers
     require("./server/routes/users")(server);
+    require("./server/routes/settings")(server);
 
     server.get('/signin', (req, res) => {
       if (req.cookies.token) {

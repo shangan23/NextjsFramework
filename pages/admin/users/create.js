@@ -17,7 +17,6 @@ class Dashboard extends React.Component {
 
   render() {
     const onSubmit = async values => {
-      console.log('dddd', this.props.authentication.token);
       fetch(`${API}/users`, {
         method: 'POST', // or 'PUT'
         headers: {

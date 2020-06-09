@@ -1,6 +1,7 @@
 const express = require('express');
 const next = require('next');
 const cookieParser = require('cookie-parser');
+const authMiddleware = require('./server/middlewares/authentication')
 
 const port = parseInt(process.env.PORT, 10) || 3001;
 const dev = process.env.NODE_ENV !== 'production';
@@ -13,7 +14,7 @@ app.prepare()
 
     server.use(cookieParser());
     server.use(express.json());
-
+    server.use(authMiddleware);
     require("./server/routes/users")(server);
 
     server.get('/signin', (req, res) => {

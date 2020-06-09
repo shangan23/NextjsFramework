@@ -1,6 +1,5 @@
 import { Form } from 'react-final-form';
 
-import Divider from '@material-ui/core/Divider';
 import {
   Grid,
   Button
@@ -20,7 +19,7 @@ import FieldSwitch from '../Fields/FieldSwitch';
 import FieldAutoCompleteSingle from '../Fields/FieldAutocompleteSingle';
 import Breadcrumb from '../Breadcrumb';
 
-export default function TwoColumn({ fieldsToRender, onSubmit }) {
+export default function TwoColumn({ fieldsToRender, onSubmit, showBreadcrumb }) {
 
   const validate = values => {
     const errors = {};
@@ -86,10 +85,15 @@ export default function TwoColumn({ fieldsToRender, onSubmit }) {
       ))}
     </Grid>
   );
+
+  let bcrumb;
+  if(showBreadcrumb){
+    bcrumb = <Breadcrumb />;
+  }
+
   return (
     <div>
-      <Breadcrumb />
-      <Divider variant="fullWidth" style={{ margin: 5 }} />
+      {bcrumb}
       <Paper elevation={1} style={{ padding: 5 }}>
         <Form
           onSubmit={onSubmit} style={{ marginTop: 16 }}

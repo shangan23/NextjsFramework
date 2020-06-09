@@ -26,6 +26,7 @@ import { connect } from 'react-redux';
 import SideMenu from '../../components/SideMenu';
 import Paper from '@material-ui/core/Paper';
 import Breadcrumb from '../../components/Breadcrumb';
+import actions from '../../redux/actions';
 
 const drawerWidth = 100;
 
@@ -309,4 +310,4 @@ const mapStateToProps = (state) => (
   { isAuthenticated: !!state.authentication.token }
 );
 
-export default connect(mapStateToProps)(Dashboard);
+export default connect(mapStateToProps,actions)(Dashboard);

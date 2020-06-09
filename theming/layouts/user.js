@@ -24,7 +24,7 @@ import MoreIcon from '@material-ui/icons/MoreVert';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
 import { connect } from 'react-redux';
 import SideMenu from '../../components/SideMenu';
-import Paper from '@material-ui/core/Paper';
+//import Paper from '@material-ui/core/Paper';
 import Breadcrumb from '../../components/Breadcrumb';
 
 const drawerWidth = 100;
@@ -287,9 +287,7 @@ function User({ children, title, deauthenticate, container }) {
         <div className={classes.toolbar} />
         <Breadcrumb />
         <Divider className={classes.divider} variant="middle" />
-        <Paper elevation={2} className={classes.paperContainer}>
-          {children}
-        </Paper>
+        {children}
       </main>
     </div>
   );

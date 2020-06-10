@@ -58,7 +58,7 @@ const useStyles = makeStyles(theme => ({
   },
   content: {
     flexGrow: 1,
-    padding: theme.spacing(3),
+    padding: theme.spacing(0.5),
   },
   grow: {
     flexGrow: 1,
@@ -203,7 +203,7 @@ function User({ children, title, deauthenticate, container }) {
             <MenuIcon />
           </IconButton>
           <Typography variant="h6" noWrap>
-            DeskX
+            DeskXsss
           </Typography>
           <div className={classes.grow} />
           <div className={classes.sectionDesktop}>

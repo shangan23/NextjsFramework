@@ -21,7 +21,6 @@ import Badge from '@material-ui/core/Badge';
 import NotificationsIcon from '@material-ui/icons/Notifications';
 import MoreIcon from '@material-ui/icons/MoreVert';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
-import { connect } from 'react-redux';
 import actions from '../../redux/actions';
 import SideMenu from '../../components/SideMenu';
 
@@ -56,7 +55,7 @@ const useStyles = makeStyles(theme => ({
   },
   content: {
     flexGrow: 1,
-    padding: theme.spacing(3),
+    padding: theme.spacing(0.5),
   },
   grow: {
     flexGrow: 1,
@@ -219,7 +218,7 @@ function CreateLayout({ children, title, deauthenticate, container }) {
             <MenuIcon />
           </IconButton>
           <Typography variant="h6" noWrap>
-            DeskX
+            {state.siteTitle}
           </Typography>
           <div className={classes.grow} />
           <div className={classes.sectionDesktop}>
@@ -316,7 +315,9 @@ CreateLayout.propTypes = {
 };
 
 const mapStateToProps = (state) => (
-  { isAuthenticated: !!state.authentication.token }
+  { isAuthenticated: !!state.authentication.token,
+    siteTitle: state.siteSettings.title
+   }
 );
 
-export default connect(mapStateToProps, actions)(CreateLayout);
+export default connect(state,mapStateToProps, actions)(CreateLayout);

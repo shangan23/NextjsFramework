@@ -28,7 +28,6 @@ import Paper from '@material-ui/core/Paper';
 import Breadcrumb from '../../components/Breadcrumb';
 import actions from '../../redux/actions';
 import Router from 'next/router';
-
 const drawerWidth = 100;
 
 const useStyles = makeStyles(theme => ({
@@ -60,7 +59,7 @@ const useStyles = makeStyles(theme => ({
   },
   content: {
     flexGrow: 1,
-    padding: theme.spacing(3),
+    padding: theme.spacing(0.5),
   },
   grow: {
     flexGrow: 1,
@@ -208,7 +207,7 @@ function Dashboard({ children, title, deauthenticate, container }) {
             <MenuIcon />
           </IconButton>
           <Typography variant="h6" noWrap>
-            DeskX
+            {this.state.siteTitle}
           </Typography>
           <div className={classes.grow} />
           <div className={classes.sectionDesktop}>
@@ -312,4 +311,4 @@ const mapStateToProps = (state) => (
   { isAuthenticated: !!state.authentication.token }
 );
 
-export default connect(mapStateToProps,actions)(Dashboard);
+export default connect(state=>state,mapStateToProps,actions)(Dashboard);

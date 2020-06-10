@@ -39,12 +39,12 @@ module.exports = function (router) {
                 });
             } else {
                 let logo = req.files.logo;
-                logo.mv('./server/uploads/site/' + logo.name);
+                logo.mv('./server/uploads/site/logo.png');
                 res.send({
                     status: true,
                     message: 'File is uploaded',
                     data: {
-                        name: logo.name,
+                        name: 'logo.png',
                         mimetype: logo.mimetype,
                         size: logo.size
                     }

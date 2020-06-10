@@ -16,7 +16,7 @@ const handle = app.getRequestHandler();
 app.prepare()
   .then(() => {
     const server = express();
-
+    server.use('/api/images', express.static(__dirname + '/server/uploads/site'));
     server.use(cookieParser());
     server.use(express.json());
 

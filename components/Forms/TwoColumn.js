@@ -1,5 +1,4 @@
 import { Form } from 'react-final-form';
-import React from 'react';
 import {
   Grid,
   Button
@@ -17,7 +16,7 @@ import FieldEmail from '../Fields/FieldEmail';
 import FieldPassword from '../Fields/FieldPassword';
 import FieldSwitch from '../Fields/FieldSwitch';
 import FieldAutoCompleteSingle from '../Fields/FieldAutocompleteSingle';
-import { DropzoneDialog } from 'material-ui-dropzone';
+import FieldFile from '../Fields/FieldFile';
 import Breadcrumb from '../Breadcrumb';
 
 export default function TwoColumn({ fieldsToRender, onSubmit, showBreadcrumb, buttonCancelText, buttonSubmitText, onFileUpload }) {
@@ -53,8 +52,6 @@ export default function TwoColumn({ fieldsToRender, onSubmit, showBreadcrumb, bu
     return errors;
   };
 
-  const [open, setOpen] = React.useState(false);
-
   const renderFields = (
     <Grid container spacing={2} style={{ margin: 4 }}>
       {fieldsToRender.map((data, index) => (
@@ -84,27 +81,7 @@ export default function TwoColumn({ fieldsToRender, onSubmit, showBreadcrumb, bu
             || (fieldsToRender[index]['type'] == 'AutocompleteSingle') &&
             <FieldAutoCompleteSingle index={index} fieldsToRender={fieldsToRender} />
             || (fieldsToRender[index]['type'] == 'Upload') &&
-            <div>
-              <Button variant="contained" color="primary" onClick={() => setOpen(true)}>
-                Upload Logo
-              </Button>
-
-              <DropzoneDialog
-                acceptedFiles={['image/*']}
-                cancelButtonText={'cancel'}
-                submitButtonText={'submit'}
-                maxFileSize={5000000}
-                open={open}
-                onClose={() => setOpen(false)}
-                onSave={(files) => {
-                  onFileUpload(files);
-                  console.log('Files:', files);
-                  setOpen(false);
-                }}
-                showPreviews={true}
-                showFileNamesInPreview={true}
-              />
-            </div>
+            <FieldFile index={index} fieldsToRender={fieldsToRender} onFileUpload={onFileUpload} />
           }
         </Grid>
       ))}
@@ -145,7 +122,6 @@ export default function TwoColumn({ fieldsToRender, onSubmit, showBreadcrumb, bu
                     color="primary"
                     type="submit"
                     disabled={submitting}
-                    fullWidth
                   >
                     {buttonSubmitText}
                   </Button>

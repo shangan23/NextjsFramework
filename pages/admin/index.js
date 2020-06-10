@@ -1,6 +1,6 @@
 import React from 'react';
 //import Router from 'next/router';
-import { API } from '../../config';
+import { API,IMGPath } from '../../config';
 import { connect } from 'react-redux';
 import initialize from '../../utils/initialize';
 import CreateLayout from '../../theming/layouts/create';
@@ -133,7 +133,9 @@ class SiteSettings extends React.Component {
         'required': false,
         'id': 'adminEmail',
         'name': 'adminEmail',
-        'label': 'Administrator Email'
+        'label': 'Upload Logo',
+        'accepted': ['image/png'],
+        'value': IMGPath+settingsData.logo
       },
     ];
     return (
@@ -146,6 +148,7 @@ class SiteSettings extends React.Component {
           buttonSubmitText="Save"
           onFileUpload={onFileUpload}
         />
+        
       </CreateLayout>
     );
   }

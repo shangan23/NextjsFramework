@@ -208,7 +208,7 @@ function Layout({ children, title, deauthenticate, container, isAuthenticated, s
   return (
     <div className={classes.root}>
       <Head>
-        <title>{title}</title>
+        <title> {siteDetails.title}:{title}</title>
         <meta charSet="utf-8" />
         <meta name="viewport" content="initial-scale=1.0, width=device-width" />
       </Head>

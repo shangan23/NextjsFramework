@@ -5,7 +5,9 @@ import { initStore } from '../redux';
 import React from 'react';
 import { ThemeProvider } from '@material-ui/core/styles';
 import CssBaseline from '@material-ui/core/CssBaseline';
-import theme from '../theming/redTheme';
+import { createMuiTheme } from '@material-ui/core/styles';
+import { green } from '@material-ui/core/colors';
+
 
 export default withRedux(initStore, { debug: true })(
   class MyApp extends App {
@@ -27,6 +29,20 @@ export default withRedux(initStore, { debug: true })(
     }
     render() {
       const { Component, pageProps, store } = this.props;
+      console.log(pageProps);
+      const theme = createMuiTheme({
+        palette: {
+          //type: 'dark',
+          background: {
+            default: '#f7f7f7',
+          },
+          /*primary: {
+            main: pageProps.settings.themeColor
+          },*/
+          primary:green,
+          secondary: green,
+        },
+      });
       return (
         <React.Fragment>
           <ThemeProvider theme={theme}>

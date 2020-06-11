@@ -8,7 +8,6 @@ export default function FieldSelect({ fieldsToRender, index }) {
     name={fieldsToRender[index]['name']}
     required={fieldsToRender[index]['required']}
     formControlProps={{ margin: 'none' }}
-    value={fieldsToRender[index]['value']}
   > {data.map((item, idx) => (
       <MenuItem value={data[idx]['id']}>{data[idx]['value']}</MenuItem>
     ))}

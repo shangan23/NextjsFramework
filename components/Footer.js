@@ -1,38 +1,29 @@
-import Container from '@material-ui/core/Container';
-import Link from '@material-ui/core/Link';
-import Typography from '@material-ui/core/Typography';
+import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
+import AppBar from '@material-ui/core/AppBar';
+import CssBaseline from '@material-ui/core/CssBaseline';
+import Typography from '@material-ui/core/Typography';
 
-function Copyright() {
-  return (
-    <Typography variant="body2" color="textSecondary" align="center">
-      {'Copyright © '}
-      <Link color="inherit" href="https://material-ui.com/">
-        DynamX
-      </Link>{' '}
-      {new Date().getFullYear()}
-      {'.'}
-    </Typography>
-  );
-}
-
-const useStyles = makeStyles(theme => ({
-  footer: {
-    padding: theme.spacing(3, 2),
-    marginTop: 'auto',
-    backgroundColor:
-     theme.palette.type === 'dark' ? theme.palette.grey[800] : theme.palette.grey[200],
+const useStyles = makeStyles((theme) => ({
+  appBar: {
+    top: 'auto',
+    bottom: 0,
+    padding: theme.spacing(0.5),
+  },
+  grow: {
+    flexGrow: 1,
   },
 }));
 
-export default function Footer() {
+export default function BottomAppBar({footerText}) {
   const classes = useStyles();
+
   return (
-    <footer className={classes.footer}>
-      <Container maxWidth="sm">
-        <Copyright />
-        <Typography variant="body2" align="center">A product of GarlInfo</Typography>
-      </Container>
-    </footer>
+    <React.Fragment>
+      <CssBaseline />
+      <AppBar position="fixed" color="grey" className={classes.appBar}>
+        <Typography variant="overline" align="center">{footerText}</Typography>
+      </AppBar>
+    </React.Fragment>
   );
 }

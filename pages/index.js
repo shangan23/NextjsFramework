@@ -31,7 +31,11 @@ class Index extends React.Component {
 
   handleLoad(){
     console.log('---- handle load -----');
-    Router.push('/signin');
+    if(this.props.isAuthenticated){
+      Router.push('/admin');
+    }else{
+      Router.push('/signin');
+    }
   }
 
   render() {
@@ -51,5 +55,9 @@ class Index extends React.Component {
   }
 }
 
+const mapStateToProps = (state) => (
+  { isAuthenticated: !!state.authentication.token,
+    siteTitle: state.siteSettings.title}
+);
 
-export default connect(state => state, actions)(Index);
+export default connect(mapStateToProps, actions)(Index);

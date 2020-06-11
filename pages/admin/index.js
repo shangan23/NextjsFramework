@@ -1,11 +1,12 @@
 import React from 'react';
 //import Router from 'next/router';
 import { API,IMGPath } from '../../config';
-import { connect } from 'react-redux';
 import initialize from '../../utils/initialize';
-import CreateLayout from '../../theming/layouts/create';
+import Layout from '../../theming/layouts/isUsers';
 import TwoColumn from '../../components/Forms/TwoColumn';
 import AdminMenu from '../../components/AdminMenu';
+import { connect } from 'react-redux';
+import actions from '../../redux/actions';
 
 class SiteSettings extends React.Component {
   constructor(props) {
@@ -14,11 +15,8 @@ class SiteSettings extends React.Component {
 
   static async getInitialProps(ctx) {
     initialize(ctx);
-    const token = ctx.store.getState().authentication.token;
-    const header = { 'Authorization': `Basic ${token}` };
-    const res = await fetch(`${API}/siteSettings/1`, { headers: header });
+    const res = await fetch(`${API}/siteSettings/1`);
     const json = await res.json();
-    console.log(json);
     return { settings: json };
   }
 
@@ -32,7 +30,7 @@ class SiteSettings extends React.Component {
         method: 'POST',
         body: formData,
         headers: {
-          'Authorization': `Basic ${this.props.authentication.token}`
+          'Authorization': `Basic ${this.props.token}`
         },
       })
         .then(response => response.json())
@@ -45,11 +43,12 @@ class SiteSettings extends React.Component {
     };
 
     const onSubmit = async values => {
+      console.log('==d==',values);
       fetch(`${API}/siteSettings/1`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': `Basic ${this.props.authentication.token}`
+          'Authorization': `Basic ${this.props.token}`
         },
         body: JSON.stringify(values),
       })
@@ -59,7 +58,8 @@ class SiteSettings extends React.Component {
           if (data.error) {
             throw Error(data.error);
           } else {
-            window.alert(JSON.stringify(data, 0, 2));
+            this.props.siteSettings(values);
+            window.alert(JSON.stringify(values, 0, 2));
             //Router.push('/admin/users');
           }
         })
@@ -139,20 +139,31 @@ class SiteSettings extends React.Component {
       },
     ];
     return (
-      <CreateLayout title="General Settings" actions="create">
+      <Layout title="General Settings" actions="create">
+        {this.props.siteTitle}
         <AdminMenu />
         <TwoColumn
           fieldsToRender={fieldsToRender}
+          defaultValue = {settingsData}
           onSubmit={onSubmit}
           buttonCancelText="Cancel"
           buttonSubmitText="Save"
           onFileUpload={onFileUpload}
         />
         
-      </CreateLayout>
+      </Layout>
     );
   }
 
 }
 
-export default connect(state => state)(SiteSettings);
+function mapStateToProps(state) {
+  return {
+    token: state.authentication.token
+  };
+}
+
+export default connect(
+  mapStateToProps,
+  actions
+)(SiteSettings);

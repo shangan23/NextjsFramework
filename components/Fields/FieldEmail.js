@@ -7,6 +7,5 @@ export default function FieldEmail({fieldsToRender, index}) {
     name={fieldsToRender[index]['name']}
     margin="none"
     required={fieldsToRender[index]['required']}
-    value={fieldsToRender[index]['value']}
   />);
 }

@@ -18,11 +18,11 @@ export default function FieldFile({ fieldsToRender, index, onFileUpload }) {
     <DropzoneDialog
       acceptedFiles={fieldsToRender[index]['accepted']}
       maxFileSize={5000000}
+      size="small"
       open={open}
       onClose={() => setOpen(false)}
       onSave={(files) => {
         onFileUpload(files);
-        console.log('Files:', files);
         setOpen(false);
       }}
       showPreviews={true}

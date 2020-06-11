@@ -1,11 +1,11 @@
-import User from '../theming/layouts/user';
+import Layout from '../theming/layouts/isUsers';
 function Error({ statusCode }) {
   return (
-    <User title="Dashboard">
+    <Layout title="Dashboard">
       {statusCode
         ? 'An error ' + statusCode + ' occurred on server'
         : 'An error occurred on client'}
-    </User>
+    </Layout>
   );
 }
 

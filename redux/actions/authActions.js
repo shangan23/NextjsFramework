@@ -15,7 +15,6 @@ const authenticate = ({ uname, password }) => {
     })
       .then(response => response.json())
       .then(data => {
-        console.log(data);
         if (data.error) {
           dispatch({ type: AUTH_ERROR, error: MSG.authError });
           throw Error(MSG.authError);
@@ -26,7 +25,8 @@ const authenticate = ({ uname, password }) => {
         }
       })
       .catch((error) => {
-        console.error('Error:', error);
+        throw Error(error);
+        //console.error('Error:', error);
       });
   };
 };

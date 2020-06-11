@@ -3,7 +3,7 @@ import Router from 'next/router';
 import { API } from '../../../config';
 import { connect } from 'react-redux';
 import initialize from '../../../utils/initialize';
-import CreateLayout from '../../../theming/layouts/create';
+import Layout from '../../theming/layouts/users';
 import TwoColumn from '../../../components/Forms/TwoColumn';
 
 class Dashboard extends React.Component {
@@ -71,9 +71,9 @@ class Dashboard extends React.Component {
       },
     ];
     return (
-      <CreateLayout title="Dashboard" actions="create">
+      <Layout title="Dashboard" actions="create">
         <TwoColumn fieldsToRender={fieldsToRender} onSubmit={onSubmit} showBreadcrumb />
-      </CreateLayout>
+      </Layout>
     );
   }
 

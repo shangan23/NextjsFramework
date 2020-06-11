@@ -23,6 +23,7 @@ module.exports = function (router) {
     });
 
     router.put(`${bucket}/:id`, (req, res) => {
+        console.log('req.body==>',req.body)
         SiteSettings.update(req.body, { where: { id: req.params.id } })
             .then(siteSettings => {
                 res.json(siteSettings);

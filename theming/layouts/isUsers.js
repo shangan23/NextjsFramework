@@ -1,6 +1,5 @@
 import React from 'react';
 import Head from 'next/head';
-import Divider from '@material-ui/core/Divider';
 import PropTypes from 'prop-types';
 import AppBar from '@material-ui/core/AppBar';
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -22,12 +21,12 @@ import Badge from '@material-ui/core/Badge';
 import NotificationsIcon from '@material-ui/icons/Notifications';
 import MoreIcon from '@material-ui/icons/MoreVert';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
-import { connect } from 'react-redux';
 import SideMenu from '../../components/SideMenu';
-import Paper from '@material-ui/core/Paper';
-import Breadcrumb from '../../components/Breadcrumb';
+import { connect } from 'react-redux';
 import actions from '../../redux/actions';
-import Router from 'next/router';
+import Signin from '../../pages/signin';
+import Footer from '../../components/Footer';
+
 const drawerWidth = 100;
 
 const useStyles = makeStyles(theme => ({
@@ -93,13 +92,29 @@ const useStyles = makeStyles(theme => ({
       display: 'none',
     },
   },
+  paperBreadcrumb: {
+    display: 'flex',
+    '& > *': {
+      margin: theme.spacing(1),
+      height: theme.spacing(4),
+    },
+  },
+  paperBreadcrumbCreate: {
+    display: 'flex',
+    '& > *': {
+      margin: theme.spacing(1),
+      height: theme.spacing(4),
+    },
+    //position: 'fixed',
+    width: '100%',
+    top: 50,
+    flexWrap: 'wrap',
+  },
   paperContainer: {
     display: 'flex',
     '& > *': {
-      margin: theme.spacing(0.5),
-      
+      margin: theme.spacing(1),
     },
-    backgroundColor: '#f7f7f7',
   },
   divider: {
     margin: theme.spacing(0.5),
@@ -107,7 +122,11 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-function Dashboard({ children, title, deauthenticate, container }) {
+function Layout({ children, title, deauthenticate, container, isAuthenticated, siteDetails }) {
+
+  if (!isAuthenticated) {
+    return <Signin />;
+  }
   const classes = useStyles();
   const theme = useTheme();
   const [mobileOpen, setMobileOpen] = React.useState(false);
@@ -127,7 +146,6 @@ function Dashboard({ children, title, deauthenticate, container }) {
   };
 
   const handleMenuClose = () => {
-    Router.push('/admin');
     setAnchorEl(null);
     handleMobileMenuClose();
   };
@@ -207,7 +225,7 @@ function Dashboard({ children, title, deauthenticate, container }) {
             <MenuIcon />
           </IconButton>
           <Typography variant="h6" noWrap>
-            {this.state.siteTitle}
+            {siteDetails.title}
           </Typography>
           <div className={classes.grow} />
           <div className={classes.sectionDesktop}>
@@ -289,17 +307,14 @@ function Dashboard({ children, title, deauthenticate, container }) {
       </nav>
       <main className={classes.content}>
         <div className={classes.toolbar} />
-        <Breadcrumb />
-        <Divider className={classes.divider} variant="middle" />
-        <Paper elevation={0} className={classes.paperContainer}>
-          {children}
-        </Paper>
+        {children}
+        <Footer footerText={siteDetails.footer} />
       </main>
     </div>
   );
 }
 
-Dashboard.propTypes = {
+Layout.propTypes = {
   /**
    * Injected by the documentation to work in an iframe.
    * You won't need it on your project.
@@ -308,7 +323,11 @@ Dashboard.propTypes = {
 };
 
 const mapStateToProps = (state) => (
-  { isAuthenticated: !!state.authentication.token }
+  {
+    isAuthenticated: !!state.authentication.token,
+    siteDetails: state.siteSettings.settings
+  }
 );
 
-export default connect(state=>state,mapStateToProps,actions)(Dashboard);
+export default connect(mapStateToProps, actions)(Layout);
+//export default Layout;

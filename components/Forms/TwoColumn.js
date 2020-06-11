@@ -3,6 +3,7 @@ import {
   Grid,
   Button
 } from '@material-ui/core';
+import React from 'react';
 import Paper from '@material-ui/core/Paper';
 import FieldAutocomplete from '../Fields/FieldAutocomplete';
 import FieldCheckbox from '../Fields/FieldCheckbox';
@@ -18,9 +19,16 @@ import FieldSwitch from '../Fields/FieldSwitch';
 import FieldAutoCompleteSingle from '../Fields/FieldAutocompleteSingle';
 import FieldFile from '../Fields/FieldFile';
 import Breadcrumb from '../Breadcrumb';
+//import { lastDayOfDecade } from 'date-fns/esm';
 
-export default function TwoColumn({ fieldsToRender, onSubmit, showBreadcrumb, buttonCancelText, buttonSubmitText, onFileUpload }) {
+export default function TwoColumn({ fieldsToRender, onSubmit, showBreadcrumb, buttonCancelText, buttonSubmitText, onFileUpload, defaultValue }) {
+  const [submittedValues, setSubmittedValues] = React.useState(undefined);
 
+  const onSubmitForm = (values) => {
+    setSubmittedValues(values);
+    onSubmit(values);
+  };
+  
   const validate = values => {
     const errors = {};
     var regex = /^\w+([-+.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$/;
@@ -95,10 +103,11 @@ export default function TwoColumn({ fieldsToRender, onSubmit, showBreadcrumb, bu
 
   return (
     <div>
-      {bcrumb}
+      {bcrumb} {onSubmit}
       <Paper elevation={1} style={{ padding: 5 }}>
         <Form
-          onSubmit={onSubmit} style={{ marginTop: 16 }}
+          onSubmit={onSubmitForm} style={{ marginTop: 16 }}
+          initialValues={submittedValues ? submittedValues : defaultValue}
           validate={validate}
           render={({ handleSubmit, reset, submitting, pristine }) => (
             <form onSubmit={handleSubmit} noValidate>
@@ -111,6 +120,7 @@ export default function TwoColumn({ fieldsToRender, onSubmit, showBreadcrumb, bu
                   item style={{ marginTop: 16 }}>
                   <Button
                     type="button"
+                    size="small"
                     variant="contained"
                     onClick={reset}
                     disabled={submitting || pristine}
@@ -119,6 +129,7 @@ export default function TwoColumn({ fieldsToRender, onSubmit, showBreadcrumb, bu
                   </Button>
                   <Button
                     variant="contained"
+                    size="small"
                     color="primary"
                     type="submit"
                     disabled={submitting}

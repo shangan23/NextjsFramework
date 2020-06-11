@@ -26,7 +26,7 @@ const useStyles = makeStyles(theme => ({
   icon: {
     fontSize: '30px !important',
     marginBottom: theme.spacing(0.5)
-  }
+  },
 }));
 
 function SideMenu({display}) {
@@ -96,7 +96,7 @@ function SideMenu({display}) {
     <div>
       {displayWith}
       <Divider />
-      <List dense>
+      <List dense >
         {menuList.map((text, index) => (
           <ListItem key={index}>
             <Button

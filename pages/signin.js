@@ -5,7 +5,7 @@ import initialize from '../utils/initialize';
 import Anonymous from '../theming/layouts/anonymous';
 import Alert from '@material-ui/lab/Alert';
 import TwoColumn from '../components/Forms/TwoColumn';
-
+import { IMGPath } from '../config';
 
 class Signin extends React.Component {
   constructor(props) {
@@ -40,7 +40,7 @@ class Signin extends React.Component {
     ];
 
     let alert;
-
+    const siteLogo = IMGPath + this.props.siteDetails.logo;
     if (this.props.message) {
       alert = <Alert variant="filled" severity={this.props.messageType}>{this.props.message}</Alert>;
     }
@@ -49,8 +49,9 @@ class Signin extends React.Component {
       <div>
         {alert}
         <Anonymous title="Sign In">
-          <br></br>
-          <TwoColumn fieldsToRender={fieldsToRender} onSubmit={onSubmit} buttonCancelText="Cancel" buttonSubmitText="Login"/>
+          <img src={siteLogo} alt={this.props.siteDetails.title} height="40" width="125"></img>
+          <br/>
+          <TwoColumn fieldsToRender={fieldsToRender} onSubmit={onSubmit} buttonCancelText="Cancel" buttonSubmitText="Login" />
         </Anonymous >
       </div>
     );
@@ -61,6 +62,7 @@ function mapStateToProps(state) {
   return {
     message: (state.authentication.error === null) ? state.authentication.success : state.authentication.error,
     messageType: (state.authentication.error === null) ? 'success' : 'error',
+    siteDetails: state.siteSettings.settings,
   };
 }
 export default connect(

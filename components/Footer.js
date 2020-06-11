@@ -21,7 +21,7 @@ export default function BottomAppBar({footerText}) {
   return (
     <React.Fragment>
       <CssBaseline />
-      <AppBar position="fixed" color="grey" className={classes.appBar}>
+      <AppBar position="fixed" color="inherit" className={classes.appBar}>
         <Typography variant="overline" align="center">{footerText}</Typography>
       </AppBar>
     </React.Fragment>

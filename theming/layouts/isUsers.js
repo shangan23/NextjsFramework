@@ -9,13 +9,10 @@ import IconButton from '@material-ui/core/IconButton';
 import MailIcon from '@material-ui/icons/Mail';
 import MenuIcon from '@material-ui/icons/Menu';
 import Toolbar from '@material-ui/core/Toolbar';
-import ExitToAppSharpIcon from '@material-ui/icons/ExitToAppSharp';
-import BuildSharpIcon from '@material-ui/icons/BuildSharp';
 import AddCircleSharpIcon from '@material-ui/icons/AddCircleSharp';
-import AssignmentIndSharpIcon from '@material-ui/icons/AssignmentIndSharp';
 import Typography from '@material-ui/core/Typography';
 import Menu from '@material-ui/core/Menu';
-import AccountCircle from '@material-ui/icons/AccountCircle';
+import Avatar from '@material-ui/core/Avatar';
 import MenuItem from '@material-ui/core/MenuItem';
 import Badge from '@material-ui/core/Badge';
 import NotificationsIcon from '@material-ui/icons/Notifications';
@@ -26,6 +23,8 @@ import { connect } from 'react-redux';
 import actions from '../../redux/actions';
 import Signin from '../../pages/signin';
 import Footer from '../../components/Footer';
+import Router from 'next/router';
+import { IMGPath } from '../../config';
 
 const drawerWidth = 100;
 
@@ -38,6 +37,7 @@ const useStyles = makeStyles(theme => ({
       width: drawerWidth,
       flexShrink: 0,
     },
+    backgroundColor: 'blue'
   },
   appBar: {
     zIndex: theme.zIndex.drawer + 1,
@@ -55,6 +55,7 @@ const useStyles = makeStyles(theme => ({
   toolbar: theme.mixins.toolbar,
   drawerPaper: {
     width: drawerWidth,
+    backgroundColor:'#1a73e8'
   },
   content: {
     flexGrow: 1,
@@ -142,11 +143,13 @@ function Layout({ children, title, deauthenticate, container, isAuthenticated, s
   };
 
   const handleMobileMenuClose = () => {
+    Router.push('/admin');
     setMobileMoreAnchorEl(null);
   };
 
   const handleMenuClose = () => {
     setAnchorEl(null);
+    Router.push('/admin');
     handleMobileMenuClose();
   };
 
@@ -162,16 +165,18 @@ function Layout({ children, title, deauthenticate, container, isAuthenticated, s
   const renderMenu = (
     <Menu
       anchorEl={anchorEl}
-      anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
+      anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
       id={menuId}
       keepMounted
-      transformOrigin={{ vertical: 'top', horizontal: 'right' }}
+      transformOrigin={{ vertical: 'bottom', horizontal: 'center' }}
       open={isMenuOpen}
       onClose={handleMenuClose}
     >
-      <MenuItem onClick={handleMenuClose}><AssignmentIndSharpIcon />&nbsp;My account</MenuItem>
-      <MenuItem onClick={handleMenuClose}><BuildSharpIcon />&nbsp;Admin</MenuItem>
-      <MenuItem onClick={deauthenticate}><ExitToAppSharpIcon />&nbsp;Sign Out</MenuItem>
+      
+      <MenuItem onClick={handleMenuClose}>{isAuthenticated.details.fullName}</MenuItem>
+      <MenuItem onClick={handleMenuClose}><Typography variant="caption">Role - Administrator</Typography></MenuItem>
+      <MenuItem onClick={handleMenuClose}>Settings</MenuItem>
+      <MenuItem onClick={deauthenticate}>Sign Out</MenuItem>
     </Menu>
   );
 
@@ -205,6 +210,9 @@ function Layout({ children, title, deauthenticate, container, isAuthenticated, s
     </Menu>
   );
 
+  let nameInLetter = isAuthenticated.details.fullName.split(' ');
+  const siteLogo = IMGPath+siteDetails.logo;
+
   return (
     <div className={classes.root}>
       <Head>
@@ -224,9 +232,7 @@ function Layout({ children, title, deauthenticate, container, isAuthenticated, s
           >
             <MenuIcon />
           </IconButton>
-          <Typography variant="h6" noWrap>
-            {siteDetails.title}
-          </Typography>
+          <img src={siteLogo} alt={siteDetails.title} height="40" width="125"></img>
           <div className={classes.grow} />
           <div className={classes.sectionDesktop}>
             <IconButton aria-label="show 4 new mails" color="inherit">
@@ -245,7 +251,7 @@ function Layout({ children, title, deauthenticate, container, isAuthenticated, s
               onClick={handleProfileMenuOpen}
               color="inherit"
             >
-              <AccountCircle />
+              <Avatar>{nameInLetter[0].slice(0, 1)}{nameInLetter[1].slice(0, 1)}</Avatar>
             </IconButton>
           </div>
           <div className={classes.sectionMobile}>
@@ -266,7 +272,7 @@ function Layout({ children, title, deauthenticate, container, isAuthenticated, s
               onClick={handleProfileMenuOpen}
               color="inherit"
             >
-              <AccountCircle />
+              <Avatar>{isAuthenticated.details.fullName.slice(0, 1)}</Avatar>
             </IconButton>
           </div>
 
@@ -274,7 +280,7 @@ function Layout({ children, title, deauthenticate, container, isAuthenticated, s
       </AppBar>
       {renderMobileMenu}
       {renderMenu}
-      <nav className={classes.drawer} aria-label="mailbox folders">
+      <nav style={{backgroundColor:'red'}} className={classes.drawer} aria-label="mailbox folders">
         {/* The implementation can be swapped with js to avoid SEO duplication of links. */}
         <Hidden smUp implementation="css">
           <Drawer
@@ -324,7 +330,7 @@ Layout.propTypes = {
 
 const mapStateToProps = (state) => (
   {
-    isAuthenticated: !!state.authentication.token,
+    isAuthenticated: state.authentication.user,
     siteDetails: state.siteSettings.settings
   }
 );

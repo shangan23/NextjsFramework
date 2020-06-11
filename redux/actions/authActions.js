@@ -17,24 +17,22 @@ const authenticate = ({ uname, password }) => {
       .then(data => {
         if (data.error) {
           dispatch({ type: AUTH_ERROR, error: MSG.authError });
-          throw Error(MSG.authError);
+          //throw Error(MSG.authError);
         } else {
-          setCookie('token', data.token);
-          dispatch({ type: AUTHENTICATE, payload: data.token });
+          setCookie('user', data);
+          dispatch({ type: AUTHENTICATE, payload: data });
           Router.push('/dashboard');
         }
-      })
-      .catch((error) => {
-        throw Error(error);
-        //console.error('Error:', error);
       });
   };
 };
 
 // gets the token from the cookie and saves it in the store
-const reauthenticate = (token) => {
+const reauthenticate = (user) => {
+  let cleanUser = unescape(user);
+  cleanUser= JSON.parse(cleanUser);
   return (dispatch) => {
-    dispatch({ type: AUTHENTICATE, payload: token });
+    dispatch({ type: AUTHENTICATE, payload: cleanUser });
   };
 };
 
@@ -46,7 +44,7 @@ const forgotPassword = (uname) => {
 // removing the token
 const deauthenticate = () => {
   return (dispatch) => {
-    removeCookie('token');
+    removeCookie('user');
     Router.push('/signin');
     dispatch({ type: DEAUTHENTICATE });
   };

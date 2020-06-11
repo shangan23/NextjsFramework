@@ -56,7 +56,7 @@ class Index extends React.Component {
 }
 
 const mapStateToProps = (state) => (
-  { isAuthenticated: !!state.authentication.token,
+  { isAuthenticated: !!state.authentication.user,
     siteTitle: state.siteSettings.title}
 );
 

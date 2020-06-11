@@ -6,12 +6,13 @@ import { getCookie } from '../utils/cookie';
 export default function (ctx) {
   if (ctx.isServer) {
     if (ctx.req.headers.cookie) {
-      ctx.store.dispatch(actions.reauthenticate(getCookie('token', ctx.req)));
+      if(getCookie('user', ctx.req))
+        ctx.store.dispatch(actions.reauthenticate(getCookie('user', ctx.req)));
       ctx.store.dispatch(actions.resettings(getCookie('settings', ctx.req)));
     }
   } else {
-    const token = ctx.store.getState().authentication.token;
-    if (token && (ctx.pathname === '/signin')) {
+    const user = ctx.store.getState().authentication.user;
+    if (user && (ctx.pathname === '/signin')) {
       setTimeout(function () {
         Router.push('/');
       }, 0);

@@ -4,10 +4,10 @@ import { API } from '../../../config';
 import { connect } from 'react-redux';
 import initialize from '../../../utils/initialize';
 import Layout from '../../../theming/layouts/isUsers';
-import TwoColumn from '../../../components/Forms/TwoColumn';
-import AdminMenu from '../../../components/AdminMenu';
+import DynamicForm from '../../../components/Forms/DynamicForm';
+import { columns } from '../../../modules/users';
 
-class Dashboard extends React.Component {
+class CreateUser extends React.Component {
   constructor(props) {
     super(props);
   }
@@ -28,54 +28,20 @@ class Dashboard extends React.Component {
       })
         .then(response => response.json())
         .then(data => {
-          console.log(data);
+          //console.log(data);
           if (data.error) {
             throw Error(data.error);
           } else {
-            window.alert(JSON.stringify(data, 0, 2));
+            //window.alert(JSON.stringify(data, 0, 2));
             Router.push('/admin/users');
           }
-        })
-        .catch((error) => {
-          console.error('Error:', error);
         });
     };
 
-    const fieldsToRender = [
-      {
-        'type': 'Text',
-        'required': false,
-        'id': 'fullName',
-        'label': 'Full Name',
-        'name': 'fullName'
-      },
-      {
-        'type': 'Text',
-        'required': true,
-        'id': 'uname',
-        'label': 'User Name',
-        'name': 'uname'
-      },
-      {
-        'type': 'Password',
-        'required': true,
-        'id': 'password',
-        'name': 'password',
-        'label': 'Password'
-      },
-      {
-        'type': 'Email',
-        'required': false,
-        'id': 'email',
-        'name': 'email',
-        'label': 'Email'
-      },
-    ];
     return (
       <Layout title="Dashboard" actions="create">
-        <AdminMenu />
-        <TwoColumn
-          fieldsToRender={fieldsToRender}
+        <DynamicForm
+          fieldsToRender={columns}
           onSubmit={onSubmit}
           buttonCancelText="Cancel"
           buttonSubmitText="Save"
@@ -85,60 +51,4 @@ class Dashboard extends React.Component {
   }
 
 }
-
-/*const onSubmit = async values => {
-  console.log(this.props);
-  axios.post(`${API}/users`, values)
-    .then((response) => {
-      //const sleep = ms => new Promise(resolve => setTimeout(resolve, ms));
-      //await sleep(300);
-      window.alert(JSON.stringify(response, 0, 2));
-      Router.push('/admin/users');
-    })
-    .catch((err) => {
-      throw new Error(err);
-    });
-};
-
-const fieldsToRender = [
-  {
-    'type': 'Text',
-    'required': false,
-    'id': 'fullName',
-    'label': 'Full Name',
-    'name': 'fullName'
-  },
-  {
-    'type': 'Text',
-    'required': true,
-    'id': 'uname',
-    'label': 'User Name',
-    'name': 'uname'
-  },
-  {
-    'type': 'Password',
-    'required': true,
-    'id': 'password',
-    'name': 'password',
-    'label': 'Password'
-  },
-  {
-    'type': 'Email',
-    'required': false,
-    'id': 'email',
-    'name': 'email',
-    'label': 'Email'
-  },
-];
-
-const Dashboard = () => (
-  <CreateLayout title="Dashboard" actions="create">
-    <TwoColumn fieldsToRender={fieldsToRender} onSubmit={onSubmit} showBreadcrumb />
-  </CreateLayout>
-);
-
-Dashboard.getInitialProps = async ctx => {
-  initialize(ctx);
-};*/
-
-export default connect(state => state)(Dashboard);
+export default connect(state => state)(CreateUser);

@@ -4,7 +4,7 @@ import actions from '../redux/actions';
 import initialize from '../utils/initialize';
 import Anonymous from '../theming/layouts/anonymous';
 import Alert from '@material-ui/lab/Alert';
-import TwoColumn from '../components/Forms/TwoColumn';
+import DynamicForm from '../components/Forms/DynamicForm';
 import { IMGPath } from '../config';
 
 class Signin extends React.Component {
@@ -22,7 +22,7 @@ class Signin extends React.Component {
         values
       );
     };
-    const fieldsToRender = [
+    const fields = [
       {
         'type': 'Text',
         'required': true,
@@ -39,19 +39,23 @@ class Signin extends React.Component {
       }
     ];
 
-    let alert;
-    const siteLogo = IMGPath + this.props.siteDetails.logo;
+    let alert, siteLogo;
+
     if (this.props.message) {
       alert = <Alert variant="filled" severity={this.props.messageType}>{this.props.message}</Alert>;
+    }
+
+    if (this.props.siteDetails) {
+      siteLogo = <img src={IMGPath + this.props.siteDetails.logo} alt={this.props.siteDetails.title} height="40" width="125"></img>;
     }
 
     return (
       <div>
         {alert}
         <Anonymous title="Sign In">
-          <img src={siteLogo} alt={this.props.siteDetails.title} height="40" width="125"></img>
-          <br/>
-          <TwoColumn fieldsToRender={fieldsToRender} onSubmit={onSubmit} buttonCancelText="Cancel" buttonSubmitText="Login" />
+          {siteLogo}
+          <br />
+          <DynamicForm fieldsToRender={fields} onSubmit={onSubmit} buttonCancelText="Cancel" buttonSubmitText="Login" />
         </Anonymous >
       </div>
     );

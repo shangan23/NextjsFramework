@@ -36,7 +36,7 @@ module.exports = function (router) {
 
     router.post(`${bucket}/auth`, (req, res) => {
         User.findOne({
-            attributes: ['uname', 'email', 'fullName', 'createdAt', 'updatedAt'],
+            attributes: ['uname', 'role','isAdmin', 'email', 'fullName', 'createdAt', 'updatedAt'],
             where: { uname: req.body.uname, password: req.body.password }
         }).then(users => {
             if (users != null) {

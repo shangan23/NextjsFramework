@@ -5,11 +5,11 @@ const initialState = {
 };
 
 export default (state = initialState, action) => {
-  console.log('---- componentDidMount - redux reduce -----', action.type);
+  //console.log('---- componentDidMount - redux reduce -----', action.type);
   switch (action.type) {
   case SITE_SETTINGS:
   case 'siteSetttings':
-    console.log('---- componentDidMount - redux reduce -----');
+    //console.log('---- componentDidMount - redux reduce -----');
     return { settings: action.payload };
   default:
     return state;

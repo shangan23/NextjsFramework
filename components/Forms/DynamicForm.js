@@ -17,42 +17,43 @@ import FieldPassword from '../Fields/FieldPassword';
 import FieldSwitch from '../Fields/FieldSwitch';
 import FieldAutoCompleteSingle from '../Fields/FieldAutocompleteSingle';
 import FieldFile from '../Fields/FieldFile';
-import Breadcrumb from '../Breadcrumb';
 import AppButton from '../Button';
 
-export default function TwoColumn({ fieldsToRender, onSubmit, showBreadcrumb, buttonCancelText, buttonSubmitText, onFileUpload, defaultValue }) {
+export default function DynamicForm({ fieldsToRender, onSubmit, buttonCancelText, buttonSubmitText, onFileUpload, defaultValue }) {
   const [submittedValues, setSubmittedValues] = React.useState(undefined);
 
   const onSubmitForm = (values) => {
     setSubmittedValues(values);
     onSubmit(values);
   };
-  
+
   const validate = values => {
     const errors = {};
     var regex = /^\w+([-+.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$/;
     fieldsToRender.map((data, index) => {
-      let name = (fieldsToRender[index]['name']).toString();
-      let label = (fieldsToRender[index]['label']).toString();
-      let type = (fieldsToRender[index]['type']).toString();
-      let required = (fieldsToRender[index]['required']);
-      switch (type) {
-      case 'Autocomplete':
-        if ((values[name].length == 0) && required)
-          errors[name] = label + ' required';
-        break;
-      case 'Email':
-        if ((!values[name]) && required)
-          errors[name] = label + ' required';
-        else {
-          if (!regex.test(values[name]) && values[name])
-            errors[name] = label + ' invalid';
+      if (fieldsToRender[index]['type']) {
+        let name = (fieldsToRender[index]['name']).toString();
+        let label = (fieldsToRender[index]['label']).toString();
+        let type = (fieldsToRender[index]['type']).toString();
+        let required = (fieldsToRender[index]['required']);
+        switch (type) {
+        case 'Autocomplete':
+          if ((values[name].length == 0) && required)
+            errors[name] = label + ' required';
+          break;
+        case 'Email':
+          if ((!values[name]) && required)
+            errors[name] = label + ' required';
+          else {
+            if (!regex.test(values[name]) && values[name])
+              errors[name] = label + ' invalid';
+          }
+          break;
+        default:
+          if (!values[name] && required)
+            errors[name] = label + ' required';
+          break;
         }
-        break;
-      default:
-        if (!values[name] && required)
-          errors[name] = label + ' required';
-        break;
       }
     }
     );
@@ -95,14 +96,8 @@ export default function TwoColumn({ fieldsToRender, onSubmit, showBreadcrumb, bu
     </Grid>
   );
 
-  let bcrumb;
-  if (showBreadcrumb) {
-    bcrumb = <Breadcrumb />;
-  }
-
   return (
     <div>
-      {bcrumb} {onSubmit}
       <Paper elevation={1} style={{ padding: 5 }}>
         <Form
           onSubmit={onSubmitForm} style={{ marginTop: 16 }}

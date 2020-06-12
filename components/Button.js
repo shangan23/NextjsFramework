@@ -23,7 +23,7 @@ const styles = {
 
 
 const StyledButton = withStyles(styles)(({ classes, color, ...other }) => (
-  <Button className={classes.root} color={color} {...other} />
+  <Button className={classes.root} style={{color:color}} {...other} />
 ));
 
 export default StyledButton;

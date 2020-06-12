@@ -1,10 +1,9 @@
 import React from 'react';
 //import Router from 'next/router';
-import { API,IMGPath } from '../../config';
+import { API, IMGPath } from '../../config';
 import initialize from '../../utils/initialize';
 import Layout from '../../theming/layouts/isUsers';
-import TwoColumn from '../../components/Forms/TwoColumn';
-import AdminMenu from '../../components/AdminMenu';
+import DynamicForm from '../../components/Forms/DynamicForm';
 import { connect } from 'react-redux';
 import actions from '../../redux/actions';
 
@@ -33,17 +32,11 @@ class SiteSettings extends React.Component {
           'Authorization': `Basic ${this.props.token}`
         },
       })
-        .then(response => response.json())
-        .then(data => {
-          console.log(data);
-        })
-        .catch(error => {
-          console.error(error);
-        });
+        .then(response => response.json());
     };
 
     const onSubmit = async values => {
-      console.log('==d==',values);
+      //console.log('==d==', values);
       fetch(`${API}/siteSettings/1`, {
         method: 'PUT',
         headers: {
@@ -54,7 +47,7 @@ class SiteSettings extends React.Component {
       })
         .then(response => response.json())
         .then(data => {
-          console.log(data);
+          //console.log(data);
           if (data.error) {
             throw Error(data.error);
           } else {
@@ -62,9 +55,6 @@ class SiteSettings extends React.Component {
             window.alert(JSON.stringify(values, 0, 2));
             //Router.push('/admin/users');
           }
-        })
-        .catch((error) => {
-          console.error('Error:', error);
         });
     };
 
@@ -135,22 +125,20 @@ class SiteSettings extends React.Component {
         'name': 'adminEmail',
         'label': 'Upload Logo',
         'accepted': ['image/png'],
-        'value': IMGPath+settingsData.logo
+        'value': IMGPath + settingsData.logo
       },
     ];
     return (
       <Layout title="General Settings" actions="create">
-        {this.props.siteTitle}
-        <AdminMenu />
-        <TwoColumn
+        <DynamicForm
           fieldsToRender={fieldsToRender}
-          defaultValue = {settingsData}
+          defaultValue={settingsData}
           onSubmit={onSubmit}
           buttonCancelText="Cancel"
           buttonSubmitText="Save"
           onFileUpload={onFileUpload}
         />
-        
+
       </Layout>
     );
   }

@@ -99,7 +99,7 @@ function SideMenu({ display }) {
   }
 
   const handleRedirection = (url) =>{
-    console.log(url);
+    //console.log(url);
     router.push(url);
   };
 

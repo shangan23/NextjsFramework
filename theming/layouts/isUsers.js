@@ -25,6 +25,7 @@ import Signin from '../../pages/signin';
 import Footer from '../../components/Footer';
 import Router from 'next/router';
 import { IMGPath } from '../../config';
+import AdminMenu from '../../components/AdminMenu';
 
 const drawerWidth = 150;
 
@@ -45,7 +46,7 @@ const useStyles = makeStyles(theme => ({
       width: `calc(100% - ${drawerWidth}px)`,
       marginLeft: drawerWidth,
     },*/
-    backgroundColor:'#ffffff'
+    backgroundColor: '#ffffff'
   },
   menuButton: {
     marginRight: theme.spacing(2),
@@ -56,7 +57,7 @@ const useStyles = makeStyles(theme => ({
   toolbar: theme.mixins.toolbar,
   drawerPaper: {
     width: drawerWidth,
-    backgroundColor:'#1a73e8'
+    backgroundColor: '#1a73e8'
   },
   content: {
     flexGrow: 1,
@@ -173,10 +174,12 @@ function Layout({ children, title, deauthenticate, container, isAuthenticated, s
       open={isMenuOpen}
       onClose={handleMenuClose}
     >
-      
-      <MenuItem onClick={handleMenuClose}>{isAuthenticated.details.fullName}</MenuItem>
-      <MenuItem onClick={handleMenuClose}><Typography variant="caption">Role - Administrator</Typography></MenuItem>
-      <MenuItem onClick={handleMenuClose}>Settings</MenuItem>
+
+      <MenuItem dense onClick={handleMenuClose}>
+        <div>
+          <Typography variant="h6">{isAuthenticated.details.fullName}</Typography>
+          <Typography variant="body2">{isAuthenticated.details.role}</Typography>
+        </div></MenuItem>
       <MenuItem onClick={deauthenticate}>Sign Out</MenuItem>
     </Menu>
   );
@@ -212,7 +215,13 @@ function Layout({ children, title, deauthenticate, container, isAuthenticated, s
   );
 
   let nameInLetter = isAuthenticated.details.fullName.split(' ');
-  const siteLogo = IMGPath+siteDetails.logo;
+  nameInLetter = (nameInLetter[1]) ? nameInLetter[0].slice(0, 1) + nameInLetter[1].slice(0, 1) : nameInLetter[0].slice(0, 1);
+  const siteLogo = IMGPath + siteDetails.logo;
+
+  let adminMenu;
+  if (isAuthenticated.details.isAdmin) {
+    adminMenu = <AdminMenu />;
+  }
 
   return (
     <div className={classes.root}>
@@ -234,7 +243,9 @@ function Layout({ children, title, deauthenticate, container, isAuthenticated, s
             <MenuIcon />
           </IconButton>
           <img src={siteLogo} alt={siteDetails.title} height="40" width="125"></img>
-          <div className={classes.grow} />
+          <div className={classes.grow}>
+            {adminMenu}
+          </div>
           <div className={classes.sectionDesktop}>
             <IconButton aria-label="show 4 new mails" color="default">
               <AddCircleSharpIcon />
@@ -252,7 +263,7 @@ function Layout({ children, title, deauthenticate, container, isAuthenticated, s
               onClick={handleProfileMenuOpen}
               color="inherit"
             >
-              <Avatar>{nameInLetter[0].slice(0, 1)}{nameInLetter[1].slice(0, 1)}</Avatar>
+              <Avatar>{nameInLetter}</Avatar>
             </IconButton>
           </div>
           <div className={classes.sectionMobile}>
@@ -281,7 +292,7 @@ function Layout({ children, title, deauthenticate, container, isAuthenticated, s
       </AppBar>
       {renderMobileMenu}
       {renderMenu}
-      <nav style={{backgroundColor:'red'}} className={classes.drawer} aria-label="mailbox folders">
+      <nav style={{ backgroundColor: 'red' }} className={classes.drawer} aria-label="mailbox folders">
         {/* The implementation can be swapped with js to avoid SEO duplication of links. */}
         <Hidden smUp implementation="css">
           <Drawer

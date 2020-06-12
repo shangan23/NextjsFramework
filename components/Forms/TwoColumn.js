@@ -1,7 +1,6 @@
 import { Form } from 'react-final-form';
 import {
-  Grid,
-  Button
+  Grid
 } from '@material-ui/core';
 import React from 'react';
 import Paper from '@material-ui/core/Paper';
@@ -19,7 +18,7 @@ import FieldSwitch from '../Fields/FieldSwitch';
 import FieldAutoCompleteSingle from '../Fields/FieldAutocompleteSingle';
 import FieldFile from '../Fields/FieldFile';
 import Breadcrumb from '../Breadcrumb';
-//import { lastDayOfDecade } from 'date-fns/esm';
+import AppButton from '../Button';
 
 export default function TwoColumn({ fieldsToRender, onSubmit, showBreadcrumb, buttonCancelText, buttonSubmitText, onFileUpload, defaultValue }) {
   const [submittedValues, setSubmittedValues] = React.useState(undefined);
@@ -118,7 +117,7 @@ export default function TwoColumn({ fieldsToRender, onSubmit, showBreadcrumb, bu
                   justify="flex-end"
                   alignItems="flex-end"
                   item style={{ marginTop: 16 }}>
-                  <Button
+                  <AppButton
                     type="button"
                     size="small"
                     variant="contained"
@@ -126,16 +125,16 @@ export default function TwoColumn({ fieldsToRender, onSubmit, showBreadcrumb, bu
                     disabled={submitting || pristine}
                   >
                     {buttonCancelText}
-                  </Button>
-                  <Button
+                  </AppButton>
+                  <AppButton
                     variant="contained"
                     size="small"
-                    color="primary"
+                    color="blue"
                     type="submit"
                     disabled={submitting}
                   >
                     {buttonSubmitText}
-                  </Button>
+                  </AppButton>
                 </Grid>
               </Grid>
             </form>

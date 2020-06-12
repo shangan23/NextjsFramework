@@ -1,5 +1,6 @@
 import { SITE_SETTINGS } from '../types';
 import { setCookie } from '../../utils/cookie';
+
 //import Router from 'next/router';
 // gets token from the api and stores it in the redux store and in cookie
 const siteSettings = (settings) => {

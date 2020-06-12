@@ -1,7 +1,8 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import actions from '../redux/actions';
-import initialize from '../utils/initialize';
+//import initialize from '../utils/initialize';
+//import whichBrowser from '../utils/browserDetector';
 import { API } from '../config';
 import Router from 'next/router';
 
@@ -11,29 +12,38 @@ class Index extends React.Component {
     this.handleLoad = this.handleLoad.bind(this);
   }
 
-  static async getInitialProps(ctx) {
+  /*static async getInitialProps(ctx) {
     initialize(ctx);
-    const res = await fetch(`${API}/siteSettings/1`);
-    const json = await res.json();
-    return { settings: json };
-  }
+  }*/
 
-  componentDidMount(){
+  componentDidMount() {
+    //console.log('Browser =',whichBrowser);
+    let propsAction;
     console.log('---- componentDidMount -----');
-    this.props.siteSettings(this.props.settings);
-    window.addEventListener('load',this.handleLoad);
+    fetch(`${API}/siteSettings/1`)
+      .then((res) => res.json())
+      .then((data) => {
+        console.log('---- componentDidMount - data dispatch -----');
+        propsAction = this.props.siteSettings(data);
+        console.log('---- componentDidMount - propsAction -----', propsAction);
+        //window.addEventListener('load', this.handleLoad);
+        window.onload = this.handleLoad();
+      }
+      );
+    
   }
 
-  componentWillUnmount(){
+  componentWillUnmount() {
     console.log('---- componentWillUnmount -----');
-    window.removeEventListener('load',this.handleLoad);
+    //window.removeEventListener('load', this.handleLoad);
+    window.onload = '';
   }
 
-  handleLoad(){
+  handleLoad() {
     console.log('---- handle load -----');
-    if(this.props.isAuthenticated){
+    if (this.props.isAuthenticated) {
       Router.push('/admin');
-    }else{
+    } else {
       Router.push('/signin');
     }
   }
@@ -56,8 +66,10 @@ class Index extends React.Component {
 }
 
 const mapStateToProps = (state) => (
-  { isAuthenticated: !!state.authentication.user,
-    siteTitle: state.siteSettings.title}
+  {
+    isAuthenticated: !!state.authentication.user,
+    siteTitle: state.siteSettings.title
+  }
 );
 
 export default connect(mapStateToProps, actions)(Index);

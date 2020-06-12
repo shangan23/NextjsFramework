@@ -26,7 +26,7 @@ import Footer from '../../components/Footer';
 import Router from 'next/router';
 import { IMGPath } from '../../config';
 
-const drawerWidth = 100;
+const drawerWidth = 150;
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -45,6 +45,7 @@ const useStyles = makeStyles(theme => ({
       width: `calc(100% - ${drawerWidth}px)`,
       marginLeft: drawerWidth,
     },*/
+    backgroundColor:'#ffffff'
   },
   menuButton: {
     marginRight: theme.spacing(2),
@@ -224,7 +225,7 @@ function Layout({ children, title, deauthenticate, container, isAuthenticated, s
       <AppBar position="fixed" className={classes.appBar}>
         <Toolbar>
           <IconButton
-            color="inherit"
+            color="default"
             aria-label="open drawer"
             edge="start"
             onClick={handleDrawerToggle}
@@ -235,10 +236,10 @@ function Layout({ children, title, deauthenticate, container, isAuthenticated, s
           <img src={siteLogo} alt={siteDetails.title} height="40" width="125"></img>
           <div className={classes.grow} />
           <div className={classes.sectionDesktop}>
-            <IconButton aria-label="show 4 new mails" color="inherit">
+            <IconButton aria-label="show 4 new mails" color="default">
               <AddCircleSharpIcon />
             </IconButton>
-            <IconButton aria-label="show 17 new notifications" color="inherit">
+            <IconButton aria-label="show 17 new notifications" color="default">
               <Badge badgeContent={17} color="secondary">
                 <NotificationsIcon />
               </Badge>

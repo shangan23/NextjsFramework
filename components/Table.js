@@ -1,20 +1,14 @@
 import MUIDataTable from 'mui-datatables';
-import { Fab } from '@material-ui/core';
-import AddIcon from '@material-ui/icons/Add';
+//import { Fab } from '@material-ui/core';
+//import AddIcon from '@material-ui/icons/Add';
 import { makeStyles } from '@material-ui/core/styles';
 import Box from '@material-ui/core/Box';
-//import CustomToolbar from './TableToolbar';
+import CustomToolbar from './TableToolbar';
 import { createMuiTheme, MuiThemeProvider } from '@material-ui/core/styles';
 
 const useStyles = makeStyles((theme) => ({
-  root: {
-    backgroundColor: theme.palette.background.paper,
-    position: 'relative',
-  },
-  fab: {
-    position: 'absolute',
-    bottom: theme.spacing(5.5),
-    right: theme.spacing(2),
+  empty: {
+    height:theme.padding
   },
 }));
 
@@ -31,9 +25,11 @@ const getMuiTheme = () => createMuiTheme({
 export default function RespTable(columns, list) {
   const classes = useStyles();
   list = columns['list'];
+  console.log(list);
   columns = columns['columns'];
   let listCount = list.length;
 
+  
   const options = {
     serverSide: true,
     filter: true,
@@ -53,15 +49,14 @@ export default function RespTable(columns, list) {
         size: 'small',
       };
     },
-    customToolbar: null,
-    /*customToolbar: () => {
+    customToolbar: () => {
       return (
         <CustomToolbar />
       );
-    }*/
+    }
   };
   return (<Box width="100%">
-    <MuiThemeProvider theme={getMuiTheme()}>
+    <MuiThemeProvider classNames={classes.empty} theme={getMuiTheme()}>
       <MUIDataTable
         title={'USERS'}
         data={list}
@@ -69,9 +64,7 @@ export default function RespTable(columns, list) {
         options={options}
         height="100%"
       /></MuiThemeProvider>
-    <Fab href="/admin/users/create" color="primary" aria-label="add" className={classes.fab}>
-      <AddIcon />
-    </Fab></Box>);
+  </Box>);
 }
 
 

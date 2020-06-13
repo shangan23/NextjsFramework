@@ -61,7 +61,7 @@ const useStyles = makeStyles(theme => ({
   },
   content: {
     flexGrow: 1,
-    padding: theme.spacing(0.5),
+    padding: theme.spacing(0.9),
   },
   grow: {
     flexGrow: 1,
@@ -163,6 +163,16 @@ function Layout({ children, title, deauthenticate, container, isAuthenticated, s
     setMobileOpen(!mobileOpen);
   };
 
+  let nameInLetter = isAuthenticated.details.fullName.split(' ');
+  nameInLetter = (nameInLetter[1]) ? nameInLetter[0].slice(0, 1) + nameInLetter[1].slice(0, 1) : nameInLetter[0].slice(0, 1);
+  const siteLogo = IMGPath + siteDetails.logo;
+
+  let adminMenu;
+  if (isAuthenticated.details.isAdmin) {
+    adminMenu = <AdminMenu />;
+  }
+
+
   const menuId = 'primary-search-account-menu';
   const renderMenu = (
     <Menu
@@ -175,10 +185,10 @@ function Layout({ children, title, deauthenticate, container, isAuthenticated, s
       onClose={handleMenuClose}
     >
 
-      <MenuItem dense onClick={handleMenuClose}>
+      <MenuItem dense>
         <div>
           <Typography variant="h6">{isAuthenticated.details.fullName}</Typography>
-          <Typography variant="body2">{isAuthenticated.details.role}</Typography>
+          <Typography variant="body2">{isAuthenticated.details.role} {(isAuthenticated.details.isAdmin)?'(SA)':''}</Typography>
         </div></MenuItem>
       <MenuItem onClick={deauthenticate}>Sign Out</MenuItem>
     </Menu>
@@ -214,19 +224,10 @@ function Layout({ children, title, deauthenticate, container, isAuthenticated, s
     </Menu>
   );
 
-  let nameInLetter = isAuthenticated.details.fullName.split(' ');
-  nameInLetter = (nameInLetter[1]) ? nameInLetter[0].slice(0, 1) + nameInLetter[1].slice(0, 1) : nameInLetter[0].slice(0, 1);
-  const siteLogo = IMGPath + siteDetails.logo;
-
-  let adminMenu;
-  if (isAuthenticated.details.isAdmin) {
-    adminMenu = <AdminMenu />;
-  }
-
   return (
     <div className={classes.root}>
       <Head>
-        <title> {siteDetails.title}:{title}</title>
+        <title> {siteDetails.title} :: {title}</title>
         <meta charSet="utf-8" />
         <meta name="viewport" content="initial-scale=1.0, width=device-width" />
       </Head>

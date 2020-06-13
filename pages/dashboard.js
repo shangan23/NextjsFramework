@@ -4,12 +4,16 @@ import { connect } from 'react-redux';
 import initialize from '../utils/initialize';
 import Layout from '../theming/layouts/isUsers';
 import SimpleCard from '../components/Widgets/Card';
+import CountCard from '../components/Widgets/CountCard';
 import ImgMediaCard from '../components/Widgets/MediaCard';
 import { Grid } from '@material-ui/core';
 
 const Dashboard = () => (
   <Layout title="Dashboard" actions="dashlets">
     <Grid container spacing={2}>
+      <Grid item xs={12} md={12}>
+        <CountCard />
+      </Grid>
       <Grid item xs={12} md={4}>
         <SimpleCard />
       </Grid>

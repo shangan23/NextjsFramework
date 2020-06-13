@@ -1,5 +1,6 @@
-module.exports = {
-  columns: [
+import Moment from 'react-moment';
+export default function columns(settings) {
+  let columns = [
     {
       name: 'fullName',
       label: 'Name',
@@ -54,23 +55,33 @@ module.exports = {
     },
     {
       name: 'isAdmin',
-      label: 'Is Administrator?',
+      label: 'Is Administrator',
       options: {
-        filter: true
+        filter: true,
+        customBodyRender: (value) => {
+          return <div>{value ? 'True' : 'False'}</div>;
+        }
       },
       type: 'Switch',
       required: false,
       id: 'isAdmin',
-      data:[
+      data: [
         { label: '', value: '1' }
-      ]
+      ],
     },
     {
       name: 'createdAt',
       label: 'Created On',
       options: {
         filter: true,
-        sort: false
+        sort: false,
+        customBodyRender: (value) => {
+          return (
+            <Moment format={settings.dateFormat}>
+              {value}
+            </Moment>
+          );
+        }
       }
     },
     {
@@ -78,8 +89,16 @@ module.exports = {
       label: 'Updated On',
       options: {
         filter: true,
-        sort: false
+        sort: false,
+        customBodyRender: (value) => {
+          return (
+            <Moment format={settings.dateFormat}>
+              {value}
+            </Moment>
+          );
+        }
       }
     }
-  ]
-};
+  ];
+  return columns;
+}

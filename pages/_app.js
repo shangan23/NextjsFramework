@@ -7,7 +7,7 @@ import { ThemeProvider } from '@material-ui/core/styles';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import theme from '../theming/redTheme';
 
-export default withRedux(initStore, { debug: true })(
+export default withRedux(initStore, { debug: false })(
   class MyApp extends App {
     /*componentDidMount() {
       // Remove the server-side injected CSS.

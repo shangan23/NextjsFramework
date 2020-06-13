@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 import initialize from '../../../utils/initialize';
 import Layout from '../../../theming/layouts/isUsers';
 import DynamicForm from '../../../components/Forms/DynamicForm';
-import { columns } from '../../../modules/users';
+import columns from '../../../modules/users';
 
 class CreateUser extends React.Component {
   constructor(props) {

@@ -21,8 +21,7 @@ class Index extends React.Component {
         //console.log('---- componentDidMount - propsAction -----', propsAction);
         //window.addEventListener('load', this.handleLoad);
         window.onload = this.handleLoad();
-      }
-      );
+      });
 
   }
 

@@ -1,6 +1,5 @@
 import React from 'react';
 import Head from 'next/head';
-import Divider from '@material-ui/core/Divider';
 import PropTypes from 'prop-types';
 import AppBar from '@material-ui/core/AppBar';
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -10,27 +9,28 @@ import IconButton from '@material-ui/core/IconButton';
 import MailIcon from '@material-ui/icons/Mail';
 import MenuIcon from '@material-ui/icons/Menu';
 import Toolbar from '@material-ui/core/Toolbar';
-import ExitToAppSharpIcon from '@material-ui/icons/ExitToAppSharp';
-import BuildSharpIcon from '@material-ui/icons/BuildSharp';
 import AddCircleSharpIcon from '@material-ui/icons/AddCircleSharp';
-import AssignmentIndSharpIcon from '@material-ui/icons/AssignmentIndSharp';
 import Typography from '@material-ui/core/Typography';
 import Menu from '@material-ui/core/Menu';
-import AccountCircle from '@material-ui/icons/AccountCircle';
+import Avatar from '@material-ui/core/Avatar';
 import MenuItem from '@material-ui/core/MenuItem';
 import Badge from '@material-ui/core/Badge';
 import NotificationsIcon from '@material-ui/icons/Notifications';
 import MoreIcon from '@material-ui/icons/MoreVert';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
-import { connect } from 'react-redux';
-import actions from '../../redux/actions';
 import SideMenu from '../../components/SideMenu';
-import Paper from '@material-ui/core/Paper';
-import Link from '@material-ui/core/Link';
-import Breadcrumbs from '@material-ui/core/Breadcrumbs';
-import NavigateNextIcon from '@material-ui/icons/NavigateNext';
+import { connect, useDispatch } from 'react-redux';
+import actions from '../../redux/actions';
+import Signin from '../../pages/signin';
+import Footer from '../../components/Footer';
+import Router from 'next/router';
+import { IMGPath } from '../../config';
+import AdminMenu from '../../components/AdminMenu';
+import Snackbar from '@material-ui/core/Snackbar';
+import Alert from '@material-ui/lab/Alert';
+import { NOTIFICATIONS_CLOSE } from '../../redux/types';
 
-const drawerWidth = 100;
+const drawerWidth = 150;
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -41,6 +41,7 @@ const useStyles = makeStyles(theme => ({
       width: drawerWidth,
       flexShrink: 0,
     },
+    backgroundColor: 'blue'
   },
   appBar: {
     zIndex: theme.zIndex.drawer + 1,
@@ -48,6 +49,7 @@ const useStyles = makeStyles(theme => ({
       width: `calc(100% - ${drawerWidth}px)`,
       marginLeft: drawerWidth,
     },*/
+    backgroundColor: '#ffffff'
   },
   menuButton: {
     marginRight: theme.spacing(2),
@@ -58,10 +60,12 @@ const useStyles = makeStyles(theme => ({
   toolbar: theme.mixins.toolbar,
   drawerPaper: {
     width: drawerWidth,
+    backgroundColor: '#1a73e8'
   },
   content: {
     flexGrow: 1,
-    padding: theme.spacing(3),
+    padding: theme.spacing(0.9),
+    marginBottom:theme.spacing(5)
   },
   grow: {
     flexGrow: 1,
@@ -116,10 +120,8 @@ const useStyles = makeStyles(theme => ({
   paperContainer: {
     display: 'flex',
     '& > *': {
-      margin: theme.spacing(0.5),
-      
+      margin: theme.spacing(1),
     },
-    backgroundColor: '#f7f7f7',
   },
   divider: {
     margin: theme.spacing(0.5),
@@ -127,7 +129,14 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-function Dashboard({ children, title, deauthenticate, container, actions }) {
+function Layout({ children, title, deauthenticate, container, isAuthenticated, siteDetails, isNotified }) {
+
+  if (!isAuthenticated) {
+    return <Signin />;
+  }
+
+  const dispatch = useDispatch();
+  
   const classes = useStyles();
   const theme = useTheme();
   const [mobileOpen, setMobileOpen] = React.useState(false);
@@ -138,16 +147,24 @@ function Dashboard({ children, title, deauthenticate, container, actions }) {
   const isMenuOpen = Boolean(anchorEl);
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
 
+
+  const handleSnackClose = () => {
+    //setOpenSnack(false);
+    dispatch({ type: NOTIFICATIONS_CLOSE, payload: null });
+  };
+
   const handleProfileMenuOpen = event => {
     setAnchorEl(event.currentTarget);
   };
 
   const handleMobileMenuClose = () => {
+    Router.push('/admin');
     setMobileMoreAnchorEl(null);
   };
 
   const handleMenuClose = () => {
     setAnchorEl(null);
+    Router.push('/admin');
     handleMobileMenuClose();
   };
 
@@ -159,20 +176,34 @@ function Dashboard({ children, title, deauthenticate, container, actions }) {
     setMobileOpen(!mobileOpen);
   };
 
+  let nameInLetter = isAuthenticated.details.fullName.split(' ');
+  nameInLetter = (nameInLetter[1]) ? nameInLetter[0].slice(0, 1) + nameInLetter[1].slice(0, 1) : nameInLetter[0].slice(0, 1);
+  const siteLogo = IMGPath + siteDetails.logo;
+
+  let adminMenu;
+  if (isAuthenticated.details.isAdmin) {
+    adminMenu = <AdminMenu />;
+  }
+
+
   const menuId = 'primary-search-account-menu';
   const renderMenu = (
     <Menu
       anchorEl={anchorEl}
-      anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
+      anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
       id={menuId}
       keepMounted
-      transformOrigin={{ vertical: 'top', horizontal: 'right' }}
+      transformOrigin={{ vertical: 'bottom', horizontal: 'center' }}
       open={isMenuOpen}
       onClose={handleMenuClose}
     >
-      <MenuItem onClick={handleMenuClose}><AssignmentIndSharpIcon />&nbsp;My account</MenuItem>
-      <MenuItem onClick={handleMenuClose}><BuildSharpIcon />&nbsp;Admin</MenuItem>
-      <MenuItem onClick={deauthenticate}><ExitToAppSharpIcon />&nbsp;Sign Out</MenuItem>
+
+      <MenuItem dense>
+        <div>
+          <Typography variant="h6">{isAuthenticated.details.fullName}</Typography>
+          <Typography variant="body2">{isAuthenticated.details.role} {(isAuthenticated.details.isAdmin) ? '(SA)' : ''}</Typography>
+        </div></MenuItem>
+      <MenuItem onClick={deauthenticate}>Sign Out</MenuItem>
     </Menu>
   );
 
@@ -206,10 +237,11 @@ function Dashboard({ children, title, deauthenticate, container, actions }) {
     </Menu>
   );
 
+
   return (
     <div className={classes.root}>
       <Head>
-        <title>{title}</title>
+        <title> {siteDetails.title} :: {title}</title>
         <meta charSet="utf-8" />
         <meta name="viewport" content="initial-scale=1.0, width=device-width" />
       </Head>
@@ -217,7 +249,7 @@ function Dashboard({ children, title, deauthenticate, container, actions }) {
       <AppBar position="fixed" className={classes.appBar}>
         <Toolbar>
           <IconButton
-            color="inherit"
+            color="default"
             aria-label="open drawer"
             edge="start"
             onClick={handleDrawerToggle}
@@ -225,15 +257,15 @@ function Dashboard({ children, title, deauthenticate, container, actions }) {
           >
             <MenuIcon />
           </IconButton>
-          <Typography variant="h6" noWrap>
-            DeskX
-          </Typography>
-          <div className={classes.grow} />
+          <img src={siteLogo} alt={siteDetails.title} height="40" width="125"></img>
+          <div className={classes.grow}>
+            {adminMenu}
+          </div>
           <div className={classes.sectionDesktop}>
-            <IconButton aria-label="show 4 new mails" color="inherit">
+            <IconButton aria-label="show 4 new mails" color="default">
               <AddCircleSharpIcon />
             </IconButton>
-            <IconButton aria-label="show 17 new notifications" color="inherit">
+            <IconButton aria-label="show 17 new notifications" color="default">
               <Badge badgeContent={17} color="secondary">
                 <NotificationsIcon />
               </Badge>
@@ -246,7 +278,7 @@ function Dashboard({ children, title, deauthenticate, container, actions }) {
               onClick={handleProfileMenuOpen}
               color="inherit"
             >
-              <AccountCircle />
+              <Avatar>{nameInLetter}</Avatar>
             </IconButton>
           </div>
           <div className={classes.sectionMobile}>
@@ -267,7 +299,7 @@ function Dashboard({ children, title, deauthenticate, container, actions }) {
               onClick={handleProfileMenuOpen}
               color="inherit"
             >
-              <AccountCircle />
+              <Avatar>{isAuthenticated.details.fullName.slice(0, 1)}</Avatar>
             </IconButton>
           </div>
 
@@ -275,7 +307,7 @@ function Dashboard({ children, title, deauthenticate, container, actions }) {
       </AppBar>
       {renderMobileMenu}
       {renderMenu}
-      <nav className={classes.drawer} aria-label="mailbox folders">
+      <nav style={{ backgroundColor: 'red' }} className={classes.drawer} aria-label="mailbox folders">
         {/* The implementation can be swapped with js to avoid SEO duplication of links. */}
         <Hidden smUp implementation="css">
           <Drawer
@@ -308,29 +340,22 @@ function Dashboard({ children, title, deauthenticate, container, actions }) {
       </nav>
       <main className={classes.content}>
         <div className={classes.toolbar} />
-        {actions != 'create' ? (
-          <Paper elevation={1} className={classes.paperBreadcrumb}>
-            <Breadcrumbs separator={<NavigateNextIcon fontSize="small" />} aria-label="breadcrumb">
-              <Link color="inherit" href="/">
-                Home
-              </Link>
-              <Link color="inherit" href="/getting-started/installation/">
-                Module
-              </Link>
-              <Typography variant="h6" color="textPrimary">Breadcrumb</Typography>
-            </Breadcrumbs>
-          </Paper>
-        ) : ('')}
-        <Divider className={classes.divider} variant="middle" />
-        <Paper elevation={0} className={classes.paperContainer}>
-          {children}
-        </Paper>
+        {children}
+        <Snackbar
+          autoHideDuration={4000}
+          anchorOrigin={{ vertical: 'bottom', horizontal: 'left' }}
+          open={isNotified?true:false}
+          onClose={handleSnackClose}
+        >
+          <Alert variant="filled" severity={isNotified ? isNotified.type : 'info'}>{isNotified ? isNotified.message : 'test'}</Alert>
+        </Snackbar>
       </main>
+      <Footer footerText={siteDetails.footer} />
     </div>
   );
 }
 
-Dashboard.propTypes = {
+Layout.propTypes = {
   /**
    * Injected by the documentation to work in an iframe.
    * You won't need it on your project.
@@ -339,7 +364,12 @@ Dashboard.propTypes = {
 };
 
 const mapStateToProps = (state) => (
-  { isAuthenticated: !!state.authentication.token }
+  {
+    isAuthenticated: state.authentication.user,
+    siteDetails: state.siteSettings.settings,
+    isNotified: state.notifications.message,
+  }
 );
 
-export default connect(mapStateToProps, actions)(Dashboard);
+export default connect(mapStateToProps, actions)(Layout);
+//export default Layout;

@@ -1,46 +1,50 @@
 import Router from 'next/router';
-//import axios from 'axios';
-import { AUTHENTICATE, DEAUTHENTICATE } from '../types';
-//import { API } from '../../config';
+import { AUTHENTICATE, DEAUTHENTICATE, AUTH_ERROR } from '../types';
+import { API, MSG } from '../../config';
 import { setCookie, removeCookie } from '../../utils/cookie';
 
 // gets token from the api and stores it in the redux store and in cookie
-const authenticate = ({ email, password }, type) => {
-  if (type !== 'signin' && type !== 'signup') {
-    throw new Error('Wrong API call!');
-  }
+const authenticate = ({ uname, password }) => {
   return (dispatch) => {
-    setCookie('token', email+'--'+ password );
-    Router.push('/dashboard');
-    dispatch({ type: AUTHENTICATE, payload: email+'--'+ password });
-    /*axios.post(`${API}/${type}`, { email, password })
-      .then((response) => {
-        setCookie('token', response.data.token);
-        Router.push('/');
-        dispatch({type: AUTHENTICATE, payload: response.data.token});
-      })
-      .catch((err) => {
-        throw new Error(err);
-      });*/
+    fetch(`${API}/users/auth`, {
+      method: 'POST', // or 'PUT'
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify( { uname: uname, password: password }),
+    })
+      .then(response => response.json())
+      .then(data => {
+        if (data.error) {
+          dispatch({ type: AUTH_ERROR, error: MSG.authError });
+          //throw Error(MSG.authError);
+        } else {
+          setCookie('user', data);
+          dispatch({ type: AUTHENTICATE, payload: data });
+          Router.push('/dashboard');
+        }
+      });
   };
 };
 
 // gets the token from the cookie and saves it in the store
-const reauthenticate = (token) => {
+const reauthenticate = (user) => {
+  let cleanUser = unescape(user);
+  cleanUser= JSON.parse(cleanUser);
   return (dispatch) => {
-    dispatch({ type: AUTHENTICATE, payload: token });
+    dispatch({ type: AUTHENTICATE, payload: cleanUser });
   };
 };
 
 // gets the token from the cookie and saves it in the store
-const forgotPassword = (email) => {
-  return email;
+const forgotPassword = (uname) => {
+  return uname;
 };
 
 // removing the token
 const deauthenticate = () => {
   return (dispatch) => {
-    removeCookie('token');
+    removeCookie('user');
     Router.push('/signin');
     dispatch({ type: DEAUTHENTICATE });
   };

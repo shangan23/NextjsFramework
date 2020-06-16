@@ -1,9 +1,6 @@
 import Head from 'next/head';
 import Container from '@material-ui/core/Container';
-import Avatar from '@material-ui/core/Avatar';
 import CssBaseline from '@material-ui/core/CssBaseline';
-import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
-import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Footer from '../../components/Footer';
 
@@ -42,12 +39,6 @@ export default function Anonymous({ children, title }) {
       <Container component="main" maxWidth="xs">
         <CssBaseline />
         <div className={classes.paper}>
-          <Avatar className={classes.avatar}>
-            <LockOutlinedIcon />
-          </Avatar>
-          <Typography component="h1" variant="h5">
-            {title}
-          </Typography>
           {children}
         </div>
       </Container>

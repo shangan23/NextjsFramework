@@ -3,96 +3,73 @@ import { connect } from 'react-redux';
 import actions from '../redux/actions';
 import initialize from '../utils/initialize';
 import Anonymous from '../theming/layouts/anonymous';
-import Button from '@material-ui/core/Button';
-import TextField from '@material-ui/core/TextField';
-import Grid from '@material-ui/core/Grid';
-import Link from '@material-ui/core/Link';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import Checkbox from '@material-ui/core/Checkbox';
-
+import Alert from '@material-ui/lab/Alert';
+import DynamicForm from '../components/Forms/DynamicForm';
+import { IMGPath } from '../config';
 
 class Signin extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {
-      email: '',
-      password: ''
-    };
   }
 
   static getInitialProps(ctx) {
     initialize(ctx);
   }
 
-  handleSubmit(e) {
-    e.preventDefault();
-    this.props.authenticate(
-      { email: this.state.email, password: this.state.password },
-      'signin'
-    );
-  }
-
   render() {
+    const onSubmit = async values => {
+      this.props.authenticate(
+        values
+      );
+    };
+    const fields = [
+      {
+        'type': 'Text',
+        'required': true,
+        'id': 'uname',
+        'label': 'User Name',
+        'name': 'uname'
+      },
+      {
+        'type': 'Password',
+        'required': true,
+        'id': 'password',
+        'name': 'password',
+        'label': 'Password'
+      }
+    ];
+
+    let alert, siteLogo;
+
+    if (this.props.message) {
+      alert = <Alert variant="filled" severity={this.props.messageType}>{this.props.message}</Alert>;
+    }
+
+    if (this.props.siteDetails) {
+      siteLogo = <img src={IMGPath + this.props.siteDetails.logo} alt={this.props.siteDetails.title} height="40" width="125"></img>;
+    }
+
     return (
-      <Anonymous title="Sign In">
-        <form noValidate onSubmit={this.handleSubmit.bind(this)}>
-          <TextField
-            variant="outlined"
-            margin="normal"
-            required
-            fullWidth
-            id="email"
-            label="Email Address"
-            name="email"
-            autoComplete="email"
-            autoFocus
-            value={this.state.email}
-            onChange={e => this.setState({ email: e.target.value })}
-          />
-          <TextField
-            variant="outlined"
-            margin="normal"
-            required
-            fullWidth
-            name="password"
-            label="Password"
-            type="password"
-            id="password"
-            autoComplete="current-password"
-            value={this.state.password}
-            onChange={e => this.setState({ password: e.target.value })}
-          />
-          <FormControlLabel
-            control={<Checkbox value="remember" color="primary" />}
-            label="Remember me"
-          />
-          <Button
-            type="submit"
-            fullWidth
-            variant="contained"
-            color="primary"
-          >
-            Sign In
-          </Button>
-          <Grid container>
-            <Grid item xs>
-              <Link href="/forgotpassword" variant="body2">
-                Forgot password?
-              </Link>
-            </Grid>
-            <Grid item>
-              <Link href="#" variant="body2">
-                {'Don\'t have an account? Sign Up'}
-              </Link>
-            </Grid>
-          </Grid>
-        </form>
-      </Anonymous >
+      <div>
+        {alert}
+        <Anonymous title="Sign In">
+          {siteLogo}
+          <br />
+          <DynamicForm fieldsToRender={fields} onSubmit={onSubmit} buttonCancelText="Cancel" buttonSubmitText="Login" />
+        </Anonymous >
+      </div>
     );
   }
 }
 
+function mapStateToProps(state) {
+  return {
+    message: (state.authentication.error === null) ? state.authentication.success : state.authentication.error,
+    messageType: (state.authentication.error === null) ? 'success' : 'error',
+    siteDetails: state.siteSettings.settings,
+  };
+}
 export default connect(
-  state => state,
+  mapStateToProps,
   actions
 )(Signin);

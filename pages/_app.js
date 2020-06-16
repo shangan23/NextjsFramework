@@ -1,4 +1,4 @@
-import { Provider } from 'react-redux';
+import { Provider} from 'react-redux';
 import App from 'next/app';
 import withRedux from 'next-redux-wrapper';
 import { initStore } from '../redux';
@@ -7,7 +7,7 @@ import { ThemeProvider } from '@material-ui/core/styles';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import theme from '../theming/redTheme';
 
-export default withRedux(initStore, { debug: true })(
+export default withRedux(initStore, { debug: false })(
   class MyApp extends App {
     /*componentDidMount() {
       // Remove the server-side injected CSS.
@@ -25,7 +25,6 @@ export default withRedux(initStore, { debug: true })(
         }
       };
     }
-
     render() {
       const { Component, pageProps, store } = this.props;
       return (

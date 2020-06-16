@@ -1,3 +1,7 @@
 module.exports = {
-  API: 'http://localhost:8000',
+  API: 'http://localhost:3001/api',
+  IMGPath: 'http://localhost:3001/api/images/',
+  MSG: {
+    'authError': 'Authentication Failed.'
+  }
 };

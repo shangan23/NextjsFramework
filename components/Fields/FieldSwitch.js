@@ -1,6 +1,6 @@
 import { Switches } from 'mui-rff';
 
-export default function FieldCheckbox({ fieldsToRender, index }) {
+export default function FieldSwitch({ fieldsToRender, index }) {
   return (<Switches
     label={fieldsToRender[index]['label']}
     name={fieldsToRender[index]['name']}

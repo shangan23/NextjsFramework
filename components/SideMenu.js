@@ -1,30 +1,40 @@
 import React from 'react';
 import { loadCSS } from 'fg-loadcss';
 import Divider from '@material-ui/core/Divider';
-import DashboardIcon from '@material-ui/icons/Dashboard';
-import BusinessIcon from '@material-ui/icons/Business';
-import DehazeIcon from '@material-ui/icons/Dehaze';
+
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
-import Button from '@material-ui/core/Button';
+//import Button from '@material-ui/core/Button';
+//import AppButton from './Button';
+import ListItemIcon from '@material-ui/core/ListItemIcon';
+import ListItemText from '@material-ui/core/ListItemText';
 import { makeStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 import { useRouter } from 'next/router';
-import Icon from '@material-ui/core/Icon';
+import Tooltip from '@material-ui/core/Tooltip';
+
+import DashboardIcon from '@material-ui/icons/Dashboard';
+import AccountBoxSharpIcon from '@material-ui/icons/AccountBoxSharp';
+import ContactPhoneSharpIcon from '@material-ui/icons/ContactPhoneSharp';
+import ListAltSharpIcon from '@material-ui/icons/ListAltSharp';
+import SecuritySharpIcon from '@material-ui/icons/SecuritySharp';
+import AppsSharpIcon from '@material-ui/icons/AppsSharp';
 
 const useStyles = makeStyles(theme => ({
   toolbar: theme.mixins.toolbar,
   label: {
-    // Aligns the content of the button vertically.
-    flexDirection: 'column',
+    marginLeft: theme.spacing(-3)
   },
-  icon: {
-    fontSize: '30px !important',
-    marginBottom: theme.spacing(0.5)
-  }
+  active: {
+    color: 'white'
+  },
 }));
 
-function SideMenu({display}) {
+const truncate = (str) => {
+  return str.length > 10 ? str.substring(0, 7) + '...' : str;
+};
+
+function SideMenu({ display }) {
   const router = useRouter();
   const classes = useStyles();
 
@@ -35,28 +45,7 @@ function SideMenu({display}) {
     );
   }, []);
 
-  let active,displayWith = '';
-  const menuList = [{
-    'name': 'Dashboard',
-    'link': '/dashboard',
-    'icon': <DashboardIcon className={classes.icon} />,
-    'id': 'dashboard'
-  }, {
-    'name': 'Leads',
-    'link': '/module/list',
-    'icon': <Icon className="fa fa-funnel-dollar" fontSize="small" />,
-    'id': 'leads'
-  }, {
-    'name': 'Sales',
-    'link': '/module/list',
-    'icon': <BusinessIcon className={classes.icon} />,
-    'id': 'sales'
-  }, {
-    'name': 'Marketting',
-    'link': '/marketting',
-    'icon': <DehazeIcon className={classes.icon} />,
-    'id': 'marketting'
-  },];
+  let active, displayWith = '';
 
   switch (router.pathname) {
   case '/dashboard':
@@ -71,30 +60,62 @@ function SideMenu({display}) {
     break;
   }
 
+  const menuList = [{
+    'name': 'Dashboard',
+    'link': '/dashboard',
+    'icon': <DashboardIcon className={(active == 'dashboard') ? classes.active : ''} />,
+    'id': 'dashboard'
+  }, {
+    'name': 'Customers',
+    'link': '/admin',
+    'icon': <AccountBoxSharpIcon className={(active == 'leads') ? classes.active : ''} />,
+    'id': 'admin'
+  }, {
+    'name': 'Products',
+    'link': '/module/list',
+    'icon': <AppsSharpIcon className={(active == 'sales') ? classes.active : ''} />,
+    'id': 'sales'
+  }, {
+    'name': 'Servivce',
+    'link': '/marketting',
+    'icon': <ContactPhoneSharpIcon className={(active == 'marketting') ? classes.active : ''} />,
+    'id': 'marketting'
+  }, {
+    'name': 'Annual Maintenance Contract',
+    'link': '/marketting',
+    'icon': <ListAltSharpIcon className={(active == 'marketting') ? classes.active : ''} />,
+    'id': 'marketting'
+  }, {
+    'name': 'Gaurentee',
+    'link': '/marketting',
+    'icon': <SecuritySharpIcon className={(active == 'marketting') ? classes.active : ''} />,
+    'id': 'marketting'
+  },];
+
   if (display === 'desktop') {
     displayWith = <div className={classes.toolbar}>test</div>;
   } else {
     displayWith = '';
   }
 
+  const handleRedirection = (url) =>{
+    //console.log(url);
+    router.push(url);
+  };
+
   return (
     <div>
       {displayWith}
       <Divider />
-      <List dense>
+      <List dense component="nav">
         {menuList.map((text, index) => (
-          <ListItem key={index}>
-            <Button
-              /* Use classes property listto inject custom styles */
-              classes={{ root: classes.button, label: classes.label }}
-              color={(active == menuList[index]['id']) ? 'primary' : 'default'}
-              size="large"
-              href={menuList[index]['link']}
-            > {menuList[index]['icon']}
-              <Typography variant="caption" display="block" gutterBottom>
-                {menuList[index]['name']}
-              </Typography>
-            </Button>
+          <ListItem onClick={(event) => handleRedirection(menuList[index]['link'], event)} button key={index} autoFocus={(active == menuList[index]['id']) ? true : false}>
+            <ListItemIcon >
+              {menuList[index]['icon']}
+            </ListItemIcon>
+            <Tooltip title={<Typography variant="overline">{menuList[index]['name']}</Typography>} arrow placement="right-start">
+              <ListItemText primary={<Typography className={(active == menuList[index]['id']) ?`${classes.active} ${classes.label}`:classes.label} variant="overline">{truncate(menuList[index]['name'])}</Typography>} />
+            </Tooltip>
           </ListItem>
         ))}
       </List>

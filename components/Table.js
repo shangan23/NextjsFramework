@@ -1,77 +1,87 @@
-import ResponsiveTable from 'material-ui-next-responsive-table';
-export default function RespTable() {
-  const columns = [
-    {
-      key: 'id',
-      label: 'ID',
-    },
-    {
-      key: 'name',
-      label: 'Name',
-      primary: true,
-    },
-    {
-      key: 'authors',
-      label: 'Author(s)',
-      render: (value) => value.join(', '),
-      primary: true,
-    },
-  ];
+import MUIDataTable from 'mui-datatables';
+import { makeStyles } from '@material-ui/core/styles';
+import Box from '@material-ui/core/Box';
+import { createMuiTheme, MuiThemeProvider } from '@material-ui/core/styles';
 
-  const data = [
-    {
-      id: '1234',
-      name: 'Foo',
-      authors: ['Andy'],
-    },
-    {
-      id: '4567',
-      name: 'Bar',
-      authors: ['Joe', 'Mike'],
-    },
-    {
-      id: '4567',
-      name: 'Bar',
-      authors: ['Joe', 'Mike'],
-    },
-    {
-      id: '4567',
-      name: 'Bar',
-      authors: ['Joe', 'Mike'],
-    },
-    {
-      id: '4567',
-      name: 'Bar',
-      authors: ['Joe', 'Mike'],
-    },
-    {
-      id: '4567',
-      name: 'Bar',
-      authors: ['Joe', 'Mike'],
-    },
-    {
-      id: '4567',
-      name: 'Bar',
-      authors: ['Joe', 'Mike'],
-    },
-    {
-      id: '4567',
-      name: 'Bar',
-      authors: ['Joe', 'Mike'],
+import Toolbar from './Table/Toolbar';
+import ToolbarSelectRows from './Table/ToolbarSelectRows';
+import Router from 'next/router';
+
+const useStyles = makeStyles((theme) => ({
+  empty: {
+    height: theme.padding
+  }
+}));
+
+const getMuiTheme = () => createMuiTheme({
+  overrides: {
+    MuiTypography: {
+      h6: {
+        fontSize: '1.2em'
+      }
     }
-  ];
+  }
+});
 
+export default function RespTable(columns, list, module) {
+  const classes = useStyles();
 
-  return (
-    <div style={{ width: '100%' }}>
-      <ResponsiveTable
+  module = columns['module'];
+  list = columns['list'];
+  columns = columns['columns'];
+  
+  let listCount = list.length;
+
+  const options = {
+    serverSide: true,
+    filter: true,
+    download: false,
+    print: false,
+    viewColumns: true,
+    filterType: 'dropdown',
+    search: false,
+    selectToolbarPlacement: 'replace',
+    count: listCount,
+    fixedHeader: true,
+    displayMode:'vertical',
+    tableBodyHeight:'475px',
+    onChangePage: (currentPage) => {
+      console.log('currentPage',currentPage);
+    },
+    onChangeRowsPerPage: (numberOfRows) => {
+      Router.push(`/admin/${module}/index?perPage=${numberOfRows}`);
+      //console.log('numberOfRows',numberOfRows);
+    },
+    setTableProps: () => {
+      return {
+        padding: 'none',
+        size: 'small',
+      };
+    },
+    customToolbar: () => {
+      return (
+        <Toolbar module={module} />
+      );
+    },
+    customToolbarSelect: (selectedRows, displayData, setSelectedRows) => (
+      <ToolbarSelectRows selectedRows={selectedRows} displayData={displayData} setSelectedRows={setSelectedRows}  module={module} />
+    ),
+    onRowsDelete: (rowsDeleted) => {
+      const idsToDelete = rowsDeleted.data.map(d => list[d.dataIndex].id);
+      console.log(idsToDelete);
+    }
+  };
+  return (<Box width="100%">
+    <MuiThemeProvider classNames={classes.empty} theme={getMuiTheme()}>
+      <MUIDataTable
+        title={'USERS'}
+        data={list}
         columns={columns}
-        data={data}
-        count={200}
-        page={0}
-        rowsPerPage={10}
-        showPagination={true}
-      />
-    </div>
-  );
+        options={options}
+        height="100%"
+      /></MuiThemeProvider>
+  </Box>);
 }
+
+
+

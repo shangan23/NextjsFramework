@@ -1,0 +1,26 @@
+{
+  "development": {
+    "username": "dba",
+    "password": "dba@123",
+    "database": "gcrm",
+    "host": "127.0.0.1",
+    "dialect": "postgres",
+    "operatorsAliases": false
+  },
+  "test": {
+    "username": "dba",
+    "password": "dba@123",
+    "database": "gcrm",
+    "host": "127.0.0.1",
+    "dialect": "postgres",
+    "operatorsAliases": false
+  },
+  "production": {
+    "username": "dba",
+    "password": "dba@123",
+    "database": "gcrm",
+    "host": "127.0.0.1",
+    "dialect": "postgres",
+    "operatorsAliases": false
+  }
+}

@@ -2,13 +2,13 @@
 import { connect } from 'react-redux';
 //import { API } from '../config';
 import initialize from '../../utils/initialize';
-import User from '../../theming/layouts/user';
+import Layout from '../../theming/layouts/isUsers';
 import RespTable from '../../components/Table';
 
 const Dashboard = () => (
-  <User title="Sales" actions="list">
+  <Layout title="Sales" actions="list">
     <RespTable />
-  </User>
+  </Layout>
 );
 
 Dashboard.getInitialProps = async ctx => {

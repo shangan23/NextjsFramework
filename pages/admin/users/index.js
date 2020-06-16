@@ -6,13 +6,15 @@ import RespTable from '../../../components/Table';
 import moduleController from '../../../modules/controller';
 
 class userList extends React.Component {
+
   constructor(props) {
     super(props);
     this.state = { listing: [] };
   }
 
   static async getInitialProps(ctx) {
-    const data = await fetch(`${API}/users`, {
+    const {query} = ctx;
+    const data = await fetch(`${API}/users?perPage=${query.perPage}`, {
       headers: {
         'Authorization': 'Basic ' + ctx.store.getState().authentication.user['token']
       }

@@ -65,6 +65,7 @@ const useStyles = makeStyles(theme => ({
   content: {
     flexGrow: 1,
     padding: theme.spacing(0.9),
+    marginBottom:theme.spacing(5)
   },
   grow: {
     flexGrow: 1,
@@ -348,8 +349,8 @@ function Layout({ children, title, deauthenticate, container, isAuthenticated, s
         >
           <Alert variant="filled" severity={isNotified ? isNotified.type : 'info'}>{isNotified ? isNotified.message : 'test'}</Alert>
         </Snackbar>
-        <Footer footerText={siteDetails.footer} />
       </main>
+      <Footer footerText={siteDetails.footer} />
     </div>
   );
 }

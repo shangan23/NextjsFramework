@@ -5,6 +5,7 @@ import { createMuiTheme, MuiThemeProvider } from '@material-ui/core/styles';
 
 import Toolbar from './Table/Toolbar';
 import ToolbarSelectRows from './Table/ToolbarSelectRows';
+import Router from 'next/router';
 
 const useStyles = makeStyles((theme) => ({
   empty: {
@@ -42,11 +43,18 @@ export default function RespTable(columns, list, module) {
     selectToolbarPlacement: 'replace',
     count: listCount,
     fixedHeader: true,
+    displayMode:'vertical',
+    tableBodyHeight:'475px',
+    onChangePage: (currentPage) => {
+      console.log('currentPage',currentPage);
+    },
+    onChangeRowsPerPage: (numberOfRows) => {
+      Router.push(`/admin/${module}/index?perPage=${numberOfRows}`);
+      //console.log('numberOfRows',numberOfRows);
+    },
     setTableProps: () => {
       return {
         padding: 'none',
-
-        // material ui v4 only
         size: 'small',
       };
     },

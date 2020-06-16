@@ -6,7 +6,15 @@ const bucket = '/api/users';
 
 module.exports = function (router) {
     router.get(bucket, (req, res) => {
+
+        let perPage, page;
+        perPage = (req.params.perPage) ? req.params.perPage : 10;
+        page = (req.params.page) ? req.params.perPage : 1;
+        console.log(req);
         User.findAll({
+            offset: ((page - 1) * perPage),
+            limit: perPage,
+            subQuery: false,
             order: [
                 ['id', 'DESC']
             ]

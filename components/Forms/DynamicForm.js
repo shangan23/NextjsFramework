@@ -1,6 +1,6 @@
 import { Form } from 'react-final-form';
 import {
-  Grid
+  Grid,Button
 } from '@material-ui/core';
 import React from 'react';
 import Paper from '@material-ui/core/Paper';
@@ -17,7 +17,6 @@ import FieldPassword from '../Fields/FieldPassword';
 import FieldSwitch from '../Fields/FieldSwitch';
 import FieldAutoCompleteSingle from '../Fields/FieldAutocompleteSingle';
 import FieldFile from '../Fields/FieldFile';
-import AppButton from '../Button';
 
 export default function DynamicForm({ fieldsToRender, onSubmit, buttonCancelText, buttonSubmitText, onFileUpload, defaultValue }) {
   const [submittedValues, setSubmittedValues] = React.useState(undefined);
@@ -112,7 +111,7 @@ export default function DynamicForm({ fieldsToRender, onSubmit, buttonCancelText
                   justify="flex-end"
                   alignItems="flex-end"
                   item style={{ marginTop: 16 }}>
-                  <AppButton
+                  <Button
                     type="button"
                     size="small"
                     variant="contained"
@@ -120,16 +119,16 @@ export default function DynamicForm({ fieldsToRender, onSubmit, buttonCancelText
                     disabled={submitting || pristine}
                   >
                     {buttonCancelText}
-                  </AppButton>
-                  <AppButton
+                  </Button>
+                  <Button
                     variant="contained"
                     size="small"
-                    color="blue"
+                    color="primary"
                     type="submit"
                     disabled={submitting}
                   >
                     {buttonSubmitText}
-                  </AppButton>
+                  </Button>
                 </Grid>
               </Grid>
             </form>

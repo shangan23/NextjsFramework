@@ -10,11 +10,13 @@ export default function FieldFile({ fieldsToRender, index, onFileUpload }) {
     filePreview = <img width="200" height="50" src={fieldsToRender[index]['value']}></img>;
   }
   return (<div>
-    <Button variant="contained" color="primary" onClick={() => setOpen(true)}>
+    <Button size="small" variant="contained" color="primary" onClick={() => setOpen(true)}>
       {fieldsToRender[index]['label']}
     </Button>
     <br></br>
+    <br></br>
     {filePreview}
+    
     <DropzoneDialog
       acceptedFiles={fieldsToRender[index]['accepted']}
       maxFileSize={5000000}

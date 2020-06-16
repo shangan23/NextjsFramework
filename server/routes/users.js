@@ -1,5 +1,6 @@
 const Msg = require('../messages').Messages;
 const User = require("../../models").Users;
+const frame = require('../frameJson');
 
 const bucket = '/api/users';
 
@@ -27,16 +28,23 @@ module.exports = function (router) {
     });
 
     router.post(bucket, (req, res) => {
+        let response, statusCode;
         User.create(req.body)
-            .then(res => {
-                res.json(res);
-            })
-            .catch(err => res.json(err));
+            .then(users => {
+                response = frame(users, req.method);
+                statusCode = response.httpCode;
+                delete response.httpCode;
+                response.details = users;
+                res.status(statusCode).json(response);
+            }).catch(err => {
+                response = frame(err, req.method);
+                res.status(response.httpCode).json(response);
+            });
     });
 
     router.post(`${bucket}/auth`, (req, res) => {
         User.findOne({
-            attributes: ['uname', 'role','isAdmin', 'email', 'fullName', 'createdAt', 'updatedAt'],
+            attributes: ['uname', 'role', 'isAdmin', 'email', 'fullName', 'createdAt', 'updatedAt'],
             where: { uname: req.body.uname, password: req.body.password }
         }).then(users => {
             if (users != null) {
@@ -50,22 +58,35 @@ module.exports = function (router) {
         }).catch(err => res.json(err));
     });
 
-    router.put("/users/:id", (req, res) => {
-        User.update({ uname: req.body.uname, password: req.body.password }, { where: { id: req.params.id } })
+    router.put(`${bucket}/:id`, (req, res) => {
+        let response, statusCode;
+        User.update(req.body, { where: { id: req.params.id } })
             .then(users => {
-                res.json(users);
-            })
-            .catch(err => res.json(err));
+                response = frame(users, req.method);
+                statusCode = response.httpCode;
+                delete response.httpCode;
+                response.details = users;
+                res.status(statusCode).json(response);
+            }).catch(err => {
+                response = frame(err, req.method);
+                res.status(response.httpCode).json(response);
+            });
     });
 
-    router.delete("/users/:id", (req, res) => {
-        User.destroy({
-            where: { id: req.params.id }
-        })
+    router.delete(`${bucket}/:id`, (req, res) => {
+        let response, statusCode;
+        User.destroy({ where: { id: req.params.id } })
             .then(users => {
-                res.json(users);
+                response = frame(users, req.method);
+                statusCode = response.httpCode;
+                delete response.httpCode;
+                response.details = users;
+                res.status(statusCode).json(response);
             })
-            .catch(err => res.json(err));
+            .catch(err => {
+                response = frame(err, req.method);
+                res.status(response.httpCode).json(response);
+            });
     });
 
     router.post(`${bucket}/upload`, (req, res) => {

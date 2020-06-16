@@ -18,6 +18,7 @@ class Index extends React.Component {
       .then((data) => {
         //console.log('---- componentDidMount - data dispatch -----');
         this.props.siteSettings(data);
+        this.props.notifications(null);
         //console.log('---- componentDidMount - propsAction -----', propsAction);
         //window.addEventListener('load', this.handleLoad);
         window.onload = this.handleLoad();

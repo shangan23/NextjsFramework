@@ -1,15 +1,15 @@
 import MUIDataTable from 'mui-datatables';
-//import { Fab } from '@material-ui/core';
-//import AddIcon from '@material-ui/icons/Add';
 import { makeStyles } from '@material-ui/core/styles';
 import Box from '@material-ui/core/Box';
-import CustomToolbar from './TableToolbar';
 import { createMuiTheme, MuiThemeProvider } from '@material-ui/core/styles';
+
+import Toolbar from './Table/Toolbar';
+import ToolbarSelectRows from './Table/ToolbarSelectRows';
 
 const useStyles = makeStyles((theme) => ({
   empty: {
-    height:theme.padding
-  },
+    height: theme.padding
+  }
 }));
 
 const getMuiTheme = () => createMuiTheme({
@@ -22,14 +22,15 @@ const getMuiTheme = () => createMuiTheme({
   }
 });
 
-export default function RespTable(columns, list) {
+export default function RespTable(columns, list, module) {
   const classes = useStyles();
+
+  module = columns['module'];
   list = columns['list'];
-  console.log(list);
   columns = columns['columns'];
+  
   let listCount = list.length;
 
-  
   const options = {
     serverSide: true,
     filter: true,
@@ -51,8 +52,15 @@ export default function RespTable(columns, list) {
     },
     customToolbar: () => {
       return (
-        <CustomToolbar />
+        <Toolbar module={module} />
       );
+    },
+    customToolbarSelect: (selectedRows, displayData, setSelectedRows) => (
+      <ToolbarSelectRows selectedRows={selectedRows} displayData={displayData} setSelectedRows={setSelectedRows}  module={module} />
+    ),
+    onRowsDelete: (rowsDeleted) => {
+      const idsToDelete = rowsDeleted.data.map(d => list[d.dataIndex].id);
+      console.log(idsToDelete);
     }
   };
   return (<Box width="100%">

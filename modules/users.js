@@ -1,6 +1,18 @@
 import Moment from 'react-moment';
+import CellEdit from '../components/Table/CellEdit';
 export default function columns(settings) {
   let columns = [
+    {
+      name: 'id',
+      label: 'ID',
+      options: {
+        filter: false,
+        display:'excluded',
+      },
+      type: 'Text',
+      required: false,
+      id: 'id',
+    },
     {
       name: 'fullName',
       label: 'Name',
@@ -55,7 +67,7 @@ export default function columns(settings) {
     },
     {
       name: 'isAdmin',
-      label: 'Is Administrator',
+      label: 'Administrator',
       options: {
         filter: true,
         customBodyRender: (value) => {
@@ -98,7 +110,20 @@ export default function columns(settings) {
           );
         }
       }
-    }
+    },
+    {
+      name: 'Action',
+      options: {
+        filter: false,
+        sort: false,
+        empty: true,
+        customBodyRender: (value, tableMeta) => {
+          return (
+            <CellEdit module="users" cellData={tableMeta} />
+          );
+        }
+      }
+    },
   ];
   return columns;
 }

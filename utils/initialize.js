@@ -6,7 +6,7 @@ import { getCookie } from '../utils/cookie';
 export default function (ctx) {
   if (ctx.isServer) {
     if (ctx.req.headers.cookie) {
-      if(getCookie('user', ctx.req))
+      if (getCookie('user', ctx.req))
         ctx.store.dispatch(actions.reauthenticate(getCookie('user', ctx.req)));
       ctx.store.dispatch(actions.resettings(getCookie('settings', ctx.req)));
     }

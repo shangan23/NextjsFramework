@@ -19,13 +19,16 @@ import NotificationsIcon from '@material-ui/icons/Notifications';
 import MoreIcon from '@material-ui/icons/MoreVert';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
 import SideMenu from '../../components/SideMenu';
-import { connect } from 'react-redux';
+import { connect, useDispatch } from 'react-redux';
 import actions from '../../redux/actions';
 import Signin from '../../pages/signin';
 import Footer from '../../components/Footer';
 import Router from 'next/router';
 import { IMGPath } from '../../config';
 import AdminMenu from '../../components/AdminMenu';
+import Snackbar from '@material-ui/core/Snackbar';
+import Alert from '@material-ui/lab/Alert';
+import { NOTIFICATIONS_CLOSE } from '../../redux/types';
 
 const drawerWidth = 150;
 
@@ -125,11 +128,14 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-function Layout({ children, title, deauthenticate, container, isAuthenticated, siteDetails }) {
+function Layout({ children, title, deauthenticate, container, isAuthenticated, siteDetails, isNotified }) {
 
   if (!isAuthenticated) {
     return <Signin />;
   }
+
+  const dispatch = useDispatch();
+  
   const classes = useStyles();
   const theme = useTheme();
   const [mobileOpen, setMobileOpen] = React.useState(false);
@@ -139,6 +145,12 @@ function Layout({ children, title, deauthenticate, container, isAuthenticated, s
 
   const isMenuOpen = Boolean(anchorEl);
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
+
+
+  const handleSnackClose = () => {
+    //setOpenSnack(false);
+    dispatch({ type: NOTIFICATIONS_CLOSE, payload: null });
+  };
 
   const handleProfileMenuOpen = event => {
     setAnchorEl(event.currentTarget);
@@ -188,7 +200,7 @@ function Layout({ children, title, deauthenticate, container, isAuthenticated, s
       <MenuItem dense>
         <div>
           <Typography variant="h6">{isAuthenticated.details.fullName}</Typography>
-          <Typography variant="body2">{isAuthenticated.details.role} {(isAuthenticated.details.isAdmin)?'(SA)':''}</Typography>
+          <Typography variant="body2">{isAuthenticated.details.role} {(isAuthenticated.details.isAdmin) ? '(SA)' : ''}</Typography>
         </div></MenuItem>
       <MenuItem onClick={deauthenticate}>Sign Out</MenuItem>
     </Menu>
@@ -223,6 +235,7 @@ function Layout({ children, title, deauthenticate, container, isAuthenticated, s
       </MenuItem>
     </Menu>
   );
+
 
   return (
     <div className={classes.root}>
@@ -327,6 +340,14 @@ function Layout({ children, title, deauthenticate, container, isAuthenticated, s
       <main className={classes.content}>
         <div className={classes.toolbar} />
         {children}
+        <Snackbar
+          autoHideDuration={4000}
+          anchorOrigin={{ vertical: 'bottom', horizontal: 'left' }}
+          open={isNotified?true:false}
+          onClose={handleSnackClose}
+        >
+          <Alert variant="filled" severity={isNotified ? isNotified.type : 'info'}>{isNotified ? isNotified.message : 'test'}</Alert>
+        </Snackbar>
         <Footer footerText={siteDetails.footer} />
       </main>
     </div>
@@ -344,7 +365,8 @@ Layout.propTypes = {
 const mapStateToProps = (state) => (
   {
     isAuthenticated: state.authentication.user,
-    siteDetails: state.siteSettings.settings
+    siteDetails: state.siteSettings.settings,
+    isNotified: state.notifications.message,
   }
 );
 

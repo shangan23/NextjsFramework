@@ -5,7 +5,6 @@ export default function FieldText({fieldsToRender, index}) {
     label={fieldsToRender[index]['label']}
     id={fieldsToRender[index]['id']}
     name={fieldsToRender[index]['name']}
-    margin="none"
     required={fieldsToRender[index]['required']}
   />);
 }

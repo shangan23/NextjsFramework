@@ -54,9 +54,8 @@ function SideMenu({ display }) {
   case '/marketting':
     active = 'marketting';
     break;
-  case '/module/list':
-  case '/module/create':
-    active = 'leads';
+  case '/app/customers':
+    active = 'customers';
     break;
   }
 
@@ -67,9 +66,9 @@ function SideMenu({ display }) {
     'id': 'dashboard'
   }, {
     'name': 'Customers',
-    'link': '/admin',
-    'icon': <AccountBoxSharpIcon className={(active == 'leads') ? classes.active : ''} />,
-    'id': 'admin'
+    'link': '/app/customers',
+    'icon': <AccountBoxSharpIcon className={(active == 'customers') ? classes.active : ''} />,
+    'id': 'customers'
   }, {
     'name': 'Products',
     'link': '/module/list',

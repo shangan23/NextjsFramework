@@ -2,6 +2,7 @@ import MUIDataTable from 'mui-datatables';
 import { makeStyles } from '@material-ui/core/styles';
 import Box from '@material-ui/core/Box';
 import { createMuiTheme, MuiThemeProvider } from '@material-ui/core/styles';
+import { RecordsPerPage } from '../config';
 
 import Toolbar from './Table/Toolbar';
 import ToolbarSelectRows from './Table/ToolbarSelectRows';
@@ -27,10 +28,9 @@ export default function RespTable(columns, list, module) {
   const classes = useStyles();
 
   module = columns['module'];
-  list = columns['list'];
+  list = columns['list'].rows;
+  let listCount = columns['list'].count;
   columns = columns['columns'];
-  
-  let listCount = list.length;
 
   const options = {
     serverSide: true,
@@ -42,15 +42,19 @@ export default function RespTable(columns, list, module) {
     search: false,
     selectToolbarPlacement: 'replace',
     count: listCount,
+    page: 0,
+    rowsPerPage: RecordsPerPage,
+    rowsPerPageOptions: [5, 10, 15],
     fixedHeader: true,
-    displayMode:'vertical',
-    tableBodyHeight:'475px',
+    displayMode: 'vertical',
+    tableBodyHeight: '475px',
     onChangePage: (currentPage) => {
-      console.log('currentPage',currentPage);
+      let page = (Router.router.query.limit) ? `?limit=${Router.router.query.limit}&page=${currentPage}` : `?limit=${RecordsPerPage}&page=${currentPage}`;
+      Router.push(`${Router.router.route}${page}`);
     },
     onChangeRowsPerPage: (numberOfRows) => {
-      Router.push(`/admin/${module}/index?perPage=${numberOfRows}`);
-      //console.log('numberOfRows',numberOfRows);
+      let limit = `?limit=${numberOfRows}&page=0`;
+      Router.push(`${Router.router.route}${limit}`);
     },
     setTableProps: () => {
       return {
@@ -64,7 +68,7 @@ export default function RespTable(columns, list, module) {
       );
     },
     customToolbarSelect: (selectedRows, displayData, setSelectedRows) => (
-      <ToolbarSelectRows selectedRows={selectedRows} displayData={displayData} setSelectedRows={setSelectedRows}  module={module} />
+      <ToolbarSelectRows selectedRows={selectedRows} displayData={displayData} setSelectedRows={setSelectedRows} module={module} />
     ),
     onRowsDelete: (rowsDeleted) => {
       const idsToDelete = rowsDeleted.data.map(d => list[d.dataIndex].id);
@@ -74,7 +78,7 @@ export default function RespTable(columns, list, module) {
   return (<Box width="100%">
     <MuiThemeProvider classNames={classes.empty} theme={getMuiTheme()}>
       <MUIDataTable
-        title={'USERS'}
+        title={module}
         data={list}
         columns={columns}
         options={options}

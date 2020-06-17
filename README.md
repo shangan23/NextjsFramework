@@ -1,2 +1,2 @@
 # nextjs-material-ui
-Material UI theme with nextjs
+A Framework on top of Nextjs and MaterialUI as frontend and Express and Sequelize

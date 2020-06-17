@@ -1,22 +1,23 @@
 import { Form } from 'react-final-form';
 import {
-  Grid,Button
+  Grid, Button
 } from '@material-ui/core';
 import React from 'react';
 import Paper from '@material-ui/core/Paper';
-import FieldAutocomplete from '../Fields/FieldAutocomplete';
-import FieldCheckbox from '../Fields/FieldCheckbox';
-import FieldDate from '../Fields/FieldDate';
-import FieldRadio from '../Fields/FieldRadio';
-import FieldSelect from '../Fields/FieldSelect';
-import FieldText from '../Fields/FieldText';
-import FieldTextArea from '../Fields/FieldTextArea';
-import FieldTime from '../Fields/FieldTime';
-import FieldEmail from '../Fields/FieldEmail';
-import FieldPassword from '../Fields/FieldPassword';
-import FieldSwitch from '../Fields/FieldSwitch';
-import FieldAutoCompleteSingle from '../Fields/FieldAutocompleteSingle';
-import FieldFile from '../Fields/FieldFile';
+import Autocomplete from '../Fields/Autocomplete';
+import Checkbox from '../Fields/Checkbox';
+import Date from '../Fields/Date';
+import Radio from '../Fields/Radio';
+import Select from '../Fields/Select';
+import Text from '../Fields/Text';
+import TextArea from '../Fields/TextArea';
+import Time from '../Fields/Time';
+import Email from '../Fields/Email';
+import Password from '../Fields/Password';
+import Switch from '../Fields/Switch';
+import AutoCompleteSingle from '../Fields/AutocompleteSingle';
+import File from '../Fields/File';
+import Lookup from '../Fields/Lookup';
 
 export default function DynamicForm({ fieldsToRender, onSubmit, buttonCancelText, buttonSubmitText, onFileUpload, defaultValue }) {
   const [submittedValues, setSubmittedValues] = React.useState(undefined);
@@ -60,37 +61,67 @@ export default function DynamicForm({ fieldsToRender, onSubmit, buttonCancelText
   };
 
   const renderFields = (
-    <Grid container spacing={2} style={{ margin: 4 }}>
+    <Grid container spacing={2} style={{ margin: 4 }} key={`grid-form${Math.random()}`}>
       {fieldsToRender.map((data, index) => (
-        <Grid item xs={6} md={6} key={index}>
-          {(fieldsToRender[index]['type'] == 'Text') &&
-            <FieldText index={index} fieldsToRender={fieldsToRender} />
-            || (fieldsToRender[index]['type'] == 'Date') &&
-            <FieldDate index={index} fieldsToRender={fieldsToRender} />
-            || (fieldsToRender[index]['type'] == 'Select') &&
-            <FieldSelect index={index} fieldsToRender={fieldsToRender} />
-            || (fieldsToRender[index]['type'] == 'Checkbox') &&
-            <FieldCheckbox index={index} fieldsToRender={fieldsToRender} />
-            || (fieldsToRender[index]['type'] == 'Time') &&
-            <FieldTime index={index} fieldsToRender={fieldsToRender} />
-            || (fieldsToRender[index]['type'] == 'TextArea') &&
-            <FieldTextArea index={index} fieldsToRender={fieldsToRender} />
-            || (fieldsToRender[index]['type'] == 'Radio') &&
-            <FieldRadio index={index} fieldsToRender={fieldsToRender} />
-            || (fieldsToRender[index]['type'] == 'Autocomplete') &&
-            <FieldAutocomplete index={index} fieldsToRender={fieldsToRender} />
-            || (fieldsToRender[index]['type'] == 'Email') &&
-            <FieldEmail index={index} fieldsToRender={fieldsToRender} />
-            || (fieldsToRender[index]['type'] == 'Password') &&
-            <FieldPassword index={index} fieldsToRender={fieldsToRender} />
-            || (fieldsToRender[index]['type'] == 'Switch') &&
-            <FieldSwitch index={index} fieldsToRender={fieldsToRender} />
-            || (fieldsToRender[index]['type'] == 'AutocompleteSingle') &&
-            <FieldAutoCompleteSingle index={index} fieldsToRender={fieldsToRender} />
-            || (fieldsToRender[index]['type'] == 'Upload') &&
-            <FieldFile index={index} fieldsToRender={fieldsToRender} onFileUpload={onFileUpload} />
+        <React.Fragment key={`layout-frag${Math.random()}`}>
+          {(fieldsToRender[index]['type'] == 'Text' && !fieldsToRender[index]['options']['display']) &&
+            <Grid item xs={6} md={6} key={index}>
+              <Text index={index} fieldsToRender={fieldsToRender} />
+            </Grid>
+            || (fieldsToRender[index]['type'] == 'Date' && !fieldsToRender[index]['options']['display']) &&
+            <Grid item xs={6} md={6} key={index}>
+              <Date index={index} fieldsToRender={fieldsToRender} />
+            </Grid>
+            || (fieldsToRender[index]['type'] == 'Select' && !fieldsToRender[index]['options']['display']) &&
+            <Grid item xs={6} md={6} key={index}>
+              <Select index={index} fieldsToRender={fieldsToRender} />
+            </Grid>
+            || (fieldsToRender[index]['type'] == 'Checkbox' && !fieldsToRender[index]['options']['display']) &&
+            <Grid item xs={6} md={6} key={index}>
+              <Checkbox index={index} fieldsToRender={fieldsToRender} />
+            </Grid>
+            || (fieldsToRender[index]['type'] == 'Time' && !fieldsToRender[index]['options']['display']) &&
+            <Grid item xs={6} md={6} key={index}>
+              <Time index={index} fieldsToRender={fieldsToRender} />
+            </Grid>
+            || (fieldsToRender[index]['type'] == 'TextArea' && !fieldsToRender[index]['options']['display']) &&
+            <Grid item xs={6} md={6} key={index}>
+              <TextArea index={index} fieldsToRender={fieldsToRender} />
+            </Grid>
+            || (fieldsToRender[index]['type'] == 'Radio' && !fieldsToRender[index]['options']['display']) &&
+            <Grid item xs={6} md={6} key={index}>
+              <Radio index={index} fieldsToRender={fieldsToRender} />
+            </Grid>
+            || (fieldsToRender[index]['type'] == 'Autocomplete' && !fieldsToRender[index]['options']['display']) &&
+            <Grid item xs={6} md={6} key={index}>
+              <Autocomplete index={index} fieldsToRender={fieldsToRender} />
+            </Grid>
+            || (fieldsToRender[index]['type'] == 'Email' && !fieldsToRender[index]['options']['display']) &&
+            <Grid item xs={6} md={6} key={index}>
+              <Email index={index} fieldsToRender={fieldsToRender} />
+            </Grid>
+            || (fieldsToRender[index]['type'] == 'Password' && !fieldsToRender[index]['options']['display']) &&
+            <Grid item xs={6} md={6} key={index}>
+              <Password index={index} fieldsToRender={fieldsToRender} />
+            </Grid>
+            || (fieldsToRender[index]['type'] == 'Switch' && !fieldsToRender[index]['options']['display']) &&
+            <Grid item xs={6} md={6} key={index}>
+              <Switch index={index} fieldsToRender={fieldsToRender} />
+            </Grid>
+            || (fieldsToRender[index]['type'] == 'AutocompleteSingle' && !fieldsToRender[index]['options']['display']) &&
+            <Grid item xs={6} md={6} key={index}>
+              <AutoCompleteSingle index={index} fieldsToRender={fieldsToRender} />
+            </Grid>
+            || (fieldsToRender[index]['type'] == 'Upload' && !fieldsToRender[index]['options']['display']) &&
+            <Grid item xs={6} md={6} key={index}>
+              <File index={index} fieldsToRender={fieldsToRender} onFileUpload={onFileUpload} />
+            </Grid>
+            || (fieldsToRender[index]['type'] == 'Lookup' && !fieldsToRender[index]['options']['display']) &&
+            <Grid item xs={6} md={6} key={index}>
+              <Lookup index={index} fieldsToRender={fieldsToRender} />
+            </Grid>
           }
-        </Grid>
+        </React.Fragment>
       ))}
     </Grid>
   );

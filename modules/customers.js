@@ -14,72 +14,105 @@ export default function columns(module, settings) {
       id: 'id',
     },
     {
-      name: 'fullName',
+      name: 'name',
       label: 'Name',
       options: {
         filter: true
       },
       type: 'Text',
       required: false,
-      id: 'fullName',
+      id: 'name',
     },
     {
-      name: 'uname',
-      label: 'Username',
+      name: 'contactName',
+      label: 'Contact Name',
       options: {
         filter: false,
         sort: false
       },
       type: 'Text',
       required: true,
-      id: 'uname',
+      id: 'contactName',
     },
     {
-      name: 'password',
-      label: 'Password',
+      name: 'contactMobile',
+      label: 'Mobile',
       options: {
         filter: true,
         sort: false
       },
-      type: 'Password',
+      type: 'Text',
       required: true,
-      id: 'password',
+      id: 'contactMobile',
     },
     {
-      name: 'role',
-      label: 'Role',
+      name: 'contactTelephone',
+      label: 'Telephone',
       options: {
         filter: true
       },
       type: 'Text',
       required: true,
-      id: 'role',
+      id: 'contactTelephone',
     },
     {
-      name: 'email',
+      name: 'contactEmail',
       label: 'Email',
       options: {
         filter: true
       },
       type: 'Email',
       required: true,
-      id: 'email',
+      id: 'contactEmail',
     },
     {
-      name: 'isAdmin',
-      label: 'Administrator',
+      name: 'contactDesignation',
+      label: 'Contact Designation',
+      options: {
+        filter: true,
+      },
+      type: 'Text',
+      required: false,
+      id: 'contactDesignation',
+    },
+    {
+      name: 'address',
+      label: 'Address',
+      options: {
+        filter: false,
+        display: 'excluded',
+      },
+      type: 'TextArea',
+      required: false,
+      id: 'address',
+    },
+    {
+      name: 'created',
+      id: 'created',
+      reference: { id: 'createdBy', name: 'createdBy' },
+      label: 'Created By',
       options: {
         filter: true,
         customBodyRender: (value) => {
-          return <div>{value ? 'True' : 'False'}</div>;
+          return value.fullName;
         }
       },
-      type: 'Switch',
+      type: 'Lookup',
       required: false,
-      id: 'isAdmin',
-      data: [
-        { label: '', value: '1' }
-      ],
+    },
+    {
+      name: 'updated',
+      reference: { id: 'updatedBy', name: 'updatedBy' },
+      label: 'Updated By',
+      options: {
+        filter: true,
+        customBodyRender: (value) => {
+          return value.fullName;
+        }
+      },
+      type: 'Lookup',
+      required: false,
+      id: 'updatedBy',
     },
     {
       name: 'createdAt',

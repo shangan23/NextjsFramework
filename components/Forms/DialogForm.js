@@ -8,25 +8,26 @@ import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
-import DialogContentText from '@material-ui/core/DialogContentText';
+//import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import moduleController from '../../modules/controller';
 import Router from 'next/router';
 import { API } from '../../config';
 import { connect } from 'react-redux';
-import FieldAutocomplete from '../Fields/FieldAutocomplete';
-import FieldCheckbox from '../Fields/FieldCheckbox';
-import FieldDate from '../Fields/FieldDate';
-import FieldRadio from '../Fields/FieldRadio';
-import FieldSelect from '../Fields/FieldSelect';
-import FieldText from '../Fields/FieldText';
-import FieldTextArea from '../Fields/FieldTextArea';
-import FieldTime from '../Fields/FieldTime';
-import FieldEmail from '../Fields/FieldEmail';
-import FieldPassword from '../Fields/FieldPassword';
-import FieldSwitch from '../Fields/FieldSwitch';
-import FieldAutoCompleteSingle from '../Fields/FieldAutocompleteSingle';
-import FieldFile from '../Fields/FieldFile';
+import Autocomplete from '../Fields/Autocomplete';
+import Checkbox from '../Fields/Checkbox';
+import Date from '../Fields/Date';
+import Radio from '../Fields/Radio';
+import Select from '../Fields/Select';
+import Text from '../Fields/Text';
+import TextArea from '../Fields/TextArea';
+import Time from '../Fields/Time';
+import Email from '../Fields/Email';
+import Password from '../Fields/Password';
+import Switch from '../Fields/Switch';
+import AutoCompleteSingle from '../Fields/AutocompleteSingle';
+import File from '../Fields/File';
+import Lookup from '../Fields/Lookup';
 import actions from '../../redux/actions';
 
 const defaultToolbarSelectStyles = {
@@ -70,6 +71,8 @@ class DialogForm extends React.Component {
         },
       }).then((res) => res.json())
         .then((data) => {
+          data.createdBy =  data.created;
+          data.updatedBy =  data.updated;
           this.setState({ modeuleObject: data });
         });
     }
@@ -101,22 +104,22 @@ class DialogForm extends React.Component {
           let type = (fieldsToRender[index]['type']).toString();
           let required = (fieldsToRender[index]['required']);
           switch (type) {
-          case 'Autocomplete':
-            if ((values[name].length == 0) && required)
-              errors[name] = label + ' required';
-            break;
-          case 'Email':
-            if ((!values[name]) && required)
-              errors[name] = label + ' required';
-            else {
-              if (!regex.test(values[name]) && values[name])
-                errors[name] = label + ' invalid';
-            }
-            break;
-          default:
-            if (!values[name] && required)
-              errors[name] = label + ' required';
-            break;
+            case 'Autocomplete':
+              if ((values[name].length == 0) && required)
+                errors[name] = label + ' required';
+              break;
+            case 'Email':
+              if ((!values[name]) && required)
+                errors[name] = label + ' required';
+              else {
+                if (!regex.test(values[name]) && values[name])
+                  errors[name] = label + ' invalid';
+              }
+              break;
+            default:
+              if (!values[name] && required)
+                errors[name] = label + ' required';
+              break;
           }
         }
       }
@@ -125,60 +128,64 @@ class DialogForm extends React.Component {
     };
 
     const renderFields = (
-      <Grid container spacing={2} style={{ margin: 4 }}>
+      <Grid container spacing={2} style={{ margin: 4 }} key={`${this.props.module}-grid-dialog${Math.random()}`}>
         {fieldsToRender.map((data, index) => (
-          <React.Fragment>
+          <React.Fragment key={`${this.props.module}fragment-dialog${Math.random()}`} >
             {(fieldsToRender[index]['type'] == 'Text' && !fieldsToRender[index]['options']['display']) &&
               <Grid item xs={6} md={6} key={index}>
-                <FieldText index={index} fieldsToRender={fieldsToRender} />
+                <Text index={index} fieldsToRender={fieldsToRender} />
               </Grid>
               || (fieldsToRender[index]['type'] == 'Date' && !fieldsToRender[index]['options']['display']) &&
               <Grid item xs={6} md={6} key={index}>
-                <FieldDate index={index} fieldsToRender={fieldsToRender} />
+                <Date index={index} fieldsToRender={fieldsToRender} />
               </Grid>
               || (fieldsToRender[index]['type'] == 'Select' && !fieldsToRender[index]['options']['display']) &&
               <Grid item xs={6} md={6} key={index}>
-                <FieldSelect index={index} fieldsToRender={fieldsToRender} />
+                <Select index={index} fieldsToRender={fieldsToRender} />
               </Grid>
               || (fieldsToRender[index]['type'] == 'Checkbox' && !fieldsToRender[index]['options']['display']) &&
               <Grid item xs={6} md={6} key={index}>
-                <FieldCheckbox index={index} fieldsToRender={fieldsToRender} />
+                <Checkbox index={index} fieldsToRender={fieldsToRender} />
               </Grid>
               || (fieldsToRender[index]['type'] == 'Time' && !fieldsToRender[index]['options']['display']) &&
               <Grid item xs={6} md={6} key={index}>
-                <FieldTime index={index} fieldsToRender={fieldsToRender} />
+                <Time index={index} fieldsToRender={fieldsToRender} />
               </Grid>
               || (fieldsToRender[index]['type'] == 'TextArea' && !fieldsToRender[index]['options']['display']) &&
               <Grid item xs={6} md={6} key={index}>
-                <FieldTextArea index={index} fieldsToRender={fieldsToRender} />
+                <TextArea index={index} fieldsToRender={fieldsToRender} />
               </Grid>
               || (fieldsToRender[index]['type'] == 'Radio' && !fieldsToRender[index]['options']['display']) &&
               <Grid item xs={6} md={6} key={index}>
-                <FieldRadio index={index} fieldsToRender={fieldsToRender} />
+                <Radio index={index} fieldsToRender={fieldsToRender} />
               </Grid>
               || (fieldsToRender[index]['type'] == 'Autocomplete' && !fieldsToRender[index]['options']['display']) &&
               <Grid item xs={6} md={6} key={index}>
-                <FieldAutocomplete index={index} fieldsToRender={fieldsToRender} />
+                <Autocomplete index={index} fieldsToRender={fieldsToRender} />
               </Grid>
               || (fieldsToRender[index]['type'] == 'Email' && !fieldsToRender[index]['options']['display']) &&
               <Grid item xs={6} md={6} key={index}>
-                <FieldEmail index={index} fieldsToRender={fieldsToRender} />
+                <Email index={index} fieldsToRender={fieldsToRender} />
               </Grid>
               || (fieldsToRender[index]['type'] == 'Password' && !fieldsToRender[index]['options']['display']) &&
               <Grid item xs={6} md={6} key={index}>
-                <FieldPassword index={index} fieldsToRender={fieldsToRender} />
+                <Password index={index} fieldsToRender={fieldsToRender} />
               </Grid>
               || (fieldsToRender[index]['type'] == 'Switch' && !fieldsToRender[index]['options']['display']) &&
               <Grid item xs={6} md={6} key={index}>
-                <FieldSwitch index={index} fieldsToRender={fieldsToRender} />
+                <Switch index={index} fieldsToRender={fieldsToRender} />
               </Grid>
               || (fieldsToRender[index]['type'] == 'AutocompleteSingle' && !fieldsToRender[index]['options']['display']) &&
               <Grid item xs={6} md={6} key={index}>
-                <FieldAutoCompleteSingle index={index} fieldsToRender={fieldsToRender} />
+                <AutoCompleteSingle index={index} fieldsToRender={fieldsToRender} />
               </Grid>
               || (fieldsToRender[index]['type'] == 'Upload' && !fieldsToRender[index]['options']['display']) &&
               <Grid item xs={6} md={6} key={index}>
-                <FieldFile index={index} fieldsToRender={fieldsToRender} onFileUpload={onFileUpload} />
+                <File index={index} fieldsToRender={fieldsToRender} onFileUpload={onFileUpload} />
+              </Grid>
+              || (fieldsToRender[index]['type'] == 'Lookup' && !fieldsToRender[index]['options']['display']) &&
+              <Grid item xs={6} md={6} key={index}>
+                <Lookup index={index} fieldsToRender={fieldsToRender} />
               </Grid>
             }
           </React.Fragment>
@@ -225,6 +232,7 @@ class DialogForm extends React.Component {
     };
 
     const dialogTitle = (this.props.action == 'new') ? `Add New ${this.props.module}` : `Edit ${this.props.module}`;
+    console.log('modeuleObject', this.state.modeuleObject);
 
     const formDialog = (
       <Dialog
@@ -234,26 +242,17 @@ class DialogForm extends React.Component {
         onClose={this.props.onClose}
         aria-labelledby="alert-dialog-title"
         aria-describedby="alert-dialog-description"
-      >
+      ><DialogTitle className={classes.dialogTitleBg} id="alert-dialog-title">{dialogTitle}</DialogTitle>
         <Form
-          onSubmit={onSubmitForm} style={{ marginTop: 16 }}
+          onSubmit={onSubmitForm}
           initialValues={this.state.submittedValues ? this.state.submittedValues : this.state.modeuleObject}
           validate={validate}
           render={({ handleSubmit }) => (
             <form onSubmit={handleSubmit} noValidate>
-              <DialogTitle className={classes.dialogTitleBg} id="alert-dialog-title">{dialogTitle}</DialogTitle>
               <DialogContent>
-                <DialogContentText id="alert-dialog-description">
-                  <Grid container alignItems="flex-end" spacing={1}>
-                    {renderFields}
-                    <Grid container
-                      direction="row"
-                      justify="flex-end"
-                      alignItems="flex-end"
-                      item style={{ marginTop: 16 }}>
-                    </Grid>
-                  </Grid>
-                </DialogContentText>
+                <Grid container alignItems="flex-end" spacing={1}>
+                  {renderFields}
+                </Grid>
               </DialogContent>
               <DialogActions className={classes.dialogActionBg}>
                 <Button id="cancel" onClick={handleCancelAction} color="secondary">

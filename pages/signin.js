@@ -24,18 +24,26 @@ class Signin extends React.Component {
     };
     const fields = [
       {
-        'type': 'Text',
-        'required': true,
-        'id': 'uname',
-        'label': 'User Name',
-        'name': 'uname'
+        name: 'uname',
+        label: 'Username',
+        options: {
+          filter: false,
+          sort: false
+        },
+        type: 'Text',
+        required: true,
+        id: 'uname',
       },
       {
-        'type': 'Password',
-        'required': true,
-        'id': 'password',
-        'name': 'password',
-        'label': 'Password'
+        name: 'password',
+        label: 'Password',
+        options: {
+          filter: true,
+          sort: false
+        },
+        type: 'Password',
+        required: true,
+        id: 'password',
       }
     ];
 

@@ -1,4 +1,4 @@
-import { Provider} from 'react-redux';
+import { Provider } from 'react-redux';
 import App from 'next/app';
 import withRedux from 'next-redux-wrapper';
 import { initStore } from '../redux';
@@ -9,13 +9,6 @@ import theme from '../theming/redTheme';
 
 export default withRedux(initStore, { debug: false })(
   class MyApp extends App {
-    /*componentDidMount() {
-      // Remove the server-side injected CSS.
-      const jssStyles = document.querySelector('#jss-server-side');
-      if (jssStyles) {
-        jssStyles.parentElement.removeChild(jssStyles);
-      }
-    }*/
     static async getInitialProps({ Component, ctx }) {
       return {
         pageProps: {

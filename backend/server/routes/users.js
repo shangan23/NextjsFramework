@@ -6,18 +6,16 @@ const bucket = '/api/users';
 
 module.exports = function (router) {
     router.get(bucket, (req, res) => {
-
-        let perPage, page;
-        perPage = (req.params.perPage) ? req.params.perPage : 10;
-        page = (req.params.page) ? req.params.perPage : 1;
-        console.log(req);
-        User.findAll({
-            offset: ((page - 1) * perPage),
-            limit: perPage,
+        let limit, page;
+        limit = (req.query.limit && req.query.limit != 'undefined') ? parseInt(req.query.limit) : 10;
+        page = (req.query.page && req.query.page != 'undefined') ? parseInt(req.query.page) : 0;
+        User.findAndCountAll({
+            offset: (page * limit),
+            limit: limit,
             subQuery: false,
             order: [
                 ['id', 'DESC']
-            ]
+            ],
         })
             .then(users => {
                 res.json(users);

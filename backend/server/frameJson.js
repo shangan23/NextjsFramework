@@ -16,7 +16,7 @@ module.exports = (res, method) => {
                 recordMessage = Msg.deleteRecord;
                 break;
         }
-        console.log('recordMessage',recordMessage);
+        //console.log('recordMessage',recordMessage);
         return { httpCode: 200, message: { type: Msg.SUCCESS, message: recordMessage } };
     }
 }

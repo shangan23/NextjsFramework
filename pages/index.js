@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import actions from '../redux/actions';
-import { API } from '../config';
+//import { API } from '../config';
 import Router from 'next/router';
 
 class Index extends React.Component {
@@ -11,29 +11,21 @@ class Index extends React.Component {
   }
 
   componentDidMount() {
-    //console.log('Browser =',whichBrowser);
-    //console.log('---- componentDidMount -----');
-    fetch(`${API}/siteSettings/1`)
+    fetch(`api/settings`)
       .then((res) => res.json())
       .then((data) => {
-        //console.log('---- componentDidMount - data dispatch -----');
         this.props.siteSettings(data);
         this.props.notifications(null);
-        //console.log('---- componentDidMount - propsAction -----', propsAction);
-        //window.addEventListener('load', this.handleLoad);
         window.onload = this.handleLoad();
       });
 
   }
 
   componentWillUnmount() {
-    //console.log('---- componentWillUnmount -----');
-    //window.removeEventListener('load', this.handleLoad);
     window.onload = '';
   }
 
   handleLoad() {
-    //console.log('---- handle load -----');
     if (this.props.isAuthenticated) {
       Router.push('/admin');
     } else {
@@ -42,7 +34,6 @@ class Index extends React.Component {
   }
 
   render() {
-    //console.log('---- render -----');
     return (
       <p>
         Loading ...

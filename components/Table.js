@@ -34,7 +34,7 @@ export default function RespTable(columns, list, module) {
 
   const options = {
     serverSide: true,
-    filter: true,
+    filter: false,
     download: false,
     print: false,
     viewColumns: true,

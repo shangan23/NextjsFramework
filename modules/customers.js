@@ -87,9 +87,9 @@ export default function columns(module, settings) {
       id: 'address',
     },
     {
-      name: 'created',
-      id: 'created',
-      reference: { id: 'createdBy', name: 'createdBy' },
+      name: 'fk_createdBy',
+      id: 'fk_createdBy',
+      //reference: { id: 'createdBy', name: 'createdBy' },
       label: 'Created By',
       options: {
         filter: true,
@@ -98,21 +98,21 @@ export default function columns(module, settings) {
         }
       },
       type: 'Lookup',
-      required: false,
+      required: true,
     },
     {
-      name: 'updated',
-      reference: { id: 'updatedBy', name: 'updatedBy' },
+      name: 'fk_updatedBy',
+      //reference: { id: 'updatedBy', name: 'updatedBy' },
       label: 'Updated By',
       options: {
-        filter: true,
+        filter: false,
         customBodyRender: (value) => {
           return value.fullName;
         }
       },
       type: 'Lookup',
-      required: false,
-      id: 'updatedBy',
+      required: true,
+      id: 'fk_updatedBy',
     },
     {
       name: 'createdAt',

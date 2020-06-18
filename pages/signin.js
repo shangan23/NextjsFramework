@@ -15,7 +15,7 @@ class Signin extends React.Component {
   static getInitialProps(ctx) {
     initialize(ctx);
   }
-
+  
   render() {
     const onSubmit = async values => {
       this.props.authenticate(

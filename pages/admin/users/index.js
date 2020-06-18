@@ -1,6 +1,5 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { API, RecordsPerPage } from '../../../config';
 import Layout from '../../../theming/layouts/isUsers';
 import RespTable from '../../../components/Table';
 import moduleController from '../../../modules/controller';
@@ -15,14 +14,10 @@ class userList extends React.Component {
   static async getInitialProps(ctx) {
     const { query } = ctx;
     let queryParam = '?'
+    let url = (ctx.store.getState().siteSettings.settings.siteURL)?(ctx.store.getState().siteSettings.settings.siteURL):'';
     queryParam += (query.limit) ? `limit=${query.limit}` : '';
     queryParam += (query.page) ? `&page=${query.page}` : '';
-    queryParam = (queryParam == '?') ? `?limit=${RecordsPerPage}` : queryParam;
-    const data = await fetch(`${API}/users${queryParam}`, {
-      headers: {
-        'Authorization': 'Basic ' + ctx.store.getState().authentication.user['token']
-      }
-    });
+    const data = await fetch(`${url}api/app/users${queryParam}`);
     const json = await data.json();
     return { listing: json };
   }
@@ -41,7 +36,6 @@ class userList extends React.Component {
 const mapStateToProps = (state) => (
   {
     siteDetails: state.siteSettings.settings,
-    token: state.authentication.user,
   }
 );
 

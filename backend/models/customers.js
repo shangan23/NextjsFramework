@@ -10,8 +10,8 @@ module.exports = (sequelize, DataTypes) => {
     address: DataTypes.TEXT
   }, {});
   Customers.associate = function (models) {
-    Customers.belongsTo(models.Users, { foreignKey: 'createdBy', as: 'created' });
-    Customers.belongsTo(models.Users, { foreignKey: 'updatedBy', as: 'updated' });
+    Customers.belongsTo(models.Users, { foreignKey: 'createdBy', as: 'fk_createdBy' });
+    Customers.belongsTo(models.Users, { foreignKey: 'updatedBy', as: 'fk_updatedBy' });
   };
   return Customers;
 };

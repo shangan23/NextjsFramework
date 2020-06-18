@@ -40,7 +40,7 @@ class CustomToolbarSelect extends React.Component {
 
   constructor(props) {
     super(props);
-    this.state = { open: false};
+    this.state = { open: false };
   }
 
   render() {
@@ -73,16 +73,11 @@ class CustomToolbarSelect extends React.Component {
 
     const deleteObject = (row) => {
       const objectId = this.props.displayData[row.dataIndex]['data'][0];
-      fetch(`${API}/${this.props.module}/${objectId}`, {
-        method: 'DELETE',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Basic ${this.props.token}`
-        },
+      fetch(`${this.props.siteDetails.siteURL}api/app/${this.props.module}/${objectId}`, {
+        method: 'DELETE'
       })
         .then(response => response.json())
         .then(data => {
-          console.log('data',data);
           this.props.notifications(data);
         });
     };
@@ -91,7 +86,8 @@ class CustomToolbarSelect extends React.Component {
       if (this.props.selectedRows.data.map(deleteObject)) {
         this.setState({ open: false });
         this.props.setSelectedRows([]);
-        Router.push(`/admin/${this.props.module}`);
+        Router.push(Router.pathname);
+        //Router.push(`/admin/${this.props.module}`);
       }
     };
 
@@ -153,8 +149,7 @@ class CustomToolbarSelect extends React.Component {
 
 const mapStateToProps = (state) => (
   {
-    siteDetails: state.siteSettings.settings,
-    token: state.authentication.user.token
+    siteDetails: state.siteSettings.settings
   }
 );
 

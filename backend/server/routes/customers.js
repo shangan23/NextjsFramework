@@ -16,7 +16,7 @@ module.exports = function (router) {
             order: [
                 ['id', 'DESC']
             ],
-            include: ['created', 'updated']
+            include: ['fk_createdBy', 'fk_updatedBy']
         })
             .then(Customers => {
                 res.json(Customers);
@@ -27,7 +27,7 @@ module.exports = function (router) {
     router.get(`${bucket}/:id`, (req, res) => {
         Customers.findAll({
             where: { id: req.params.id },
-            include: ['created', 'updated']
+            include: ['fk_createdBy', 'fk_updatedBy']
         })
             .then(Customers => {
                 res.json(Customers[0]);
@@ -36,6 +36,7 @@ module.exports = function (router) {
     });
 
     router.post(bucket, (req, res) => {
+        console.log('req.body',req.body);
         let response, statusCode;
         Customers.create(req.body)
             .then(Customers => {
@@ -58,10 +59,10 @@ module.exports = function (router) {
                 statusCode = response.httpCode;
                 delete response.httpCode;
                 response.details = Customers;
-                res.status(statusCode).json(response);
+                res.status(statusCode).json(response); 
             }).catch(err => {
                 response = frame(err, req.method);
-                res.status(response.httpCode).json(response);
+              res.status(response.httpCode).json(response);
             });
     });
 

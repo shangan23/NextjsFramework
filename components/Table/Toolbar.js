@@ -35,7 +35,7 @@ class CustomToolbar extends React.Component {
         <React.Fragment>
           <Tooltip title={'Add'}>
             <IconButton className={classes.iconButton} onClick={() => this.handleClick()}>
-              <AddIcon className={classes.deleteIcon} />
+              <AddIcon color='secondary' className={classes.deleteIcon} />
             </IconButton>
           </Tooltip>
         </React.Fragment>
@@ -45,7 +45,7 @@ class CustomToolbar extends React.Component {
         <React.Fragment>
           <Tooltip title={'Add'}>
             <IconButton className={classes.iconButton} onClick={() => this.handleClick()}>
-              <AddIcon className={classes.deleteIcon} />
+              <AddIcon color='secondary' className={classes.deleteIcon} />
             </IconButton>
           </Tooltip>
           <DialogForm module={this.props.module} action="new" isOpen={true} onClose={onClose} />
@@ -56,7 +56,7 @@ class CustomToolbar extends React.Component {
         <React.Fragment>
           <Tooltip title={'Add'}>
             <IconButton className={classes.iconButton} onClick={() => this.handleClick()}>
-              <AddIcon className={classes.deleteIcon} />
+              <AddIcon color='secondary' className={classes.deleteIcon} />
             </IconButton>
           </Tooltip>
           <Snack />

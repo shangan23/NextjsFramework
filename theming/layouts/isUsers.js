@@ -30,7 +30,7 @@ import Snackbar from '@material-ui/core/Snackbar';
 import Alert from '@material-ui/lab/Alert';
 import { NOTIFICATIONS_CLOSE } from '../../redux/types';
 
-const drawerWidth = 150;
+const drawerWidth = 170;
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -49,7 +49,7 @@ const useStyles = makeStyles(theme => ({
       width: `calc(100% - ${drawerWidth}px)`,
       marginLeft: drawerWidth,
     },*/
-    backgroundColor: '#ffffff'
+    //backgroundColor: '#e60000'
   },
   menuButton: {
     marginRight: theme.spacing(2),
@@ -60,7 +60,7 @@ const useStyles = makeStyles(theme => ({
   toolbar: theme.mixins.toolbar,
   drawerPaper: {
     width: drawerWidth,
-    backgroundColor: '#1a73e8'
+    //backgroundColor: '#e60000'
   },
   content: {
     flexGrow: 1,

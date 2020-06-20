@@ -55,8 +55,8 @@ export default function AdminMenu() {
     <div className={classes.spacing}>
       <Tabs
         value={value}
-        indicatorColor="primary"
-        textColor="primary"
+        indicatorColor="secondary"
+        textColor="secondary"
         onChange={handleChange}
       >
         <Tab label="General Settings" />

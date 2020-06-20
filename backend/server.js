@@ -24,6 +24,7 @@ server.use(morgan('dev'));
 require("./server/routes/settings")(server);
 require("./server/routes/users")(server);
 require("./server/routes/customers")(server);
+require("./server/routes/vendors")(server);
 
 //server startup
 server.listen(port, '0.0.0.0', (err) => {

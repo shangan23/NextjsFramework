@@ -7,6 +7,7 @@ import { RecordsPerPage } from '../config';
 import Toolbar from './Table/Toolbar';
 import ToolbarSelectRows from './Table/ToolbarSelectRows';
 import Router from 'next/router';
+import Typography from '@material-ui/core/Typography';
 
 const useStyles = makeStyles((theme) => ({
   empty: {
@@ -47,7 +48,7 @@ export default function RespTable(columns, list, module) {
     rowsPerPageOptions: [5, 10, 15],
     fixedHeader: true,
     displayMode: 'vertical',
-    tableBodyHeight: '475px',
+    tableBodyHeight: '100%',
     onChangePage: (currentPage) => {
       let page = (Router.router.query.limit) ? `?limit=${Router.router.query.limit}&page=${currentPage}` : `?limit=${RecordsPerPage}&page=${currentPage}`;
       Router.push(`${Router.router.route}${page}`);
@@ -78,7 +79,8 @@ export default function RespTable(columns, list, module) {
   return (<Box width="100%">
     <MuiThemeProvider classNames={classes.empty} theme={getMuiTheme()}>
       <MUIDataTable
-        title={module}
+        elevation={2}
+        title={<Typography color='primary' variant="h6"> {module.toUpperCase()} </Typography>}
         data={list}
         columns={columns}
         options={options}
@@ -86,6 +88,8 @@ export default function RespTable(columns, list, module) {
       /></MuiThemeProvider>
   </Box>);
 }
+
+
 
 
 

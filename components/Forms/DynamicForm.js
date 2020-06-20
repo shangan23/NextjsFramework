@@ -3,7 +3,6 @@ import {
   Grid, Button
 } from '@material-ui/core';
 import React from 'react';
-import Paper from '@material-ui/core/Paper';
 import Autocomplete from '../Fields/Autocomplete';
 import Checkbox from '../Fields/Checkbox';
 import Date from '../Fields/Date';
@@ -60,64 +59,65 @@ export default function DynamicForm({ fieldsToRender, onSubmit, buttonCancelText
     return errors;
   };
 
+  //&& fieldsToRender[index]['options']['display']== null
   const renderFields = (
     <Grid container spacing={2} style={{ margin: 4 }} key={`grid-form${Math.random()}`}>
       {fieldsToRender.map((data, index) => (
         <React.Fragment key={`layout-frag${Math.random()}`}>
-          {(fieldsToRender[index]['type'] == 'Text' && !fieldsToRender[index]['options']['display']) &&
-            <Grid item xs={6} md={6} key={index}>
+          {(fieldsToRender[index]['type'] == 'Text') &&
+            <Grid item xs={12} md={12} key={index}> 
               <Text index={index} fieldsToRender={fieldsToRender} />
             </Grid>
-            || (fieldsToRender[index]['type'] == 'Date' && !fieldsToRender[index]['options']['display']) &&
-            <Grid item xs={6} md={6} key={index}>
+            || (fieldsToRender[index]['type'] == 'Date') &&
+            <Grid item xs={12} md={12} key={index}>
               <Date index={index} fieldsToRender={fieldsToRender} />
             </Grid>
-            || (fieldsToRender[index]['type'] == 'Select' && !fieldsToRender[index]['options']['display']) &&
-            <Grid item xs={6} md={6} key={index}>
+            || (fieldsToRender[index]['type'] == 'Select') &&
+            <Grid item xs={12} md={12} key={index}>
               <Select index={index} fieldsToRender={fieldsToRender} />
             </Grid>
-            || (fieldsToRender[index]['type'] == 'Checkbox' && !fieldsToRender[index]['options']['display']) &&
-            <Grid item xs={6} md={6} key={index}>
+            || (fieldsToRender[index]['type'] == 'Checkbox') &&
+            <Grid item xs={12} md={12} key={index}>
               <Checkbox index={index} fieldsToRender={fieldsToRender} />
             </Grid>
-            || (fieldsToRender[index]['type'] == 'Time' && !fieldsToRender[index]['options']['display']) &&
-            <Grid item xs={6} md={6} key={index}>
+            || (fieldsToRender[index]['type'] == 'Time') &&
+            <Grid item xs={12} md={12} key={index}>
               <Time index={index} fieldsToRender={fieldsToRender} />
             </Grid>
-            || (fieldsToRender[index]['type'] == 'TextArea' && !fieldsToRender[index]['options']['display']) &&
-            <Grid item xs={6} md={6} key={index}>
+            || (fieldsToRender[index]['type'] == 'TextArea') &&
+            <Grid item xs={12} md={12} key={index}>
               <TextArea index={index} fieldsToRender={fieldsToRender} />
             </Grid>
-            || (fieldsToRender[index]['type'] == 'Radio' && !fieldsToRender[index]['options']['display']) &&
-            <Grid item xs={6} md={6} key={index}>
+            || (fieldsToRender[index]['type'] == 'Radio') &&
+            <Grid item xs={12} md={12} key={index}>
               <Radio index={index} fieldsToRender={fieldsToRender} />
             </Grid>
-            || (fieldsToRender[index]['type'] == 'Autocomplete' && !fieldsToRender[index]['options']['display']) &&
-            <Grid item xs={6} md={6} key={index}>
+            || (fieldsToRender[index]['type'] == 'Autocomplete') &&
+            <Grid item xs={12} md={12} key={index}>
               <Autocomplete index={index} fieldsToRender={fieldsToRender} />
             </Grid>
-            || (fieldsToRender[index]['type'] == 'Email' && !fieldsToRender[index]['options']['display']) &&
-            <Grid item xs={6} md={6} key={index}>
+            || (fieldsToRender[index]['type'] == 'Email') &&
+            <Grid item xs={12} md={12} key={index}>
               <Email index={index} fieldsToRender={fieldsToRender} />
             </Grid>
-            || (fieldsToRender[index]['type'] == 'Password' && !fieldsToRender[index]['options']['display']) &&
-            <Grid item xs={6} md={6} key={index}>
+            || (fieldsToRender[index]['type'] == 'Password') &&
+            <Grid item xs={12} md={12} key={index}>
               <Password index={index} fieldsToRender={fieldsToRender} />
             </Grid>
-            || (fieldsToRender[index]['type'] == 'Switch' && !fieldsToRender[index]['options']['display']) &&
-            <Grid item xs={6} md={6} key={index}>
+            || (fieldsToRender[index]['type'] == 'Switch') &&
+            <Grid item xs={12} md={12} key={index}>
               <Switch index={index} fieldsToRender={fieldsToRender} />
             </Grid>
-            || (fieldsToRender[index]['type'] == 'AutocompleteSingle' && !fieldsToRender[index]['options']['display']) &&
-            <Grid item xs={6} md={6} key={index}>
+            || (fieldsToRender[index]['type'] == 'AutocompleteSingle') &&
+            <Grid item xs={12} md={12} key={index}>
               <AutoCompleteSingle index={index} fieldsToRender={fieldsToRender} />
             </Grid>
-            || (fieldsToRender[index]['type'] == 'Upload' && !fieldsToRender[index]['options']['display']) &&
-            <Grid item xs={6} md={6} key={index}>
+            || (fieldsToRender[index]['type'] == 'Upload') &&
+            <Grid item xs={12} md={12} key={index}>
               <File index={index} fieldsToRender={fieldsToRender} onFileUpload={onFileUpload} />
             </Grid>
-            || (fieldsToRender[index]['type'] == 'Lookup' && !fieldsToRender[index]['options']['display']) &&
-            <Grid item xs={6} md={6} key={index}>
+            || (fieldsToRender[index]['type'] == 'Lookup') &&
+            <Grid item xs={12} md={12} key={index}>
               <Lookup index={index} fieldsToRender={fieldsToRender} />
             </Grid>
           }
@@ -128,20 +128,16 @@ export default function DynamicForm({ fieldsToRender, onSubmit, buttonCancelText
 
   return (
     <div>
-      <Paper elevation={1} style={{ padding: 5 }}>
-        <Form
-          onSubmit={onSubmitForm} style={{ marginTop: 16 }}
-          initialValues={submittedValues ? submittedValues : defaultValue}
-          validate={validate}
-          render={({ handleSubmit, reset, submitting, pristine }) => (
-            <form onSubmit={handleSubmit} noValidate>
-              <Grid container alignItems="flex-end" spacing={1}>
-                {renderFields}
-                <Grid container
-                  direction="row"
-                  justify="flex-end"
-                  alignItems="flex-end"
-                  item style={{ marginTop: 16 }}>
+      <Form
+        onSubmit={onSubmitForm} style={{ marginTop: 16 }}
+        initialValues={submittedValues ? submittedValues : defaultValue}
+        validate={validate}
+        render={({ handleSubmit, reset, submitting, pristine }) => (
+          <form onSubmit={handleSubmit} noValidate>
+            <Grid container alignItems="flex-end" spacing={1}>
+              {renderFields}
+              <Grid container alignItems="flex-end" justify="flex-end" spacing={2}>
+                <Grid container item xs={3} md={3}>
                   <Button
                     type="button"
                     size="small"
@@ -151,6 +147,8 @@ export default function DynamicForm({ fieldsToRender, onSubmit, buttonCancelText
                   >
                     {buttonCancelText}
                   </Button>
+                </Grid>
+                <Grid container item xs={3} md={3}>
                   <Button
                     variant="contained"
                     size="small"
@@ -162,10 +160,10 @@ export default function DynamicForm({ fieldsToRender, onSubmit, buttonCancelText
                   </Button>
                 </Grid>
               </Grid>
-            </form>
-          )}
-        />
-      </Paper>
+            </Grid>
+          </form>
+        )}
+      />
     </div>
   );
 }

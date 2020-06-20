@@ -48,7 +48,8 @@ export const set = handler => {
         if (getCookie('user', req)) {
             user = getCookie('user', req);
             cleanUser = unescape(user);
-            cleanUser = JSON.parse(cleanUser);
+            //cleanUser = JSON.parse(cleanUser);
+            console.log(user);
             req.headers['Authorization'] = `Basic ${cleanUser.token}`;
         }
 
@@ -56,4 +57,3 @@ export const set = handler => {
         return handler(req, res);
     }
 }
-

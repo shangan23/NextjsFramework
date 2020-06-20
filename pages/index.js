@@ -11,7 +11,7 @@ class Index extends React.Component {
   }
 
   componentDidMount() {
-    fetch(`api/settings`)
+    fetch('api/settings')
       .then((res) => res.json())
       .then((data) => {
         this.props.siteSettings(data);

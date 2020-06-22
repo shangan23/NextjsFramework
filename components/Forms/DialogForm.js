@@ -238,6 +238,7 @@ class DialogForm extends React.Component {
 
     const formDialog = (
       <Dialog
+        //fullScreen
         disableBackdropClick
         disableEscapeKeyDown
         open={this.state.open}

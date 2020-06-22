@@ -35,7 +35,7 @@ export default function RespTable(columns, list, module) {
 
   const options = {
     serverSide: true,
-    filter: false,
+    filter: true,
     download: false,
     print: false,
     viewColumns: true,
@@ -79,12 +79,11 @@ export default function RespTable(columns, list, module) {
   return (<Box width="100%">
     <MuiThemeProvider classNames={classes.empty} theme={getMuiTheme()}>
       <MUIDataTable
-        elevation={2}
+        elevation={0}
         title={<Typography color='primary' variant="h6"> {module.toUpperCase()} </Typography>}
         data={list}
         columns={columns}
         options={options}
-        height="100%"
       /></MuiThemeProvider>
   </Box>);
 }

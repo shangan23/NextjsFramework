@@ -5,7 +5,7 @@ const get = (req, res) => {
 
     const headers = {
         'x-api-key': req.headers['x-api-key'],
-        'Content-Type': 'application/json',
+        //'Content-Type': 'application/json',
     }
 
     if (req.headers['Authorization'])
@@ -21,6 +21,9 @@ const get = (req, res) => {
             parameters += (query.limit) ? `limit=${query.limit}` : '';
             parameters += (query.page) ? `&page=${query.page}` : '';
             parameters = (parameters == '?') ? `?limit=${RecordsPerPage}` : parameters;
+
+            console.log(req.headers);
+
             fetch(`${API}/${query.appId}${parameters}`, { headers })
                 .then((res) => res.json())
                 .then((data) => {

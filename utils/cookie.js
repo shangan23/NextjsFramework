@@ -40,5 +40,5 @@ const getCookieFromServer = (key, req) => {
   if (!rawCookie) {
     return undefined;
   }
-  return rawCookie.split('=')[1];
+  return rawCookie.replace(`${key}=`, '');
 };

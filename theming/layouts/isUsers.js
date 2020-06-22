@@ -23,12 +23,14 @@ import { connect, useDispatch } from 'react-redux';
 import actions from '../../redux/actions';
 import Signin from '../../pages/signin';
 import Footer from '../../components/Footer';
+import PageHeader from '../../components/PageHeader';
 import Router from 'next/router';
 import { IMGPath } from '../../config';
 import AdminMenu from '../../components/Menus/Admin';
 import Snackbar from '@material-ui/core/Snackbar';
-import Alert from '@material-ui/lab/Alert';
+import { Alert, AlertTitle } from '@material-ui/lab';
 import { NOTIFICATIONS_CLOSE } from '../../redux/types';
+import PageLoader from '../../components/PageLoader';
 
 const drawerWidth = 170;
 
@@ -45,6 +47,8 @@ const useStyles = makeStyles(theme => ({
   },
   appBar: {
     zIndex: theme.zIndex.drawer + 1,
+    top: 2
+    //height: theme.spacing(2)
     /*[theme.breakpoints.up('sm')]: {
       width: `calc(100% - ${drawerWidth}px)`,
       marginLeft: drawerWidth,
@@ -64,8 +68,9 @@ const useStyles = makeStyles(theme => ({
   },
   content: {
     flexGrow: 1,
+    marginTop: theme.spacing(4),
     padding: theme.spacing(0.9),
-    marginBottom:theme.spacing(5)
+    marginBottom: theme.spacing(5)
   },
   grow: {
     flexGrow: 1,
@@ -136,7 +141,7 @@ function Layout({ children, title, deauthenticate, container, isAuthenticated, s
   }
 
   const dispatch = useDispatch();
-  
+
   const classes = useStyles();
   const theme = useTheme();
   const [mobileOpen, setMobileOpen] = React.useState(false);
@@ -237,7 +242,7 @@ function Layout({ children, title, deauthenticate, container, isAuthenticated, s
     </Menu>
   );
 
-
+  //<img src={siteLogo} alt={siteDetails.title} height="40" width="125"></img>
   return (
     <div className={classes.root}>
       <Head>
@@ -246,7 +251,8 @@ function Layout({ children, title, deauthenticate, container, isAuthenticated, s
         <meta name="viewport" content="initial-scale=1.0, width=device-width" />
       </Head>
       <CssBaseline />
-      <AppBar position="fixed" className={classes.appBar}>
+      <PageLoader />
+      <AppBar elevation={0} position="fixed" className={classes.appBar}>
         <Toolbar>
           <IconButton
             color="default"
@@ -257,7 +263,7 @@ function Layout({ children, title, deauthenticate, container, isAuthenticated, s
           >
             <MenuIcon />
           </IconButton>
-          <img src={siteLogo} alt={siteDetails.title} height="40" width="125"></img>
+          <Typography variant="h5">{siteDetails.title}</Typography>
           <div className={classes.grow}>
             {adminMenu}
           </div>
@@ -302,12 +308,11 @@ function Layout({ children, title, deauthenticate, container, isAuthenticated, s
               <Avatar>{isAuthenticated.details.fullName.slice(0, 1)}</Avatar>
             </IconButton>
           </div>
-
         </Toolbar>
       </AppBar>
       {renderMobileMenu}
       {renderMenu}
-      <nav style={{ backgroundColor: 'red' }} className={classes.drawer} aria-label="mailbox folders">
+      <nav elevation={0} className={classes.drawer}>
         {/* The implementation can be swapped with js to avoid SEO duplication of links. */}
         <Hidden smUp implementation="css">
           <Drawer
@@ -339,15 +344,19 @@ function Layout({ children, title, deauthenticate, container, isAuthenticated, s
         </Hidden>
       </nav>
       <main className={classes.content}>
+        <PageHeader pageHeader={title} />
         <div className={classes.toolbar} />
         {children}
         <Snackbar
           autoHideDuration={4000}
-          anchorOrigin={{ vertical: 'bottom', horizontal: 'left' }}
-          open={isNotified?true:false}
+          anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
+          open={isNotified ? true : false}
           onClose={handleSnackClose}
         >
-          <Alert variant="filled" severity={isNotified ? isNotified.type : 'info'}>{isNotified ? isNotified.message : 'test'}</Alert>
+          <Alert severity={isNotified ? isNotified.type : 'info'}>
+            <AlertTitle><Typography variant="overline">{isNotified ? isNotified.type : 'info'}</Typography></AlertTitle>
+            <Typography variant="body2">{isNotified ? isNotified.message : 'test'}</Typography>
+          </Alert>
         </Snackbar>
       </main>
       <Footer footerText={siteDetails.footer} />

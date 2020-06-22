@@ -8,7 +8,7 @@ export const check = handler => {
         switch (req.method) {
             case 'PUT':
             case 'POST':
-                console.log('req.body',req.body);
+                console.log('req.body', req.body);
                 req.body = helper(req.body);
                 break;
         }
@@ -29,7 +29,7 @@ export const helper = (data) => {
 }
 
 export const set = handler => {
-    let tenant, host, user, cleanUser;
+    let tenant, host, user, cleanUser, x, txt;
     return (req, res) => {
 
         //Tenant header
@@ -44,13 +44,27 @@ export const set = handler => {
                 break;
         }
 
-        //Authorization header
+        //Authorization header from Cookie
         if (getCookie('user', req)) {
             user = getCookie('user', req);
             cleanUser = unescape(user);
-            //cleanUser = JSON.parse(cleanUser);
-            console.log(user);
+            cleanUser = JSON.parse(cleanUser);
+            console.log('cleanUser', cleanUser)
             req.headers['Authorization'] = `Basic ${cleanUser.token}`;
+        }
+
+        //'user-agent': 'node-fetch/1.0 (+https://github.com/bitinn/node-fetch)',
+        if (req.headers['user-agent'] === 'node-fetch/1.0 (+https://github.com/bitinn/node-fetch)') {
+            if (req.headers.authorization) {
+                req.headers['Authorization'] = req.headers['authorization'];
+                delete req.headers['authorization'];
+            }
+
+            if (req.headers['content-type']) {
+                req.headers['Content-Type'] = req.headers['content-type'];
+                delete req.headers['content-type'];
+            }
+           // console.log('req.headers[Authorization]', req.headers);
         }
 
         req.headers['x-api-key'] = tenant;

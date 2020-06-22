@@ -7,7 +7,6 @@ import SimpleCard from '../components/Widgets/Card';
 import CountCard from '../components/Widgets/CountCard';
 import ImgMediaCard from '../components/Widgets/MediaCard';
 import { Grid } from '@material-ui/core';
-import Paper from '@material-ui/core/Paper';
 
 const Dashboard = () => (
   <Layout title="Dashboard" actions="dashlets">

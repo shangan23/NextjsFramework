@@ -9,15 +9,23 @@ import AppsSharpIcon from '@material-ui/icons/AppsSharp';
 
 const useStyles = makeStyles((theme) => ({
   countCard: {
-    height: theme.spacing(12),
+    height: theme.spacing(8),
   },
   count: {
     float: 'left',
-    width: theme.spacing(25),
-    padding: theme.spacing(1),
+     paddingLeft:theme.spacing(1),
+    [theme.breakpoints.up('sm')]: {
+      width: theme.spacing(10),
+    },
+    [theme.breakpoints.up('xs')]: {
+      width: theme.spacing(34),
+    },
+    [theme.breakpoints.up('md')]: {
+      width: theme.spacing(30),
+    },
   },
   icon: {
-    marginTop: theme.spacing(1),
+    //marginTop: theme.spacing(1),
   },
   avatatIcon: {
     // width: theme.spacing(7),
@@ -33,46 +41,46 @@ export default function CountCard({ type }) {
 
   switch (type) {
     case 'users':
-      paperCount = <Paper className={classes.countCard} elevation={0}>
+      paperCount = <Paper className={classes.countCard} elevation={0} variant="outlined">
         <div className={classes.count}>
           <Typography color="secondary"  variant="h6">105</Typography>
           <Typography color="primary" variant="overline">Users</Typography>
         </div>
         <div className={classes.icon}>
-          <AccountBoxIcon color="primary" style={{ fontSize: 80 }} />
+          <AccountBoxIcon color="primary" style={{ fontSize: 50 }} />
         </div>
       </Paper>;
       break;
     case 'spares':
-      paperCount = <Paper className={classes.countCard} elevation={0}>
+      paperCount = <Paper className={classes.countCard} elevation={0} variant="outlined">
         <div className={classes.count}>
           <Typography color="secondary"  variant="h6">105</Typography>
           <Typography color="primary" variant="overline">Spares</Typography>
         </div>
         <div className={classes.icon}>
-          <Icon color="primary" className="fas fa-cogs" style={{ fontSize: 80 }} />
+          <Icon color="primary" className="fas fa-cogs" style={{ fontSize: 50 }} />
         </div>
       </Paper>;
       break;
     case 'products':
-      paperCount = <Paper className={classes.countCard} elevation={0}>
+      paperCount = <Paper className={classes.countCard} elevation={0} variant="outlined">
         <div className={classes.count}>
           <Typography color="secondary"  variant="h6">105</Typography>
           <Typography color="primary" variant="overline">Products</Typography>
         </div>
         <div className={classes.icon}>
-          <AppsSharpIcon color="primary" style={{ fontSize: 80 }} />
+          <AppsSharpIcon color="primary" style={{ fontSize: 50 }} />
         </div>
       </Paper>;
       break;
     case 'specifications':
-      paperCount = <Paper className={classes.countCard} elevation={0}>
+      paperCount = <Paper className={classes.countCard} elevation={0} variant="outlined">
         <div className={classes.count}>
           <Typography color="secondary" variant="h6">105</Typography>
           <Typography color="primary" variant="overline">Specifications</Typography>
         </div>
         <div className={classes.icon}>
-          <AccountTreeIcon color="primary" style={{ fontSize: 80 }} />
+          <AccountTreeIcon color="primary" style={{ fontSize: 50 }} />
         </div>
       </Paper>;
       break;

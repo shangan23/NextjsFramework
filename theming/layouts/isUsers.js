@@ -31,6 +31,7 @@ import Snackbar from '@material-ui/core/Snackbar';
 import { Alert, AlertTitle } from '@material-ui/lab';
 import { NOTIFICATIONS_CLOSE } from '../../redux/types';
 import PageLoader from '../../components/PageLoader';
+import { deepOrange, deepPurple } from '@material-ui/core/colors';
 
 const drawerWidth = 170;
 
@@ -68,8 +69,9 @@ const useStyles = makeStyles(theme => ({
   },
   content: {
     flexGrow: 1,
-    marginTop: theme.spacing(4),
-    padding: theme.spacing(0.9),
+    marginTop: theme.spacing(5),
+    paddingTop: theme.spacing(1.8),
+    padding: theme.spacing(1),
     marginBottom: theme.spacing(5)
   },
   grow: {
@@ -130,7 +132,15 @@ const useStyles = makeStyles(theme => ({
   },
   divider: {
     margin: theme.spacing(0.5),
-    backgroundColor: '#f7f7f7',
+    //backgroundColor: '#f7f7f7',
+  },
+  orange: {
+    color: theme.palette.getContrastText(deepOrange[500]),
+    backgroundColor: deepOrange[500],
+  },
+  purple: {
+    color: theme.palette.getContrastText(deepPurple[500]),
+    backgroundColor: deepPurple[500],
   },
 }));
 
@@ -284,7 +294,7 @@ function Layout({ children, title, deauthenticate, container, isAuthenticated, s
               onClick={handleProfileMenuOpen}
               color="inherit"
             >
-              <Avatar>{nameInLetter}</Avatar>
+              <Avatar className={classes.orange}>{nameInLetter}</Avatar>
             </IconButton>
           </div>
           <div className={classes.sectionMobile}>

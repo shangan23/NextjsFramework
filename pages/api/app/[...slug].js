@@ -23,6 +23,8 @@ const get = (req, res) => {
                     //res.status(200).json(helper(data))
                     res.status(200).json(data)
                     res.end();
+                }).catch(error => {
+                    console.log(error);
                 });
             break;
         case 'PUT':
@@ -31,6 +33,8 @@ const get = (req, res) => {
                 .then((data) => {
                     res.status(200).json(data)
                     res.end();
+                }).catch(error => {
+                    console.log(error);
                 });
             break;
         case 'DELETE':
@@ -39,7 +43,9 @@ const get = (req, res) => {
                 .then((data) => {
                     res.status(200).json(data)
                     res.end();
-                });
+                }).catch(error => {
+                    console.log(error);
+                });     
             break;
     }
 

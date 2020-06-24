@@ -77,7 +77,7 @@ export default function RespTable(columns, list, module) {
     }
   };
   return (<Box width="100%">
-    <MuiThemeProvider classNames={classes.empty} theme={getMuiTheme()}>
+    <MuiThemeProvider theme={getMuiTheme()}>
       <MUIDataTable
         elevation={0}
         title={<Typography color='primary' variant="h6"> {module.toUpperCase()} </Typography>}

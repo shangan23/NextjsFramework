@@ -1,7 +1,6 @@
 import React from 'react';
 import { loadCSS } from 'fg-loadcss';
 import Divider from '@material-ui/core/Divider';
-
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
@@ -25,7 +24,7 @@ const useStyles = makeStyles(theme => ({
     marginLeft: theme.spacing(-3),
     fontSize: '0.70rem'
   },
-  icon:{
+  icon: {
     fontSize: '1.4em'
   },
   active: {
@@ -62,16 +61,16 @@ function SideMenu({ display }) {
   let routerActive = (router.pathname).split('/');
 
   switch (routerActive.length) {
-  case 2:
-    active = routerActive[1];
-    break;
-  case 3:
-    active = routerActive[2];
-    break;
-  case 4:
-    active = routerActive[2];
-    subActive = routerActive[3];
-    break;
+    case 2:
+      active = routerActive[1];
+      break;
+    case 3:
+      active = routerActive[2];
+      break;
+    case 4:
+      active = routerActive[2];
+      subActive = routerActive[3];
+      break;
   }
 
   const [expanded, setExpanded] = React.useState({ clicked: active });
@@ -81,33 +80,34 @@ function SideMenu({ display }) {
   const menuList = [{
     'name': 'Dashboard',
     'link': '/dashboard',
-    'icon': <DashboardIcon color={(active == 'orders') ? classes.active : 'secondary'} className={(active == 'dashboard') ? classes.active : ''} />,
+    'icon': <DashboardIcon color={(active == 'dashboard') ? 'secondary' : 'primary'} className={(active == 'dashboard') ? classes.active : ''} />,
     'id': 'dashboard',
     'menus': []
   }, {
     'name': 'Customers',
     'link': '/app/customers',
-    'icon': <Icon color={(active == 'orders') ? classes.active : 'secondary'} className={(active == 'customers') ? `${classes.activeIconText} fa fa-address-card icon` : `${classes.icon} fa fa-address-card`} />,
+    'icon': <Icon color={(active == 'customers') ? 'secondary' : 'primary'} className={(active == 'customers') ? `${classes.activeIconText} fa fa-address-card icon` : `${classes.icon} fa fa-address-card`} />,
     'id': 'customers',
     'menus': []
   }, {
     'name': 'Vendors',
     'link': '/app/vendors',
-    'icon': <RecentActorsIcon color={(active == 'orders') ? classes.active : 'secondary'} className={(active == 'vendors') ? classes.active : ''} />,
+    'icon': <RecentActorsIcon color={(active == 'vendors') ? 'secondary' : 'primary'} className={(active == 'vendors') ? classes.active : ''} />,
     'id': 'vendors',
     'menus': []
   }, {
-    'name': 'Products',
-    'link': '/app/products',
-    'icon': <AppsIcon color={(active == 'orders') ? classes.active : 'secondary'} className={(active == 'products') ? classes.active : ''} />,
+    'name': 'Items',
+    'link': '',
+    'icon': <AppsIcon color={(active == 'products') ? 'secondary' : 'primary'} className={(active == 'products') ? classes.active : ''} />,
     'id': 'products',
     'menus': [
-      { 'name': 'Items', 'link': '/app/products/items', 'icon': '', 'id': 'items' }
+      { 'name': 'Single', 'link': '/app/products/items', 'icon': '', 'id': 'items' },
+      { 'name': 'Grouped', 'link': '/app/products/groupedItems', 'icon': '', 'id': 'groupedItems' }
     ]
   }, {
     'name': 'Inventory',
     'link': '/app/inventory/stocks',
-    'icon': <Icon color={(active == 'orders') ? classes.active : 'secondary'} className={(active == 'inventory') ? `icon fa fa-pallet ${classes.activeIconText}` : `${classes.icon} fa fa-pallet`} />,
+    'icon': <Icon color={(active == 'inventory') ? 'secondary' : 'primary'} className={(active == 'inventory') ? `icon fa fa-pallet ${classes.activeIconText}` : `${classes.icon} fa fa-pallet`} />,
     'id': 'inventory',
     'menus': [
       { 'name': 'Stocks', 'link': '/app/inventory/stocks', 'icon': '', 'id': 'stocks' },
@@ -116,7 +116,7 @@ function SideMenu({ display }) {
   }, {
     'name': 'Orders',
     'link': '/app/orders',
-    'icon': <AddShoppingCartIcon color={(active == 'orders') ? classes.active : 'secondary'} />,
+    'icon': <AddShoppingCartIcon color={(active == 'orders') ? 'secondary' : 'primary'} />,
     'id': 'orders',
     'menus': []
   }];
@@ -151,15 +151,15 @@ function SideMenu({ display }) {
       <List dense component="nav" >
         {menuList.map((text, index) => (
           <React.Fragment>
-            <ListItem autoFocus dense onClick={(event) => handleRedirection(menuList[index], event)} button key={index} >
+            <ListItem onClick={(event) => handleRedirection(menuList[index], event)} button dense key={index} >
               <ListItemIcon >
                 {menuList[index]['icon']}
               </ListItemIcon>
               <Tooltip title={<Typography variant="overline">{menuList[index]['name']}</Typography>} arrow placement="right-start">
-                <ListItemText primary={<Typography 
-                className={(active == menuList[index]['id']) ? `${classes.activeText} ${classes.label}` : classes.label} 
-                color={(active == menuList[index]['id']) ?'secondary':'primary'}
-                variant="overline">{truncate(menuList[index]['name'])}</Typography>} />
+                <ListItemText primary={<Typography
+                  className={(active == menuList[index]['id']) ? `${classes.activeText} ${classes.label}` : classes.label}
+                  color={(active == menuList[index]['id']) ? 'secondary' : 'primary'}
+                  variant="overline">{truncate(menuList[index]['name'])}</Typography>} />
               </Tooltip>
               {(menuList[index]['menus'].length > 0) ? (expanded.clicked === menuList[index]['id']) ? <ExpandLess /> : <ExpandMore /> : ''}
             </ListItem>
@@ -172,7 +172,7 @@ function SideMenu({ display }) {
                       <ListItemText
                         primary={<Typography
                           className={(subActive == menuList[index]['menus'][subindex]['id']) ? `${classes.active} ${classes.label}` : classes.label}
-                          color={(subActive == menuList[index]['menus'][subindex]['id']) ?'secondary':'primary'}
+                          color={(subActive == menuList[index]['menus'][subindex]['id']) ? 'secondary' : 'primary'}
                           variant="overline">
                           {truncate(menuList[index]['menus'][subindex]['name'], 13)}
                         </Typography>} />

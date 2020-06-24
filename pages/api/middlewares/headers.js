@@ -49,7 +49,6 @@ export const set = handler => {
             user = getCookie('user', req);
             cleanUser = unescape(user);
             cleanUser = JSON.parse(cleanUser);
-            console.log('cleanUser', cleanUser)
             req.headers['Authorization'] = `Basic ${cleanUser.token}`;
         }
 
@@ -64,7 +63,6 @@ export const set = handler => {
                 req.headers['Content-Type'] = req.headers['content-type'];
                 delete req.headers['content-type'];
             }
-           // console.log('req.headers[Authorization]', req.headers);
         }
 
         req.headers['x-api-key'] = tenant;

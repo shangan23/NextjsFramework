@@ -10,6 +10,7 @@ import { Typography } from '@material-ui/core';
 import { Grid } from '@material-ui/core';
 import { withStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
+import Router from 'next/router';
 
 import Avatar from '@material-ui/core/Avatar';
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -17,7 +18,7 @@ import Link from '@material-ui/core/Link';
 import Box from '@material-ui/core/Box';
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 
-function Copyright({text}) {
+function Copyright({ text }) {
   return (
     <Typography variant="body2" color="textSecondary" align="center">
       {text}
@@ -60,11 +61,35 @@ const useStyles = theme => ({
 class Signin extends React.Component {
   constructor(props) {
     super(props);
+    this.handleLoad = this.handleLoad.bind(this);
   }
 
   static getInitialProps(ctx) {
     initialize(ctx);
   }
+
+  componentDidMount() {
+    fetch('api/settings')
+      .then((res) => res.json())
+      .then((data) => {
+        this.props.siteSettings(data);
+        this.props.notifications(null);
+        window.onload = this.handleLoad();
+      });
+
+  }
+
+  componentWillUnmount() {
+    window.onload = '';
+  }
+
+  handleLoad() {
+    if (this.props.isAuthenticated) {
+      Router.push('/dashboard');
+    } 
+  }
+
+
 
   render() {
     const { classes } = this.props;

@@ -27,7 +27,7 @@ class Index extends React.Component {
 
   handleLoad() {
     if (this.props.isAuthenticated) {
-      Router.push('/admin');
+      Router.push('/dashboard');
     } else {
       Router.push('/signin');
     }

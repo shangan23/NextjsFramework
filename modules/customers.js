@@ -7,7 +7,7 @@ export default function columns(module, settings) {
       label: 'ID',
       options: {
         filter: false,
-        display: 'excluded',
+        display: false,
       },
       type: 'Text',
       required: false,
@@ -67,7 +67,7 @@ export default function columns(module, settings) {
     },
     {
       name: 'contactDesignation',
-      label: 'Contact Designation',
+      label: 'Designation',
       options: {
         filter: true,
       },
@@ -80,7 +80,7 @@ export default function columns(module, settings) {
       label: 'Address',
       options: {
         filter: false,
-        display: 'excluded',
+        display: false,
       },
       type: 'TextArea',
       required: false,
@@ -89,6 +89,7 @@ export default function columns(module, settings) {
     {
       name: 'fk_createdBy',
       id: 'fk_createdBy',
+      fk: true,
       //reference: { id: 'createdBy', name: 'createdBy' },
       label: 'Created By',
       options: {
@@ -104,6 +105,7 @@ export default function columns(module, settings) {
       name: 'fk_updatedBy',
       //reference: { id: 'updatedBy', name: 'updatedBy' },
       label: 'Updated By',
+      fk: true,
       options: {
         filter: false,
         customBodyRender: (value) => {
@@ -145,7 +147,9 @@ export default function columns(module, settings) {
       }
     },
     {
-      name: 'Action',
+      name: 'action',
+      id: 'action',
+      label: 'Action',
       options: {
         filter: false,
         sort: false,

@@ -25,13 +25,15 @@ import Signin from '../../pages/signin';
 import Footer from '../../components/Footer';
 import PageHeader from '../../components/PageHeader';
 import Router from 'next/router';
+import { useRouter } from 'next/router';
 import { IMGPath } from '../../config';
-import AdminMenu from '../../components/Menus/Admin';
 import Snackbar from '@material-ui/core/Snackbar';
 import { Alert, AlertTitle } from '@material-ui/lab';
 import { NOTIFICATIONS_CLOSE } from '../../redux/types';
 import PageLoader from '../../components/PageLoader';
 import { deepOrange, deepPurple } from '@material-ui/core/colors';
+import Link from 'next/link';
+import initialize from '../../utils/initialize';
 
 const drawerWidth = 170;
 
@@ -70,7 +72,7 @@ const useStyles = makeStyles(theme => ({
   content: {
     flexGrow: 1,
     marginTop: theme.spacing(5),
-    paddingTop: theme.spacing(1.8),
+    paddingTop: theme.spacing(1),
     padding: theme.spacing(1),
     marginBottom: theme.spacing(5)
   },
@@ -151,7 +153,7 @@ function Layout({ children, title, deauthenticate, container, isAuthenticated, s
   }
 
   const dispatch = useDispatch();
-
+  const routerInfo = useRouter()
   const classes = useStyles();
   const theme = useTheme();
   const [mobileOpen, setMobileOpen] = React.useState(false);
@@ -193,13 +195,12 @@ function Layout({ children, title, deauthenticate, container, isAuthenticated, s
 
   let nameInLetter = isAuthenticated.details.fullName.split(' ');
   nameInLetter = (nameInLetter[1]) ? nameInLetter[0].slice(0, 1) + nameInLetter[1].slice(0, 1) : nameInLetter[0].slice(0, 1);
-  const siteLogo = IMGPath + siteDetails.logo;
+  //const siteLogo = IMGPath + siteDetails.logo;
 
   let adminMenu;
   if (isAuthenticated.details.isAdmin) {
-    adminMenu = <AdminMenu />;
+    adminMenu = <MenuItem><Link href="/admin/">Administration</Link></MenuItem>;
   }
-
 
   const menuId = 'primary-search-account-menu';
   const renderMenu = (
@@ -218,6 +219,7 @@ function Layout({ children, title, deauthenticate, container, isAuthenticated, s
           <Typography variant="h6">{isAuthenticated.details.fullName}</Typography>
           <Typography variant="body2">{isAuthenticated.details.role} {(isAuthenticated.details.isAdmin) ? '(SA)' : ''}</Typography>
         </div></MenuItem>
+      {adminMenu}
       <MenuItem onClick={deauthenticate}>Sign Out</MenuItem>
     </Menu>
   );
@@ -256,7 +258,7 @@ function Layout({ children, title, deauthenticate, container, isAuthenticated, s
   return (
     <div className={classes.root}>
       <Head>
-        <title> {siteDetails.title} :: {title}</title>
+        <title> {siteDetails.title}</title>
         <meta charSet="utf-8" />
         <meta name="viewport" content="initial-scale=1.0, width=device-width" />
       </Head>
@@ -275,7 +277,6 @@ function Layout({ children, title, deauthenticate, container, isAuthenticated, s
           </IconButton>
           <Typography variant="h5">{siteDetails.title}</Typography>
           <div className={classes.grow}>
-            {adminMenu}
           </div>
           <div className={classes.sectionDesktop}>
             <IconButton aria-label="show 4 new mails" color="default">
@@ -349,12 +350,12 @@ function Layout({ children, title, deauthenticate, container, isAuthenticated, s
             variant="permanent"
             open
           >
-            <SideMenu display="desktop" />
+            <SideMenu key={Math.random()} display="desktop" />
           </Drawer>
         </Hidden>
       </nav>
       <main className={classes.content}>
-        <PageHeader pageHeader={title} />
+        <PageHeader pageHeader={title} routerInfo={routerInfo.pathname} />
         <div className={classes.toolbar} />
         {children}
         <Snackbar
@@ -389,6 +390,10 @@ const mapStateToProps = (state) => (
     isNotified: state.notifications.message,
   }
 );
+
+Layout.getInitialProps = async (ctx) => {
+  await initialize(ctx);
+};
 
 export default connect(mapStateToProps, actions)(Layout);
 //export default Layout;

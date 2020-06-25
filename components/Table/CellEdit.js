@@ -16,7 +16,7 @@ class CellEdit extends React.Component {
   }
 
   handleClick() {
-    console.log(this.props.cellData.rowData[0]);
+    console.log(this.props.cellData);
     this.setState({ renderView: 'withDialogForm' });
   }
 
@@ -39,7 +39,7 @@ class CellEdit extends React.Component {
           <Button color='secondary' onClick={() => this.handleClick()}>
             Edit
           </Button>
-          <DialogForm objectId={this.props.cellData.rowData[0]} module={this.props.module} action="edit" isOpen={true} onClose={onClose} />
+          <DialogForm objectId={this.props.cellData.id} module={this.props.module} action="edit" isOpen={true} onClose={onClose} />
         </React.Fragment>
       );
     }

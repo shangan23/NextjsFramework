@@ -5,6 +5,7 @@ import AddIcon from '@material-ui/icons/Add';
 import { withStyles } from '@material-ui/core/styles';
 import DialogForm from '../Forms/DialogForm';
 import Snack from '../Snack';
+import Router from 'next/router';
 
 const defaultToolbarStyles = {
   iconButton: {
@@ -20,7 +21,8 @@ class CustomToolbar extends React.Component {
 
   handleClick() {
     console.log(this.props.module);
-    this.setState({ renderView: 'withDialogForm' });
+    Router.push(this.props.createLink);
+    //this.setState({ renderView: 'withDialogForm' });
   }
 
   render() {

@@ -2,7 +2,6 @@ import React from 'react';
 //import Router from 'next/router';
 import { API, IMGPath } from '../../config';
 import initialize from '../../utils/initialize';
-import Layout from '../../theming/layouts/isUsers';
 import DynamicForm from '../../components/Forms/DynamicForm';
 import { connect } from 'react-redux';
 import actions from '../../redux/actions';
@@ -135,8 +134,8 @@ class SiteSettings extends React.Component {
       },
     ];
     return (
-      <Layout title="General Settings" actions="create">
         <DynamicForm
+          formTitle={'site settings'}
           fieldsToRender={fieldsToRender}
           defaultValue={settingsData}
           onSubmit={onSubmit}
@@ -144,8 +143,6 @@ class SiteSettings extends React.Component {
           buttonSubmitText="Save"
           onFileUpload={onFileUpload}
         />
-
-      </Layout>
     );
   }
 

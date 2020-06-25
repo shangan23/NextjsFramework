@@ -5,13 +5,9 @@ import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
 
 const useStyles = makeStyles((theme) => ({
-  spacing: {
-    display: 'flex',
-    '& > *': {
-      padding: theme.spacing(0.5),
-    },
-    marginLeft: theme.spacing(2),
-    height: 50
+  tabRoot: {
+    minHeight: 24,
+    height: 24
   }
 }));
 
@@ -28,16 +24,16 @@ export default function AdminMenu() {
   let activeValue = 0;
 
   switch (router.pathname) {
-  case '/admin':
-    activeValue = 0;
-    break;
-  case '/admin/users':
-  case '/admin/users/create':
-    activeValue = 1;
-    break;
-  case '/admin/roles':
-    activeValue = 2;
-    break;
+    case '/admin':
+      activeValue = 0;
+      break;
+    case '/admin/users':
+    case '/admin/users/create':
+      activeValue = 1;
+      break;
+    case '/admin/roles':
+      activeValue = 2;
+      break;
   }
 
   const [value, setValue] = React.useState(activeValue);
@@ -52,17 +48,19 @@ export default function AdminMenu() {
 
 
   return (
-    <div className={classes.spacing}>
-      <Tabs
-        value={value}
-        indicatorColor="secondary"
-        textColor="secondary"
-        onChange={handleChange}
-      >
-        <Tab label="General Settings" />
-        <Tab label="Users" />
-        <Tab label="Roles" disabled />
-      </Tabs>
-    </div>
+    <Tabs
+      value={value}
+      indicatorColor="secondary"
+      textColor="secondary"
+      onChange={handleChange}
+      className={classes.tabRoot}
+    >
+      <Tab label="Settings" className={classes.tabRoot} />
+      <Tab label="Users" className={classes.tabRoot} />
+      <Tab label="Roles" className={classes.tabRoot} disabled />
+      <Tab label="UI Config" className={classes.tabRoot} disabled />
+      <Tab label="Orchestration" className={classes.tabRoot} disabled />
+      <Tab label="Templates" className={classes.tabRoot} disabled />
+    </Tabs>
   );
 }

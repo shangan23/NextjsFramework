@@ -15,7 +15,7 @@ import CardContent from '@material-ui/core/CardContent';
 import Typography from '@material-ui/core/Typography';
 
 function Dashboard() {
-  return (<Layout title="Dashboard" actions="dashlets">
+  return (
     <Grid container spacing={1}>
       <Grid item xs={12} sm={12} md={3}>
         <CountCard type="users" />
@@ -79,8 +79,7 @@ function Dashboard() {
           </CardContent>
         </Card>
       </Grid>
-    </Grid>
-  </Layout>);
+    </Grid>);
 
 }
 

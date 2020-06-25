@@ -35,7 +35,7 @@ export default function columns(module, settings) {
       id: 'contactName',
     },
     {
-      name: 'mobile',
+      name: 'contactMobile',
       label: 'Mobile',
       options: {
         filter: true,
@@ -43,44 +43,44 @@ export default function columns(module, settings) {
       },
       type: 'Text',
       required: true,
-      id: 'mobile',
+      id: 'contactMobile',
     },
     {
-      name: 'telephone',
+      name: 'contactTelephone',
       label: 'Telephone',
       options: {
         filter: true
       },
       type: 'Text',
       required: true,
-      id: 'telephone',
+      id: 'contactTelephone',
     },
     {
-      name: 'email',
+      name: 'contactEmail',
       label: 'Email',
       options: {
         filter: true
       },
       type: 'Email',
       required: true,
-      id: 'email',
+      id: 'contactEmail',
     },
     {
-      name: 'designation',
-      label: 'Designation',
+      name: 'contactDesignation',
+      label: 'Contact Designation',
       options: {
         filter: true,
       },
       type: 'Text',
       required: false,
-      id: 'designation',
+      id: 'contactDesignation',
     },
     {
       name: 'address',
       label: 'Address',
       options: {
         filter: false,
-        display: false,
+        display: 'excluded',
       },
       type: 'TextArea',
       required: false,

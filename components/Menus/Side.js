@@ -8,6 +8,7 @@ import ListItemText from '@material-ui/core/ListItemText';
 import { makeStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 import { useRouter } from 'next/router';
+import Router from 'next/router';
 import Tooltip from '@material-ui/core/Tooltip';
 import ExpandLess from '@material-ui/icons/ExpandLess';
 import ExpandMore from '@material-ui/icons/ExpandMore';
@@ -82,20 +83,23 @@ function SideMenu({ display }) {
     'link': '/dashboard',
     'icon': <DashboardIcon color={(active == 'dashboard') ? 'secondary' : 'primary'} className={(active == 'dashboard') ? classes.active : ''} />,
     'id': 'dashboard',
-    'menus': []
+    'menus': [],
+    'type': null
   }, {
     'name': 'Customers',
     'link': '/app/customers',
     'icon': <Icon color={(active == 'customers') ? 'secondary' : 'primary'} className={(active == 'customers') ? `${classes.activeIconText} fa fa-address-card icon` : `${classes.icon} fa fa-address-card`} />,
     'id': 'customers',
-    'menus': []
+    'menus': [],
+    'type': '/app/[appId]'
   }, {
     'name': 'Vendors',
     'link': '/app/vendors',
     'icon': <RecentActorsIcon color={(active == 'vendors') ? 'secondary' : 'primary'} className={(active == 'vendors') ? classes.active : ''} />,
     'id': 'vendors',
-    'menus': []
-  }, {
+    'menus': [],
+    'type': '/app/[appId]'
+  },{
     'name': 'Items',
     'link': '',
     'icon': <AppsIcon color={(active == 'products') ? 'secondary' : 'primary'} className={(active == 'products') ? classes.active : ''} />,
@@ -118,7 +122,8 @@ function SideMenu({ display }) {
     'link': '/app/orders',
     'icon': <AddShoppingCartIcon color={(active == 'orders') ? 'secondary' : 'primary'} />,
     'id': 'orders',
-    'menus': []
+    'menus': [],
+    'type': null
   }];
 
   if (display === 'desktop') {
@@ -127,7 +132,8 @@ function SideMenu({ display }) {
     displayWith = '';
   }
 
-  const handleRedirection = (obj) => {
+  const handleRedirection = (obj, e) => {
+    e.preventDefault();
     let link;
 
     if (obj['menus'] && obj['menus'].length > 0) {
@@ -140,7 +146,14 @@ function SideMenu({ display }) {
 
     if (obj['link'] || obj['menus']['link']) {
       link = (obj['link'] ? obj['link'] : obj['menus']['link']).toString();
-      router.push(link);
+      if (obj['type'] != null) {
+        Router.push(
+          obj['type'],
+          link
+        );
+      } else {
+        router.push(link);
+      }
     }
   };
   //autoFocus={(active === menuList[index]['id']) ? true : false}
@@ -150,7 +163,7 @@ function SideMenu({ display }) {
       <Divider />
       <List dense component="nav" >
         {menuList.map((text, index) => (
-          <React.Fragment>
+          <React.Fragment key={Math.random()}>
             <ListItem onClick={(event) => handleRedirection(menuList[index], event)} button dense key={index} >
               <ListItemIcon >
                 {menuList[index]['icon']}
@@ -164,7 +177,7 @@ function SideMenu({ display }) {
               {(menuList[index]['menus'].length > 0) ? (expanded.clicked === menuList[index]['id']) ? <ExpandLess /> : <ExpandMore /> : ''}
             </ListItem>
             {menuList[index]['menus'].map((text, subindex) => (
-              <Collapse in={(expanded.clicked === menuList[index]['id']) ? true : false} timeout="auto" unmountOnExit>
+              <Collapse key={Math.random()} in={(expanded.clicked === menuList[index]['id']) ? true : false} timeout="auto" unmountOnExit>
                 <List component="div" disablePadding>
                   <ListItem onClick={(event) => handleRedirection(menuList[index]['menus'][subindex], event)} dense button className={classes.nested}>
                     <ListItemIcon> {menuList[index]['menus'][subindex]['icon']}</ListItemIcon>

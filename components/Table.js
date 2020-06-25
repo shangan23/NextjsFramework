@@ -25,12 +25,13 @@ const getMuiTheme = () => createMuiTheme({
   }
 });
 
-export default function RespTable(columns, list, module) {
+export default function RespTable(columns, list, module,createLink) {
   const classes = useStyles();
 
   module = columns['module'];
   list = columns['list'].rows;
   let listCount = columns['list'].count;
+  createLink = columns['createLink'];
   columns = columns['columns'];
 
   const options = {
@@ -65,7 +66,7 @@ export default function RespTable(columns, list, module) {
     },
     customToolbar: () => {
       return (
-        <Toolbar module={module} />
+        <Toolbar module={module} createLink={createLink}/>
       );
     },
     customToolbarSelect: (selectedRows, displayData, setSelectedRows) => (

@@ -1,8 +1,9 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import Layout from '../../theming/layouts/isUsers';
-import RespTable from '../../components/Table';
+import RespTable from '../../components/TableNew';
 import moduleController from '../../modules/controller';
+import Router from 'next/router';
 
 class appList extends React.Component {
 
@@ -11,15 +12,18 @@ class appList extends React.Component {
     this.state = { listing: [] };
   }
 
-  static async getInitialProps(ctx) {
-    const { query } = ctx;
-    let queryParam = '?'
-    let url = (ctx.store.getState().siteSettings.settings.siteURL) ? (ctx.store.getState().siteSettings.settings.siteURL) : '';
-    queryParam += (query.limit) ? `limit=${query.limit}` : '';
-    queryParam += (query.page) ? `&page=${query.page}` : '';
-    const data = await fetch(`${url}api/app/customers${queryParam}`);
-    const json = await data.json();
-    return { listing: json };
+  static async getInitialProps({ req }) {
+    if (!req) {
+      const fullUrl = window.location.protocol + '//' + window.location.hostname + (window.location.port ? ':' + window.location.port : '');
+      const { query } = Router;
+      let queryParam = '?'
+      let url = fullUrl;
+      queryParam += (query.limit) ? `limit=${query.limit}` : '';
+      queryParam += (query.page) ? `&page=${query.page}` : '';
+      const data = await fetch(`${url}/api/app/customers${queryParam}`);
+      const json = await data.json();
+      return { listing: json };
+    }
   }
 
   render() {

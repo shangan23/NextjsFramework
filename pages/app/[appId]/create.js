@@ -1,11 +1,15 @@
 import React from 'react';
-import RespTable from '../../components/TableNew';
-import moduleController from '../../modules/controller';
+import initialize from '../../../utils/initialize';
+import DynamicForm from '../../../components/Forms/UserDynamicFormGrid';
 import { connect } from 'react-redux';
-import Router from 'next/router';
 import absoluteUrl from "next-absolute-url";
-import { getCookie } from '../../utils/cookie';
-import initialize from '../../utils/initialize';
+import RespTable from '../../../components/TableNew';
+import {
+  Grid
+} from '@material-ui/core';
+import Router from 'next/router';
+import { getCookie } from '../../../utils/cookie';
+import moduleController from '../../../modules/controller';
 
 const frameURL = async (req) => {
   let user, host, settings, cleanUser, cleanSettings, columnsList, urlObj, headers = {};
@@ -23,7 +27,7 @@ const frameURL = async (req) => {
   console.log(urlObj);
   let { origin, searchParams, pathname } = urlObj;
   module = pathname.replace('/app/', '');
-  console.log('iServer module',module);
+  console.log('iServer module', module);
   queryParam = '?'
   queryParam += (searchParams.get('limit')) ? `limit=${searchParams.get('limit')}` : '';
   queryParam += (searchParams.get('page')) ? `&page=${searchParams.get('page')}` : '';
@@ -33,7 +37,9 @@ const frameURL = async (req) => {
   return { listing, module, columnsList }
 };
 
-class DynamicList extends React.Component {
+
+
+class DynamicCreate extends React.Component {
   constructor(props) {
     super(props);
   }
@@ -45,8 +51,8 @@ class DynamicList extends React.Component {
       const fullUrl = `${window.location.protocol}//${window.location.hostname}${(window.location.port ? ':' + window.location.port : '')}`;
       const { query } = Router;
       let module = ctx.query.appId;
-      console.log('iClient Router module',module);
-      console.log('iClient ctx',ctx.query.appId);
+      console.log('iClient Router module', module);
+      console.log('iClient ctx', ctx.query.appId);
       let queryParam = '?'
       queryParam += (query.limit) ? `limit=${query.limit}` : '';
       queryParam += (query.page) ? `&page=${query.page}` : '';
@@ -60,19 +66,42 @@ class DynamicList extends React.Component {
   }
 
   render() {
+    const settingsData = {};
+    const onSubmit = async values => {
+      window.alert(JSON.stringify(values, 0, 2));
+    };
+
     let module = this.props.module;
     let columnsList = moduleController(module, this.props.siteInfo);
+
     return (
-      <RespTable module={module} createLink={'tests'} list={this.props.listing} columns={columnsList} />
+      <Grid container spacing={1} key={`${Math.random()}`}>
+        <Grid item xs={12} md={4} >
+          <RespTable module={this.props.module} createLink={'tests'} list={this.props.listing} columns={columnsList} />
+        </Grid>
+        <Grid item xs={12} md={8}>
+          <DynamicForm
+            formTitle={'Create'}
+            module={module}
+            action="new"
+            defaultValue={settingsData}
+            onSubmit={onSubmit}
+            buttonCancelText="Cancel"
+            buttonSubmitText="Save"
+          />
+        </Grid>
+      </Grid>
     );
   }
+
 }
 
-const mapStateToProps = (state) => (
-  {
-    // isAuthenticated: !!state.authentication.user,
-    siteInfo: state.siteSettings.settings
-  }
-);
+function mapStateToProps(state) {
+  return {
+    siteInfo: state.siteSettings.settings,
+  };
+}
 
-export default connect(mapStateToProps)(DynamicList);
+export default connect(
+  mapStateToProps
+)(DynamicCreate);

@@ -70,6 +70,7 @@ class Lookup extends React.Component {
         name={attributes[index]['name']}
         id={attributes[index]['id']}
         open={this.state.open}
+        size="small"
         onInputChange={handleChange}
         onOpen={() => {
           this.setState({ open: true });

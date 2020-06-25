@@ -7,7 +7,7 @@ export default function columns(module, settings) {
       label: 'ID',
       options: {
         filter: false,
-        display: 'excluded',
+        display: false,
       },
       type: 'Text',
       required: false,
@@ -35,25 +35,15 @@ export default function columns(module, settings) {
       id: 'contactName',
     },
     {
-      name: 'mobile',
-      label: 'Mobile',
+      name: 'number',
+      label: 'Number',
       options: {
         filter: true,
         sort: false
       },
       type: 'Text',
       required: true,
-      id: 'mobile',
-    },
-    {
-      name: 'telephone',
-      label: 'Telephone',
-      options: {
-        filter: true
-      },
-      type: 'Text',
-      required: true,
-      id: 'telephone',
+      id: 'number',
     },
     {
       name: 'email',
@@ -145,7 +135,9 @@ export default function columns(module, settings) {
       }
     },
     {
-      name: 'Action',
+      name: 'action',
+      id: 'action',
+      label: 'Action',
       options: {
         filter: false,
         sort: false,

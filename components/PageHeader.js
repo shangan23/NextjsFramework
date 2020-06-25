@@ -9,6 +9,7 @@ import Moment from 'react-moment';
 import { connect } from 'react-redux';
 import Button from '@material-ui/core/Button';
 import AdminMenu from './Menus/Admin';
+import Router from 'next/router';
 
 const drawerWidth = 170;
 
@@ -55,7 +56,7 @@ const useStyles = theme => ({
   toolbarStyle: {
     minHeight: theme.spacing(1)
   },
-  toolbarAdminStyle:{
+  toolbarAdminStyle: {
     minHeight: theme.spacing(5)
   },
   dateRangePicker: {
@@ -64,6 +65,17 @@ const useStyles = theme => ({
     top: theme.spacing(3)
   }
 });
+
+const frameURL = async (req) => {
+  let host, urlObj, module;
+  host = absoluteUrl(req, req.headers.host);
+  urlObj = new URL(`${host.origin}${req.url}`);
+  let { pathname } = urlObj;
+  console.log('isServer PH pathname', pathname);
+  //module = pathname.replace('/app/', '');
+  //return { module }
+};
+
 
 class PageHeader extends React.Component {
 
@@ -84,6 +96,19 @@ class PageHeader extends React.Component {
     }
   }
 
+  static async getInitialProps(ctx) {
+    await initialize(ctx);
+    const { req } = ctx;
+    if (!req) {
+      let module = ctx.query.appId;
+      console.log('isClient PH pathname', pathname);
+      //return { module: module };
+    } else {
+      const { module } = await frameURL(req);
+      //return { module };
+    }
+  }
+
   handleOutsideClick(e) {
     if (this.node.contains(e.target)) {
       return;
@@ -94,12 +119,15 @@ class PageHeader extends React.Component {
 
   render() {
     const { classes } = this.props;
-    let pageHeaderActions;
-    console.log('this.props.routerInfo',this.props.routerInfo);
-    if (this.props.routerInfo.indexOf('/admin') != -1) {
+    let pageHeaderActions,pageTitle;
+    console.log('this.props.routerInfo', this.props.routerInfo);
+    console.log('${this.props.routerInfo.query.appId}',this.props.routerInfo.query.appId)
+    if (this.props.routerInfo.pathname.indexOf('/admin') != -1) {
       pageHeaderActions = <AdminMenu />;
     } else {
-      if (this.props.pageHeader == 'Dashboard') {
+
+      if (this.props.routerInfo.pathname.indexOf('/dashboard') != -1) {
+        pageTitle = 'Dashboard'
         pageHeaderActions = <div className={classes.datePickerButtons} >
           <div className={classes.dateRangePicker} ref={node => this.node = node}>
             <DateRangePicker
@@ -117,9 +145,14 @@ class PageHeader extends React.Component {
             </Typography>
           </Button>
         </div>;
-      } else {
+      } else if (this.props.routerInfo.pathname.indexOf('/app/') != -1) {
+        pageTitle = this.props.routerInfo.query.appId;
+        pageTitle = pageTitle.charAt(0).toUpperCase() + pageTitle.slice(1)
         pageHeaderActions = <div className={classes.buttons}>
-          <Button size="small" color="secondary" disableElevation>Create</Button>
+          <Button size="small" onClick={() => Router.push(
+            '/app/[appId]/create',
+            `/app/${this.props.routerInfo.query.appId}/create`
+          )} color="secondary" disableElevation>Create</Button>
           <Button size="small" color="primary" disableElevation>Filter</Button>
           <Button size="small" color="primary" disableElevation>Columns</Button>
         </div>;
@@ -130,13 +163,14 @@ class PageHeader extends React.Component {
           <AppBar elevation={1} position="fixed" color="inherit" className={classes.appBar}>
             <Toolbar className={classes.toolbarStyle} variant="dense">
               <div className={classes.pageTitle}>
-                <Typography color="primary" variant="subtitle1">{this.props.pageHeader}</Typography>
+                <Typography color="primary" variant="subtitle1">{pageTitle}</Typography>
               </div>
               {pageHeaderActions}
             </Toolbar>
           </AppBar>
         </React.Fragment>
       );
+
     }
 
     return (
@@ -144,9 +178,9 @@ class PageHeader extends React.Component {
         <CssBaseline />
         <AppBar elevation={1} position="fixed" color="inherit" className={classes.appBar}>
           <Toolbar className={classes.toolbarAdminStyle} variant="dense">
-          <div className={classes.adminPageTitle}>
-                <Typography color="primary" variant="subtitle1">Administration</Typography>
-              </div>
+            <div className={classes.adminPageTitle}>
+              <Typography color="primary" variant="subtitle1">Administration</Typography>
+            </div>
             {pageHeaderActions}
           </Toolbar>
         </AppBar>

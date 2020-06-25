@@ -20,14 +20,14 @@ const useStyles = makeStyles((theme) => ({
     minHeight: theme.spacing(63.5),
   },
   TableCell: {
-    fontSize: '0.85rem',
+    fontSize: '0.8rem',
     padding:theme.spacing(1)
     //paddingTop: theme.spacing(0.5),
     //paddingRight: theme.spacing(1),
     //paddingLeft: theme.spacing(3)
   },
   TableCellHead: {
-    fontSize: '0.85rem',
+    fontSize: '0.8rem',
     fontWeight: 500,
     padding:theme.spacing(1)
     //paddingTop: theme.spacing(0.5),

@@ -17,7 +17,7 @@ import MenuItem from '@material-ui/core/MenuItem';
 import Badge from '@material-ui/core/Badge';
 import NotificationsIcon from '@material-ui/icons/Notifications';
 import MoreIcon from '@material-ui/icons/MoreVert';
-import { makeStyles, useTheme } from '@material-ui/core/styles';
+import { fade, makeStyles, useTheme } from '@material-ui/core/styles';
 import SideMenu from '../../components/Menus/Side';
 import { connect, useDispatch } from 'react-redux';
 import actions from '../../redux/actions';
@@ -34,6 +34,8 @@ import PageLoader from '../../components/PageLoader';
 import { deepOrange, deepPurple } from '@material-ui/core/colors';
 import Link from 'next/link';
 import initialize from '../../utils/initialize';
+import SearchIcon from '@material-ui/icons/Search';
+import InputBase from '@material-ui/core/InputBase';
 
 const drawerWidth = 170;
 
@@ -85,15 +87,41 @@ const useStyles = makeStyles(theme => ({
       display: 'block',
     },
   },
+  search: {
+    position: 'relative',
+    borderRadius: theme.shape.borderRadius,
+    backgroundColor: fade(theme.palette.common.white, 0.15),
+    '&:hover': {
+      backgroundColor: fade(theme.palette.common.white, 0.25),
+    },
+    marginRight: theme.spacing(2),
+    marginLeft: 0,
+    width: '100%',
+    [theme.breakpoints.up('sm')]: {
+      marginLeft: theme.spacing(3),
+      width: 'auto',
+    },
+  },
+  searchIcon: {
+    padding: theme.spacing(0, 2),
+    height: '100%',
+    position: 'absolute',
+    pointerEvents: 'none',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
   inputRoot: {
     color: 'inherit',
   },
   inputInput: {
-    padding: theme.spacing(1, 1, 1, 7),
+    padding: theme.spacing(1, 1, 1, 0),
+    // vertical padding + font size from searchIcon
+    paddingLeft: `calc(1em + ${theme.spacing(4)}px)`,
     transition: theme.transitions.create('width'),
     width: '100%',
     [theme.breakpoints.up('md')]: {
-      width: 200,
+      width: '20ch',
     },
   },
   sectionDesktop: {
@@ -278,6 +306,19 @@ function Layout({ children, title, deauthenticate, container, isAuthenticated, s
           <Typography variant="h5">{siteDetails.title}</Typography>
           <div className={classes.grow}>
           </div>
+          <div className={classes.search}>
+            <div className={classes.searchIcon}>
+              <SearchIcon />
+            </div>
+            <InputBase
+              placeholder="Search…"
+              classes={{
+                root: classes.inputRoot,
+                input: classes.inputInput,
+              }}
+              inputProps={{ 'aria-label': 'search' }}
+            />
+          </div>
           <div className={classes.sectionDesktop}>
             <IconButton aria-label="show 4 new mails" color="default">
               <AddCircleSharpIcon />
@@ -355,7 +396,7 @@ function Layout({ children, title, deauthenticate, container, isAuthenticated, s
         </Hidden>
       </nav>
       <main className={classes.content}>
-        <PageHeader pageHeader={title} routerInfo={routerInfo.pathname} />
+        <PageHeader pageHeader={title} routerInfo={routerInfo} />
         <div className={classes.toolbar} />
         {children}
         <Snackbar

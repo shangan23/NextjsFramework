@@ -7,6 +7,7 @@ export default function FieldAutoCompleteSingle({fieldsToRender, index}) {
     options={fieldsToRender[index]['data']}
     getOptionValue={option => option.id}
     getOptionLabel={option => option.value}
+    size="small"
     name={fieldsToRender[index]['name']}
   />);
 }

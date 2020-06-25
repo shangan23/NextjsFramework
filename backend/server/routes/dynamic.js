@@ -48,6 +48,7 @@ module.exports = function (router) {
     });
 
     router.post(`${bucket}:module`, (req, res) => {
+        console.log('payload -- ',req.body);
         modelName = (req.params.module)
         modelName = modelName.charAt(0).toUpperCase() + modelName.slice(1);
         runningModel = models[modelName];

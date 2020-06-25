@@ -2,7 +2,6 @@ import React from 'react';
 //import Router from 'next/router';
 import { API, IMGPath } from '../../config';
 import initialize from '../../utils/initialize';
-import Layout from '../../theming/layouts/isUsers';
 import DynamicForm from '../../components/Forms/DynamicForm';
 import { connect } from 'react-redux';
 import actions from '../../redux/actions';
@@ -65,11 +64,13 @@ class SiteSettings extends React.Component {
         'id': 'title',
         'label': 'Site Title',
         'name': 'title',
+        'options':{},
         'value': settingsData.title
       }, {
         'type': 'Email',
         'required': false,
         'id': 'adminEmail',
+        'options':{},
         'name': 'adminEmail',
         'label': 'Administrator Email',
         'value': settingsData.adminEmail
@@ -78,6 +79,7 @@ class SiteSettings extends React.Component {
         'type': 'Select',
         'required': false,
         'id': 'dateFormat',
+        'options':{},
         'label': 'Date Format',
         'name': 'dateFormat',
         'data': [
@@ -91,6 +93,7 @@ class SiteSettings extends React.Component {
       {
         'type': 'Select',
         'required': false,
+        'options':{},
         'id': 'timeFormat',
         'label': 'Time Format',
         'name': 'timeFormat',
@@ -103,6 +106,7 @@ class SiteSettings extends React.Component {
       {
         'type': 'Text',
         'required': false,
+        'options':{},
         'id': 'siteThemeColor',
         'label': 'Theme Color',
         'name': 'themeColor',
@@ -113,6 +117,7 @@ class SiteSettings extends React.Component {
         'type': 'TextArea',
         'required': false,
         'id': 'footer',
+        'options':{},
         'label': 'Footer',
         'name': 'footer',
         'value': settingsData.footer
@@ -129,8 +134,8 @@ class SiteSettings extends React.Component {
       },
     ];
     return (
-      <Layout title="General Settings" actions="create">
         <DynamicForm
+          formTitle={'site settings'}
           fieldsToRender={fieldsToRender}
           defaultValue={settingsData}
           onSubmit={onSubmit}
@@ -138,8 +143,6 @@ class SiteSettings extends React.Component {
           buttonSubmitText="Save"
           onFileUpload={onFileUpload}
         />
-
-      </Layout>
     );
   }
 

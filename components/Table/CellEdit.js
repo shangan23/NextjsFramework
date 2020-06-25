@@ -1,6 +1,7 @@
 import React from 'react';
 import { withStyles } from '@material-ui/core/styles';
 import DialogForm from '../Forms/DialogForm';
+import { Button } from '@material-ui/core';
 
 const defaultToolbarStyles = {
   iconButton: {
@@ -15,7 +16,7 @@ class CellEdit extends React.Component {
   }
 
   handleClick() {
-    console.log(this.props.cellData.rowData[0]);
+    console.log(this.props.cellData);
     this.setState({ renderView: 'withDialogForm' });
   }
 
@@ -27,18 +28,18 @@ class CellEdit extends React.Component {
     if (this.state.renderView == 'onlyAction') {
       return (
         <React.Fragment>
-          <button onClick={() => this.handleClick()}>
+          <Button color='secondary' onClick={() => this.handleClick()}>
             Edit
-          </button>
+          </Button>
         </React.Fragment>
       );
     } else if (this.state.renderView == 'withDialogForm') {
       return (
         <React.Fragment>
-          <button onClick={() => this.handleClick()}>
+          <Button color='secondary' onClick={() => this.handleClick()}>
             Edit
-          </button>
-          <DialogForm objectId={this.props.cellData.rowData[0]} module={this.props.module} action="edit" isOpen={true} onClose={onClose} />
+          </Button>
+          <DialogForm objectId={this.props.cellData.id} module={this.props.module} action="edit" isOpen={true} onClose={onClose} />
         </React.Fragment>
       );
     }

@@ -9,6 +9,7 @@ const useStyles = makeStyles((theme) => ({
     top: 'auto',
     bottom: 0,
     padding: theme.spacing(0.5),
+    height:theme.spacing(4)
   },
   grow: {
     flexGrow: 1,
@@ -21,7 +22,7 @@ export default function BottomAppBar({footerText}) {
   return (
     <React.Fragment>
       <CssBaseline />
-      <AppBar position="fixed" color="inherit" className={classes.appBar}>
+      <AppBar position="fixed" color="inherit" className={classes.appBar}  elevation={1}>
         <Typography variant="overline" align="center">{footerText}</Typography>
       </AppBar>
     </React.Fragment>

@@ -65,16 +65,17 @@ class DialogForm extends React.Component {
 
   componentDidMount() {
     if (this.props.action == 'edit') {
-      fetch(`${API}/${this.props.module}/${this.props.objectId}`, {
-        headers: {
-          'Authorization': `Basic ${this.props.token}`
-        },
-      }).then((res) => res.json())
+      fetch(`${this.props.siteDetails.siteURL}api/app/${this.props.module}/${this.props.objectId}`)
+        .then((res) => res.json())
         .then((data) => {
-          data.createdBy =  data.created;
-          data.updatedBy =  data.updated;
           this.setState({ modeuleObject: data });
         });
+    } else {
+      let defaultData = {
+        fk_createdBy: this.props.user.details,
+        fk_updatedBy: this.props.user.details
+      }
+      this.setState({ modeuleObject: defaultData });
     }
 
   }
@@ -198,10 +199,10 @@ class DialogForm extends React.Component {
       let resourceUrl, resourceMethod;
 
       if (this.props.action == 'new') {
-        resourceUrl = `${API}/${this.props.module}`;
+        resourceUrl = `${this.props.siteDetails.siteURL}api/app/${this.props.module}`;
         resourceMethod = 'POST';
       } else if (this.props.action == 'edit') {
-        resourceUrl = `${API}/${this.props.module}/${this.props.objectId}`;
+        resourceUrl = `${this.props.siteDetails.siteURL}api/app/${this.props.module}/${this.props.objectId}`;
         resourceMethod = 'PUT';
       }
 
@@ -210,7 +211,7 @@ class DialogForm extends React.Component {
           method: resourceMethod,
           headers: {
             'Content-Type': 'application/json',
-            'Authorization': `Basic ${this.props.token}`
+            'Authorization': `Basic ${this.props.user.token}`
           },
           body: JSON.stringify(values),
         })
@@ -218,11 +219,12 @@ class DialogForm extends React.Component {
           .then(data => {
             this.props.notifications(data);
             this.props.onClose();
-            Router.push(`/admin/${this.props.module}`);
+            //console.log(Router.pathname);
+            Router.push(Router.pathname);
           }).catch(error => {
             this.props.notifications(error);
             //this.props.onClose();
-            Router.push(`/admin/${this.props.module}`);
+            Router.push(Router.pathname);
           });
       }
     };
@@ -236,6 +238,7 @@ class DialogForm extends React.Component {
 
     const formDialog = (
       <Dialog
+        //fullScreen
         disableBackdropClick
         disableEscapeKeyDown
         open={this.state.open}
@@ -278,7 +281,7 @@ class DialogForm extends React.Component {
 const mapStateToProps = (state) => (
   {
     siteDetails: state.siteSettings.settings,
-    token: state.authentication.user.token
+    user: state.authentication.user
   }
 );
 

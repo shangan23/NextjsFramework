@@ -16,6 +16,7 @@
     "@material-ui/core": "^4.10.2",
     "@material-ui/icons": "^4.9.1",
     "@material-ui/lab": "^4.0.0-alpha.56",
+    "@matharumanpreet00/react-daterange-picker": "^1.0.5",
     "date-fns": "^2.14.0",
     "fg-loadcss": "^3.1.0",
     "final-form": "^4.20.0",
@@ -25,14 +26,22 @@
     "mui-datatables": "^3.0.1",
     "mui-rff": "^2.1.15",
     "next": "^9.4.4",
+    "next-absolute-url": "^1.2.2",
     "next-redux-wrapper": "5.0.0",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
     "react-final-form": "^6.5.0",
     "react-moment": "^0.9.7",
     "react-redux": "^7.2.0",
+    "recharts": "^1.8.5",
     "redux": "^4.0.5",
     "redux-devtools-extension": "^2.13.8",
     "redux-thunk": "^2.3.0"
+  },
+  "devDependencies": {
+    "babel-eslint": "^8.2.6",
+    "eslint": "^4.19.1",
+    "eslint-loader": "^2.2.1",
+    "eslint-plugin-react": "^7.20.0"
   }
 }

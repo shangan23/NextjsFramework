@@ -23,7 +23,7 @@ server.use(morgan('dev'));
 //routers
 require("./server/routes/settings")(server);
 require("./server/routes/users")(server);
-require("./server/routes/customers")(server);
+require("./server/routes/dynamic")(server);
 
 //server startup
 server.listen(port, '0.0.0.0', (err) => {

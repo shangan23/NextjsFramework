@@ -5,6 +5,7 @@ import AddIcon from '@material-ui/icons/Add';
 import { withStyles } from '@material-ui/core/styles';
 import DialogForm from '../Forms/DialogForm';
 import Snack from '../Snack';
+import Router from 'next/router';
 
 const defaultToolbarStyles = {
   iconButton: {
@@ -20,7 +21,8 @@ class CustomToolbar extends React.Component {
 
   handleClick() {
     console.log(this.props.module);
-    this.setState({ renderView: 'withDialogForm' });
+    Router.push(this.props.createLink);
+    //this.setState({ renderView: 'withDialogForm' });
   }
 
   render() {
@@ -35,7 +37,7 @@ class CustomToolbar extends React.Component {
         <React.Fragment>
           <Tooltip title={'Add'}>
             <IconButton className={classes.iconButton} onClick={() => this.handleClick()}>
-              <AddIcon className={classes.deleteIcon} />
+              <AddIcon color='secondary' className={classes.deleteIcon} />
             </IconButton>
           </Tooltip>
         </React.Fragment>
@@ -45,7 +47,7 @@ class CustomToolbar extends React.Component {
         <React.Fragment>
           <Tooltip title={'Add'}>
             <IconButton className={classes.iconButton} onClick={() => this.handleClick()}>
-              <AddIcon className={classes.deleteIcon} />
+              <AddIcon color='secondary' className={classes.deleteIcon} />
             </IconButton>
           </Tooltip>
           <DialogForm module={this.props.module} action="new" isOpen={true} onClose={onClose} />
@@ -56,7 +58,7 @@ class CustomToolbar extends React.Component {
         <React.Fragment>
           <Tooltip title={'Add'}>
             <IconButton className={classes.iconButton} onClick={() => this.handleClick()}>
-              <AddIcon className={classes.deleteIcon} />
+              <AddIcon color='secondary' className={classes.deleteIcon} />
             </IconButton>
           </Tooltip>
           <Snack />

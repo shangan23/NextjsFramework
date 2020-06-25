@@ -4,5 +4,5 @@ module.exports = {
   MSG: {
     'authError': 'Authentication Failed.'
   },
-  RecordsPerPage:5
+  RecordsPerPage:10
 };

@@ -55,7 +55,7 @@ class Lookup extends React.Component {
   render() {
     const attributes = this.props.fieldsToRender;
     const index = parseInt(this.props.index);
-    const options = this.state.options
+    const options = this.state.options;
 
     const handleChange = (event, value, reason) => {
       this.getModuleObjects();
@@ -67,8 +67,8 @@ class Lookup extends React.Component {
       <Autocomplete
         required={attributes[index]['required']}
         label={attributes[index]['label']}
-        name={attributes[index]['reference']['name']}
-        id={attributes[index]['reference']['id']}
+        name={attributes[index]['name']}
+        id={attributes[index]['id']}
         open={this.state.open}
         onInputChange={handleChange}
         onOpen={() => {

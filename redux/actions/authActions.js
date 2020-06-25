@@ -19,7 +19,7 @@ const authenticate = ({ uname, password }) => {
           dispatch({ type: AUTH_ERROR, error: MSG.authError });
           //throw Error(MSG.authError);
         } else {
-          setCookie('user', data);
+          setCookie('user',data);
           dispatch({ type: AUTHENTICATE, payload: data });
           Router.push('/dashboard');
         }

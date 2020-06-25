@@ -1,9 +1,8 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { API, RecordsPerPage } from '../../../config';
-import Layout from '../../../theming/layouts/isUsers';
 import RespTable from '../../../components/Table';
 import moduleController from '../../../modules/controller';
+import Router from 'next/router';
 
 class userList extends React.Component {
 
@@ -12,28 +11,25 @@ class userList extends React.Component {
     this.state = { listing: [] };
   }
 
-  static async getInitialProps(ctx) {
-    const { query } = ctx;
-    let queryParam = '?'
-    queryParam += (query.limit) ? `limit=${query.limit}` : '';
-    queryParam += (query.page) ? `&page=${query.page}` : '';
-    queryParam = (queryParam == '?') ? `?limit=${RecordsPerPage}` : queryParam;
-    const data = await fetch(`${API}/users${queryParam}`, {
-      headers: {
-        'Authorization': 'Basic ' + ctx.store.getState().authentication.user['token']
-      }
-    });
-    const json = await data.json();
-    return { listing: json };
+  static async getInitialProps({ req }) {
+    if (!req) {
+      const fullUrl = `${window.location.protocol}//${window.location.hostname}${(window.location.port ? ':' + window.location.port : '')}`;
+      const { query } = Router;
+      let queryParam = '?'
+      let url = fullUrl;
+      queryParam += (query.limit) ? `limit=${query.limit}` : '';
+      queryParam += (query.page) ? `&page=${query.page}` : '';
+      const data = await fetch(`${url}/api/app/users${queryParam}`);
+      const json = await data.json();
+      return { listing: json };
+    }
   }
 
   render() {
     let module = 'users';
     let columnsList = moduleController(module, this.props.siteDetails);
     return (
-      <Layout title="Users" actions="list">
-        <RespTable module={module} list={this.props.listing} columns={columnsList} />
-      </Layout>
+        <RespTable module={module} list={this.props.listing} columns={columnsList} createLink={'/admin/users/create'} />
     );
   }
 }
@@ -41,7 +37,6 @@ class userList extends React.Component {
 const mapStateToProps = (state) => (
   {
     siteDetails: state.siteSettings.settings,
-    token: state.authentication.user,
   }
 );
 

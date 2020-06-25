@@ -7,7 +7,7 @@ export default function columns(module, settings) {
       label: 'ID',
       options: {
         filter: false,
-        display: 'excluded',
+        display: false,
       },
       type: 'Text',
       required: false,
@@ -67,7 +67,7 @@ export default function columns(module, settings) {
     },
     {
       name: 'contactDesignation',
-      label: 'Contact Designation',
+      label: 'Designation',
       options: {
         filter: true,
       },
@@ -80,16 +80,17 @@ export default function columns(module, settings) {
       label: 'Address',
       options: {
         filter: false,
-        display: 'excluded',
+        display: false,
       },
       type: 'TextArea',
       required: false,
       id: 'address',
     },
     {
-      name: 'created',
-      id: 'created',
-      reference: { id: 'createdBy', name: 'createdBy' },
+      name: 'fk_createdBy',
+      id: 'fk_createdBy',
+      fk: true,
+      //reference: { id: 'createdBy', name: 'createdBy' },
       label: 'Created By',
       options: {
         filter: true,
@@ -98,21 +99,22 @@ export default function columns(module, settings) {
         }
       },
       type: 'Lookup',
-      required: false,
+      required: true,
     },
     {
-      name: 'updated',
-      reference: { id: 'updatedBy', name: 'updatedBy' },
+      name: 'fk_updatedBy',
+      //reference: { id: 'updatedBy', name: 'updatedBy' },
       label: 'Updated By',
+      fk: true,
       options: {
-        filter: true,
+        filter: false,
         customBodyRender: (value) => {
           return value.fullName;
         }
       },
       type: 'Lookup',
-      required: false,
-      id: 'updatedBy',
+      required: true,
+      id: 'fk_updatedBy',
     },
     {
       name: 'createdAt',
@@ -145,7 +147,9 @@ export default function columns(module, settings) {
       }
     },
     {
-      name: 'Action',
+      name: 'action',
+      id: 'action',
+      label: 'Action',
       options: {
         filter: false,
         sort: false,

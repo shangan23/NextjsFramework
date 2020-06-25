@@ -2,6 +2,9 @@ const userService = require("../services/users");
 module.exports = basicAuth;
 
 async function basicAuth(req, res, next) {
+
+    console.log('!!req.headers.authorization',req.headers.authorization);
+
     // make authenticate path public
     if (req.path === '/api/users/auth' || req.path === '/api/siteSettings/1' || req.path.indexOf("api") === -1) {
         return next();
@@ -9,6 +12,7 @@ async function basicAuth(req, res, next) {
     
     // check for basic auth header
     if (!req.headers.authorization || req.headers.authorization.indexOf('Basic ') === -1) {
+        console.log('req.headers.authorization',req.headers.authorization);
         return res.status(401).json({ message: 'Missing Authorization Header' });
     }
 

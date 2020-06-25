@@ -5,6 +5,7 @@ import { setCookie } from '../../utils/cookie';
 // gets token from the api and stores it in the redux store and in cookie
 const siteSettings = (settings) => {
   return (dispatch) => {
+    settings.siteURL = 'http://localhost:3000/';
     setCookie('settings', JSON.stringify(settings));
     dispatch({ type: SITE_SETTINGS, payload: settings });
     //Router.push('/signin');

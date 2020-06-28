@@ -1,5 +1,5 @@
 import Moment from 'react-moment';
-import CellEdit from '../components/Table/CellEdit';
+import CellEdit from '../components/Table/CellEditDialog';
 export default function columns(module, settings) {
   let columns = [
     {
@@ -12,6 +12,7 @@ export default function columns(module, settings) {
       type: 'Text',
       required: false,
       id: 'id',
+      section: 'System Information'
     },
     {
       name: 'name',
@@ -22,6 +23,7 @@ export default function columns(module, settings) {
       type: 'Text',
       required: false,
       id: 'name',
+      section: 'Basic Information'
     },
     {
       name: 'contactName',
@@ -33,6 +35,7 @@ export default function columns(module, settings) {
       type: 'Text',
       required: true,
       id: 'contactName',
+      section: 'Basic Information'
     },
     {
       name: 'contactMobile',
@@ -44,6 +47,7 @@ export default function columns(module, settings) {
       type: 'Text',
       required: true,
       id: 'contactMobile',
+      section: 'Communication'
     },
     {
       name: 'contactTelephone',
@@ -54,6 +58,7 @@ export default function columns(module, settings) {
       type: 'Text',
       required: true,
       id: 'contactTelephone',
+      section: 'Communication'
     },
     {
       name: 'contactEmail',
@@ -64,6 +69,7 @@ export default function columns(module, settings) {
       type: 'Email',
       required: true,
       id: 'contactEmail',
+      section: 'Communication'
     },
     {
       name: 'contactDesignation',
@@ -74,6 +80,7 @@ export default function columns(module, settings) {
       type: 'Text',
       required: false,
       id: 'contactDesignation',
+      section: 'Basic Information'
     },
     {
       name: 'address',
@@ -85,6 +92,7 @@ export default function columns(module, settings) {
       type: 'TextArea',
       required: false,
       id: 'address',
+      section: 'Communication'
     },
     {
       name: 'fk_createdBy',
@@ -100,6 +108,7 @@ export default function columns(module, settings) {
       },
       type: 'Lookup',
       required: true,
+      section: 'System Information'
     },
     {
       name: 'fk_updatedBy',
@@ -115,9 +124,11 @@ export default function columns(module, settings) {
       type: 'Lookup',
       required: true,
       id: 'fk_updatedBy',
+      section: 'System Information'
     },
     {
       name: 'createdAt',
+      id:'createdAt',
       label: 'Created On',
       options: {
         filter: true,
@@ -129,10 +140,12 @@ export default function columns(module, settings) {
             </Moment>
           );
         }
-      }
+      },
+      section: 'System Information'
     },
     {
       name: 'updatedAt',
+      id:'createdAt',
       label: 'Updated On',
       options: {
         filter: true,
@@ -144,7 +157,8 @@ export default function columns(module, settings) {
             </Moment>
           );
         }
-      }
+      },
+      section: 'System Information'
     },
     {
       name: 'action',

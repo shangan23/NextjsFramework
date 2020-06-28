@@ -1,5 +1,5 @@
 import Moment from 'react-moment';
-import CellEdit from '../components/Table/CellEdit';
+import CellEdit from '../components/Table/CellEditDialog';
 export default function columns(module, settings) {
   let columns = [
     {

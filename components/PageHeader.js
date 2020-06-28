@@ -10,6 +10,9 @@ import { connect } from 'react-redux';
 import Button from '@material-ui/core/Button';
 import AdminMenu from './Menus/Admin';
 import Router from 'next/router';
+import ViewColumnIcon from '@material-ui/icons/ViewColumn';
+import FilterListIcon from '@material-ui/icons/FilterList';
+import AddBoxIcon from '@material-ui/icons/AddBox';
 
 const drawerWidth = 170;
 
@@ -38,11 +41,12 @@ const useStyles = theme => ({
     },
     float: 'left',
     position: 'relative',
-    right: theme.spacing(-27.5),
+    right: theme.spacing(-20.5),
     top: theme.spacing(0.1),
   },
   pageTitle: {
     width: theme.spacing(100),
+    float:'left',
     position: 'relative',
     right: theme.spacing(1),
     top: theme.spacing(0.4)
@@ -50,6 +54,7 @@ const useStyles = theme => ({
   adminPageTitle: {
     width: theme.spacing(15),
     position: 'relative',
+    float:'left',
     right: theme.spacing(1),
     top: theme.spacing(0.4)
   },
@@ -152,9 +157,9 @@ class PageHeader extends React.Component {
           <Button size="small" onClick={() => Router.push(
             '/app/[appId]/create',
             `/app/${this.props.routerInfo.query.appId}/create`
-          )} color="secondary" disableElevation>Create</Button>
-          <Button size="small" color="primary" disableElevation>Filter</Button>
-          <Button size="small" color="primary" disableElevation>Columns</Button>
+          )} color="secondary" variant="text" startIcon={<AddBoxIcon />} disableElevation>Create</Button>
+          <Button size="small" color="primary" variant="text" startIcon={<FilterListIcon />} disableElevation>Filter</Button>
+          <Button size="small" variant="text" startIcon={<ViewColumnIcon />} color="primary" disableElevation>Columns</Button>
         </div>;
       }
       return (

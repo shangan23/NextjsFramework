@@ -21,7 +21,7 @@ const useStyles = makeStyles((theme) => ({
   },
   TableCell: {
     fontSize: '0.8rem',
-    padding:theme.spacing(1)
+    padding: theme.spacing(1)
     //paddingTop: theme.spacing(0.5),
     //paddingRight: theme.spacing(1),
     //paddingLeft: theme.spacing(3)
@@ -29,7 +29,7 @@ const useStyles = makeStyles((theme) => ({
   TableCellHead: {
     fontSize: '0.8rem',
     fontWeight: 500,
-    padding:theme.spacing(1)
+    padding: theme.spacing(1)
     //paddingTop: theme.spacing(0.5),
     //paddingRight: theme.spacing(0),
     //paddingLeft: theme.spacing(3)
@@ -53,6 +53,15 @@ export default function RespTable(columns, list, module) {
     navigatePage = (Router.router.query.limit) ? `?limit=${Router.router.query.limit}&page=${newPage}` : `?limit=${RecordsPerPage}&page=${newPage}`;
     Router.push(`${Router.router.route}${navigatePage}`);
   };
+
+  const handleCellClick = (index,row) => {
+    console.log(row, index, module);
+    console.log('/app/[appId]/[objId]', `/app/${module}/${row.id}`);
+    Router.push(
+      '/app/[appId]/[objId]',
+      `/app/${module}/${row.id}`
+    )
+  }
 
   const handleChangeRowsPerPage = (event) => {
     setRowsPerPage(+event.target.value);
@@ -86,12 +95,12 @@ export default function RespTable(columns, list, module) {
           <TableBody>
             {rows.map((row, index) => {
               return (
-                <TableRow hover role="checkbox" tabIndex={-1} key={Math.random()}>
+                <TableRow hover role="checkbox" tabIndex={-1} key={Math.random()} onClick={() => handleCellClick(index, rows[index])}>
                   {columns.map((col) => {
                     if (col.options.display != false) {
                       dataValue = rows[index][col.id];
                       dataValue = (col.fk) ? rows[index][col.id] : dataValue
-                      value = (col.options.customBodyRender) ? col.options.customBodyRender(dataValue,rows[index]) : dataValue;
+                      value = (col.options.customBodyRender) ? col.options.customBodyRender(dataValue, rows[index]) : dataValue;
                       return (
                         <TableCell className={classes.TableCell} key={Math.random()} align={'left'}>
                           {value}

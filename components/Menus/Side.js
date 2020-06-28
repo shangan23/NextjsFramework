@@ -59,7 +59,8 @@ function SideMenu({ display }) {
   }, []);
 
   let active, subActive, displayWith = '';
-  let routerActive = (router.pathname).split('/');
+  //let routerActive = (router.pathname).split('/');
+  let routerActive = (router.asPath).split('/');
 
   switch (routerActive.length) {
     case 2:

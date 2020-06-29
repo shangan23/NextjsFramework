@@ -23,8 +23,8 @@ import actions from '../../redux/actions';
 import { withStyles } from '@material-ui/core/styles';
 import moduleController from '../../modules/controller';
 import Router from 'next/router';
-import KeyboardBackspaceIcon from '@material-ui/icons/KeyboardBackspace';
-import {dynamicSort} from '../../utils/helper';
+
+import { dynamicSort } from '../../utils/helper';
 
 const useStyles = (theme) => ({
   fieldsContainer: {
@@ -77,6 +77,11 @@ class DynamicForm extends React.Component {
       fk_updatedBy: this.props.user.details
     }
     this.setState({ modeuleObject: defaultData });
+
+    if (this.props.action === 'edit') {
+      console.log('this.props.defaultValue',this.props.defaultValue);
+      this.setState({ modeuleObject: this.props.defaultValue });
+    }
   }
 
   render() {
@@ -213,7 +218,7 @@ class DynamicForm extends React.Component {
     );
 
     const onSubmit = async values => {
-      window.alert(JSON.stringify(values, 0, 2));
+      //window.alert(JSON.stringify(values, 0, 2));
       let resourceUrl, resourceMethod;
 
       if (this.props.action == 'new') {
@@ -238,11 +243,19 @@ class DynamicForm extends React.Component {
             this.props.notifications(data);
             //this.props.onClose();
             //console.log(Router.pathname);
-            Router.push(Router.pathname);
+            //Router.push(Router.asPath);
+            Router.push(
+              '/app/[appId]',
+              `/app/${this.props.module}`
+            )
           }).catch(error => {
             this.props.notifications(error);
             //this.props.onClose();
-            Router.push(Router.pathname);
+            //Router.push(Router.asPath);
+            Router.push(
+              '/app/[appId]',
+              `/app/${this.props.module}`
+            )
           });
       }
     };
@@ -257,18 +270,7 @@ class DynamicForm extends React.Component {
             <form onSubmit={handleSubmit} noValidate>
               <div>
                 <div className={(this.props.formTitle) ? classes.formTitle : ''}>
-                  <Button
-                    variant="text"
-                    color="primary"
-                    size="small"
-                    onClick={() => Router.push(
-                      '/app/[appId]',
-                      `/app/${module}`
-                    )}
-                    startIcon={<KeyboardBackspaceIcon />}
-                  >
-                    Back To List
-                </Button>
+                  <Typography variant="button">{this.props.formTitle}</Typography>
                 </div>
                 <div className={(this.props.formTitle) ? classes.formTitleButtons : classes.buttons}>
                   <Button size="small" type="button" onClick={reset} disabled={submitting || pristine} disableElevation>{this.props.buttonCancelText}</Button>

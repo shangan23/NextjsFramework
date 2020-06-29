@@ -3,16 +3,30 @@ import AppBar from '@material-ui/core/AppBar';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import Typography from '@material-ui/core/Typography';
 import Toolbar from '@material-ui/core/Toolbar';
-import { DateRangePicker, DateRange } from "@matharumanpreet00/react-daterange-picker";
+//import { DateRangePicker, DateRange } from "@matharumanpreet00/react-daterange-picker";
 import { withStyles } from '@material-ui/core/styles';
 import Moment from 'react-moment';
 import { connect } from 'react-redux';
 import Button from '@material-ui/core/Button';
 import AdminMenu from './Menus/Admin';
 import Router from 'next/router';
-import ViewColumnIcon from '@material-ui/icons/ViewColumn';
+import Badge from '@material-ui/core/Badge';
+//import ViewColumnIcon from '@material-ui/icons/ViewColumn';
 import FilterListIcon from '@material-ui/icons/FilterList';
 import AddBoxIcon from '@material-ui/icons/AddBox';
+import ArrowBackSharpIcon from '@material-ui/icons/ArrowBackSharp';
+import EditIcon from '@material-ui/icons/Edit';
+import DeleteIcon from '@material-ui/icons/Delete';
+import VisibilityIcon from '@material-ui/icons/Visibility';
+
+import Dialog from '@material-ui/core/Dialog';
+import DialogActions from '@material-ui/core/DialogActions';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogContentText from '@material-ui/core/DialogContentText';
+import DialogTitle from '@material-ui/core/DialogTitle';
+import actions from '../redux/actions';
+import Drawer from '@material-ui/core/Drawer';
+import FilterForm from '../components/Forms/FilterForm';
 
 const drawerWidth = 170;
 
@@ -30,31 +44,37 @@ const useStyles = theme => ({
     '& > *': {
       //margin: theme.spacing(0.3),
     },
-    float: 'left',
-    position: 'relative',
-    right: theme.spacing(-26),
-    top: theme.spacing(0.1),
+    float: 'right',
+    // position: 'relative',
+    // right: theme.spacing(-26),
+    // top: theme.spacing(0.1),
   },
   buttons: {
     '& > *': {
       margin: theme.spacing(0.5),
     },
-    float: 'left',
-    position: 'relative',
-    right: theme.spacing(-20.5),
+    //float: 'left',
+    //position: 'relative',
+    //right: theme.spacing(-20.5),
     top: theme.spacing(0.1),
   },
   pageTitle: {
-    width: theme.spacing(100),
-    float:'left',
-    position: 'relative',
-    right: theme.spacing(1),
+    //width: theme.spacing(100),
+    float: 'left',
+    //position: 'relative',
+    //right: theme.spacing(1),
     top: theme.spacing(0.4)
+  },
+  grow: {
+    flexGrow: 1,
+  },
+  pageActions: {
+    float: 'right',
   },
   adminPageTitle: {
     width: theme.spacing(15),
     position: 'relative',
-    float:'left',
+    float: 'left',
     right: theme.spacing(1),
     top: theme.spacing(0.4)
   },
@@ -68,6 +88,20 @@ const useStyles = theme => ({
     position: 'absolute',
     right: theme.spacing(2),
     top: theme.spacing(3)
+  },
+  infoBox: {
+    float: 'left',
+    padding: '10px'
+  },
+  wrapIcon: {
+    verticalAlign: 'bottom',
+    display: 'inline-flex'
+  },
+  toolbar: {
+    //maxHeight: theme.spacing(80),
+    top: theme.mixins.toolbar.minHeight+40,
+    bottom: -theme.mixins.toolbar.minHeight,
+    width:300,
   }
 });
 
@@ -81,12 +115,11 @@ const frameURL = async (req) => {
   //return { module }
 };
 
-
 class PageHeader extends React.Component {
 
   constructor(props) {
     super(props);
-    this.state = { open: false, dateRange: [{ startDate: new Date(), endDate: new Date() }] };
+    this.state = { filterOpen: false, dialogOpen: false, open: false, dateRange: [{ startDate: new Date(), endDate: new Date() }] };
     this.handleClick = this.handleClick.bind(this);
     this.handleOutsideClick = this.handleOutsideClick.bind(this);
   }
@@ -124,9 +157,98 @@ class PageHeader extends React.Component {
 
   render() {
     const { classes } = this.props;
-    let pageHeaderActions,pageTitle;
+
+    const handleCancelAction = () => {
+      this.setState({ dialogOpen: false });
+    };
+
+    const handleFilterClose = () => {
+      this.setState({ filterOpen: false });
+    }
+
+    const handleConfirmAction = () => {
+      const objectId = this.props.routerInfo.query.objId;
+      fetch(`${this.props.siteDetails.siteURL}api/app/${this.props.routerInfo.query.appId}/${objectId}`, {
+        method: 'DELETE'
+      })
+        .then(response => response.json())
+        .then(data => {
+          this.setState({ dialogOpen: false });
+          this.props.notifications(data);
+          Router.push(
+            '/app/[appId]',
+            `/app/${this.props.routerInfo.query.appId}`
+          );
+        });
+    };
+
+    let displayWith, display = "desktop";
+    if (display === 'desktop') {
+      displayWith = <div></div>;
+    } else {
+      displayWith = false;
+    }
+
+
+    const confirmDeleteDialog = (
+      <Dialog
+        disableBackdropClick
+        disableEscapeKeyDown
+        open={this.state.dialogOpen}
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description"
+      >
+        <DialogTitle id="alert-dialog-title">
+          <Typography variant="h6" color="primary">{'Are you sure you want to delete?'}</Typography>
+        </DialogTitle>
+        <DialogContent>
+          <DialogContentText id="alert-dialog-description">
+            <div>
+              Confirming this action will delete the record permanently.
+              <Typography color="secondary" variant="body2" className={classes.wrapIcon}>
+                Warning: This action cannot be undone!
+                </Typography>
+            </div>
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button id="cancel" onClick={handleCancelAction} color="secondary">
+            Cancel
+      </Button>
+          <Button id="cancel" onClick={handleConfirmAction} color="primary" autoFocus>
+            Confirm
+      </Button>
+        </DialogActions>
+      </Dialog>
+    );
+
+    const filterDrawer =
+      <Drawer
+        onEscapeKeyDown={handleFilterClose}
+        onBackdropClick={handleFilterClose}
+        BackdropProps={{ invisible: true }}
+        variant={"temprorary"}
+        anchor={'right'}
+        docked={false}
+        classes={{ paper: classes.toolbar }} 
+        open={this.state.filterOpen} >
+        <div>
+          <FilterForm
+            module={this.props.routerInfo.query.appId}
+            action="edit"
+            defaultValue={{}}
+            //onSubmit={onSubmit}
+            buttonCancelText="Clear"
+            onCancel={handleFilterClose}
+            buttonSubmitText="Filter"
+          />
+        </div>
+      </Drawer>
+
+
+    let pageHeaderActions, pageTitle;
     console.log('this.props.routerInfo', this.props.routerInfo);
-    console.log('${this.props.routerInfo.query.appId}',this.props.routerInfo.query.appId)
+    console.log('${this.props.routerInfo.query.appId}', this.props.routerInfo.query.appId)
     if (this.props.routerInfo.pathname.indexOf('/admin') != -1) {
       pageHeaderActions = <AdminMenu />;
     } else {
@@ -135,10 +257,10 @@ class PageHeader extends React.Component {
         pageTitle = 'Dashboard'
         pageHeaderActions = <div className={classes.datePickerButtons} >
           <div className={classes.dateRangePicker} ref={node => this.node = node}>
-            <DateRangePicker
+            {/*<DateRangePicker
               open={this.state.open}
               onChange={range => this.setState({ dateRange: [range], open: false })}
-            />
+            />*/}
           </div>
           <Button size="small" variant="text" disableElevation>
             <Typography variant="overline" ref={node => this.node = node} onClick={() => this.handleClick()}>
@@ -153,24 +275,85 @@ class PageHeader extends React.Component {
       } else if (this.props.routerInfo.pathname.indexOf('/app/') != -1) {
         pageTitle = this.props.routerInfo.query.appId;
         pageTitle = pageTitle.charAt(0).toUpperCase() + pageTitle.slice(1)
-        pageHeaderActions = <div className={classes.buttons}>
-          <Button size="small" onClick={() => Router.push(
-            '/app/[appId]/create',
-            `/app/${this.props.routerInfo.query.appId}/create`
-          )} color="secondary" variant="text" startIcon={<AddBoxIcon />} disableElevation>Create</Button>
-          <Button size="small" color="primary" variant="text" startIcon={<FilterListIcon />} disableElevation>Filter</Button>
-          <Button size="small" variant="text" startIcon={<ViewColumnIcon />} color="primary" disableElevation>Columns</Button>
-        </div>;
+
+        let backToList = <Button
+          variant="text"
+          color="secondary"
+          size="small"
+          onClick={() => Router.push(
+            '/app/[appId]',
+            `/app/${this.props.routerInfo.query.appId}`
+          )}
+          startIcon={<ArrowBackSharpIcon />}>Back To List</Button>;
+
+        let deleteButton = <Button
+          size="small"
+          variant="text"
+          startIcon={<DeleteIcon />}
+          onClick={() => this.setState({ dialogOpen: true })}
+          color="primary" disableElevation>Delete</Button>;
+
+        switch (this.props.routerInfo.route) {
+          case '/app/[appId]/[objId]':
+            pageHeaderActions = <div className={classes.buttons}>
+              {backToList}
+              <Button size="small" color="primary" variant="text" onClick={() => Router.push(
+                '/app/[appId]/[objId]/edit',
+                `/app/${this.props.routerInfo.query.appId}/${this.props.routerInfo.query.objId}/edit`
+              )} startIcon={<EditIcon />} disableElevation>Edit</Button>
+              {deleteButton}
+            </div>;
+            break;
+          case '/app/[appId]':
+            pageHeaderActions = <div className={classes.buttons}>
+              <Button size="small" onClick={() => Router.push(
+                '/app/[appId]/create',
+                `/app/${this.props.routerInfo.query.appId}/create`
+              )} color="secondary" variant="text" startIcon={<AddBoxIcon />} disableElevation>Create</Button>
+
+              <Button size="small" color="primary" onClick={() => this.setState({ filterOpen: true })} variant="text" startIcon={<FilterListIcon />} disableElevation>
+                <Badge variant={this.props.routerInfo.query.filter?'dot':''} color="secondary">
+                  Filter
+                </Badge>
+              </Button>
+              {
+                /* <Button size="small" variant="text" startIcon={<ViewColumnIcon />} color="primary" disableElevation>Columns</Button> */
+              }
+            </div>;
+            break;
+          case '/app/[appId]/create':
+            pageHeaderActions = <div className={classes.buttons}>
+              {backToList}
+            </div>;
+            break;
+          case '/app/[appId]/[objId]/edit':
+            pageHeaderActions = <div className={classes.buttons}>
+              {backToList}
+              <Button size="small" variant="text" startIcon={<VisibilityIcon />} color="primary" onClick={() => Router.push(
+                '/app/[appId]/[objId]',
+                `/app/${this.props.routerInfo.query.appId}/${this.props.routerInfo.query.objId}`
+              )}
+                disableElevation>View</Button>
+              {deleteButton}
+            </div>;
+            break;
+        }
       }
       return (
         <React.Fragment>
           <CssBaseline />
+          {confirmDeleteDialog}
+          {filterDrawer}
           <AppBar elevation={1} position="fixed" color="inherit" className={classes.appBar}>
             <Toolbar className={classes.toolbarStyle} variant="dense">
               <div className={classes.pageTitle}>
                 <Typography color="primary" variant="subtitle1">{pageTitle}</Typography>
               </div>
-              {pageHeaderActions}
+              <div className={classes.grow}>
+              </div>
+              <div className={classes.pageActions}>
+                {pageHeaderActions}
+              </div>
             </Toolbar>
           </AppBar>
         </React.Fragment>
@@ -181,10 +364,13 @@ class PageHeader extends React.Component {
     return (
       <React.Fragment>
         <CssBaseline />
+        {confirmDeleteDialog}
         <AppBar elevation={1} position="fixed" color="inherit" className={classes.appBar}>
           <Toolbar className={classes.toolbarAdminStyle} variant="dense">
             <div className={classes.adminPageTitle}>
               <Typography color="primary" variant="subtitle1">Administration</Typography>
+            </div>
+            <div className={classes.grow}>
             </div>
             {pageHeaderActions}
           </Toolbar>
@@ -204,5 +390,5 @@ function mapStateToProps(state) {
 }
 
 export default connect(
-  mapStateToProps
+  mapStateToProps, actions
 )(withStyles(useStyles)(PageHeader));

@@ -119,7 +119,7 @@ class DynamicCreate extends React.Component {
                 (
                   (fieldsToRender[index]['type'] == 'Date') &&
                   <Grid item xs={12} md={4} key={index}>
-                    <Typography variant="subtitle2">{fieldsToRender[index]['label']}:<Typography variant="body2"><Moment format={this.props.siteInfo.dateFormat}>{object[fieldsToRender[index]['id']]}</Moment></Typography></Typography>
+                    <Typography variant="subtitle2">{fieldsToRender[index]['label']}:<Typography variant="body2"><Moment format={this.props.siteInfo.dateFormat}>{object[fieldsToRender[index]['iddd']]}</Moment></Typography></Typography>
                   </Grid>
                   || (fieldsToRender[index]['type'] == 'Lookup') &&
                   <Grid item xs={12} md={4} key={index}>

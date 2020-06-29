@@ -306,7 +306,7 @@ function Layout({ children, title, deauthenticate, container, isAuthenticated, s
           <Typography variant="h5">{siteDetails.title}</Typography>
           <div className={classes.grow}>
           </div>
-          <div className={classes.search}>
+          {/*<div className={classes.search}>
             <div className={classes.searchIcon}>
               <SearchIcon />
             </div>
@@ -318,13 +318,13 @@ function Layout({ children, title, deauthenticate, container, isAuthenticated, s
               }}
               inputProps={{ 'aria-label': 'search' }}
             />
-          </div>
+            </div>*/}
           <div className={classes.sectionDesktop}>
             <IconButton aria-label="show 4 new mails" color="default">
               <AddCircleSharpIcon />
             </IconButton>
             <IconButton aria-label="show 17 new notifications" color="default">
-              <Badge badgeContent={17} color="secondary">
+              <Badge badgeContent={17} color="secondary" >
                 <NotificationsIcon />
               </Badge>
             </IconButton>

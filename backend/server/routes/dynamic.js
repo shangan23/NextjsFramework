@@ -1,8 +1,9 @@
 const models = require("../../models");
 const frame = require('../frameJson');
+const filterHelper = require('../helper');
 
 const bucket = '/api/';
-let runningModel, modelName, limit, page,response, statusCode;
+let runningModel, modelName, limit, page, filter, response, statusCode;
 
 module.exports = function (router) {
     router.get(`${bucket}:module`, (req, res) => {
@@ -13,6 +14,9 @@ module.exports = function (router) {
 
         limit = (req.query.limit && req.query.limit != 'undefined') ? parseInt(req.query.limit) : 10;
         page = (req.query.page && req.query.page != 'undefined') ? parseInt(req.query.page) : 0;
+        filter = (req.query.filter && req.query.filter != 'undefined') ? filterHelper(req.query.filter) : '';
+
+        console.log('filter', JSON.stringify(filter));
 
         runningModel.findAndCountAll({
             offset: (page * limit),
@@ -21,7 +25,8 @@ module.exports = function (router) {
             order: [
                 ['id', 'DESC']
             ],
-            include: ['fk_createdBy', 'fk_updatedBy']
+            include: ['fk_createdBy', 'fk_updatedBy'],
+            where: filter
         })
             .then(runningModel => {
                 res.json(runningModel);
@@ -48,7 +53,7 @@ module.exports = function (router) {
     });
 
     router.post(`${bucket}:module`, (req, res) => {
-        console.log('payload -- ',req.body);
+        console.log('payload -- ', req.body);
         modelName = (req.params.module)
         modelName = modelName.charAt(0).toUpperCase() + modelName.slice(1);
         runningModel = models[modelName];
@@ -88,7 +93,7 @@ module.exports = function (router) {
         modelName = (req.params.module)
         modelName = modelName.charAt(0).toUpperCase() + modelName.slice(1);
         runningModel = models[modelName];
-      
+
         runningModel.destroy({ where: { id: req.params.id } })
             .then(runningModel => {
                 response = frame(runningModel, req.method);

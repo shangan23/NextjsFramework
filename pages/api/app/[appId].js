@@ -20,6 +20,7 @@ const get = (req, res) => {
             let parameters = `?`
             parameters += (query.limit) ? `limit=${query.limit}` : '';
             parameters += (query.page) ? `&page=${query.page}` : '';
+            parameters += (query.filter) ? `&filter=${query.filter}` : '';
             parameters = (parameters == '?') ? `?limit=${RecordsPerPage}` : parameters;
             fetch(`${API}/${query.appId}${parameters}`, { headers })
                 .then((res) => res.json())

@@ -51,10 +51,20 @@ export default function RespTable(columns, list, module) {
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
     navigatePage = (Router.router.query.limit) ? `?limit=${Router.router.query.limit}&page=${newPage}` : `?limit=${RecordsPerPage}&page=${newPage}`;
-    Router.push(`${Router.router.route}${navigatePage}`);
+    switch (Router.router.route) {
+      case '/app/[appId]':
+        Router.push(
+          `/app/[appId]${navigatePage}`,
+          `/app/${module}${navigatePage}`,
+        );
+        break;
+      default:
+        Router.push(`${Router.router.route}${navigatePage}`);
+        break;
+    }
   };
 
-  const handleCellClick = (index,row) => {
+  const handleCellClick = (index, row) => {
     console.log(row, index, module);
     console.log('/app/[appId]/[objId]', `/app/${module}/${row.id}`);
     Router.push(
@@ -64,10 +74,20 @@ export default function RespTable(columns, list, module) {
   }
 
   const handleChangeRowsPerPage = (event) => {
-    setRowsPerPage(+event.target.value);
+    setRowsPerPage((+event.target.value)?+event.target.value:RecordsPerPage);
     setPage(0);
     limit = `?limit=${+event.target.value}&page=0`;
-    Router.push(`${Router.router.route}${limit}`);
+    switch (Router.router.route) {
+      case '/app/[appId]':
+        Router.push(
+          `/app/[appId]${limit}`,
+          `/app/${module}${limit}`
+        );
+        break;
+      default:
+        Router.push(`${Router.router.route}${limit}`);
+        break;
+    }
   };
 
   return (

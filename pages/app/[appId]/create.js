@@ -47,7 +47,7 @@ class DynamicCreate extends React.Component {
     return (
       <DynamicForm
         listLink={''}
-        formTitle={'test'}
+        formTitle={'create'}
         module={module}
         action="new"
         defaultValue={settingsData}

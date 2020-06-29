@@ -15,7 +15,8 @@ class CellEdit extends React.Component {
     this.state = { renderView: 'onlyAction' };
   }
 
-  handleClick() {
+  handleClick(e) {
+    //e.stopPropagation();
     console.log(this.props.cellData);
     this.setState({ renderView: 'withDialogForm' });
   }
@@ -28,7 +29,7 @@ class CellEdit extends React.Component {
     if (this.state.renderView == 'onlyAction') {
       return (
         <React.Fragment>
-          <Button color='secondary' onClick={() => this.handleClick()}>
+          <Button color='secondary' onClick={(e) => this.handleClick(e)}>
             Edit
           </Button>
         </React.Fragment>
@@ -36,7 +37,7 @@ class CellEdit extends React.Component {
     } else if (this.state.renderView == 'withDialogForm') {
       return (
         <React.Fragment>
-          <Button color='secondary' onClick={() => this.handleClick()}>
+          <Button color='secondary' onClick={(e) => this.handleClick(e)}>
             Edit
           </Button>
           <DialogForm objectId={this.props.cellData.id} module={this.props.module} action="edit" isOpen={true} onClose={onClose} />

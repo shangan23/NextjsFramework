@@ -130,6 +130,7 @@ export default function columns(module, settings) {
       name: 'createdAt',
       id:'createdAt',
       label: 'Created On',
+      type: 'Date',
       options: {
         filter: true,
         sort: false,
@@ -147,6 +148,7 @@ export default function columns(module, settings) {
       name: 'updatedAt',
       id:'createdAt',
       label: 'Updated On',
+      type: 'Date',
       options: {
         filter: true,
         sort: false,

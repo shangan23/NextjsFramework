@@ -1,9 +1,9 @@
 import { DatePicker } from 'mui-rff';
 import DateFnsUtils from '@date-io/date-fns';
 
-export default function FieldDate({fieldsToRender, index}) {
+export default function FieldDate({fieldsToRender, index, source}) {
   return (<DatePicker
-    required={fieldsToRender[index]['required']}
+    required={(!source)?fieldsToRender[index]['required']:false}
     name={fieldsToRender[index]['name']}
     margin="normal"
     label={fieldsToRender[index]['label']}

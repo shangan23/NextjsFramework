@@ -14,15 +14,8 @@ import Moment from 'react-moment';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import { withStyles } from '@material-ui/core/styles';
-import Stepper from '@material-ui/core/Stepper';
-import Step from '@material-ui/core/Step';
-import StepButton from '@material-ui/core/StepButton';
-import Button from '@material-ui/core/Button';
 
 const useStyles = theme => ({
-  root: {
-    width: '100%',
-  },
   appBar: {
     top: theme.spacing(0),
     //marginLeft: theme.spacing(-2),
@@ -43,14 +36,7 @@ const useStyles = theme => ({
   },
   grow: {
     flexGrow: 1,
-  },
-  completed: {
-    display: 'inline-block',
-  },
-  instructions: {
-    marginTop: theme.spacing(1),
-    marginBottom: theme.spacing(1),
-  },
+  }
 });
 
 const frameURL = async (req) => {
@@ -75,14 +61,11 @@ const frameURL = async (req) => {
   return { module, objJson }
 };
 
-function getSteps() {
-  return ['Item Details', 'Add Items', 'Adjust Stocks'];
-}
+
 
 class DynamicCreate extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { activeStep: 0, completed: {} };
   }
 
   static async getInitialProps(ctx) {
@@ -102,64 +85,9 @@ class DynamicCreate extends React.Component {
   }
 
   render() {
-
-    const steps = getSteps();
-    const { classes } = this.props;
-
-    const totalSteps = () => {
-      return steps.length;
-    };
-
-    const completedSteps = () => {
-      return Object.keys(this.state.completed).length;
-    };
-
-    const isLastStep = () => {
-      return this.state.activeStep === totalSteps() - 1;
-    };
-
-    const allStepsCompleted = () => {
-      return completedSteps() === totalSteps();
-    };
-
-    const handleNext = () => {
-      const newActiveStep =
-        isLastStep() && !allStepsCompleted()
-          ? // It's the last step, but not all steps have been completed,
-          // find the first step that has been completed
-          steps.findIndex((step, i) => !(i in this.state.completed))
-          : this.state.activeStep + 1;
-      this.setState({ activeStep: newActiveStep });
-      //setActiveStep(newActiveStep);
-    };
-
-    const handleBack = () => {
-      //setActiveStep((prevActiveStep) => prevActiveStep - 1);
-      this.setState({ activeStep: (prevActiveStep) => prevActiveStep - 1 });
-    };
-
-    const handleStep = (step) => () => {
-      //setActiveStep(step);
-      this.setState({ activeStep: step });
-    };
-
-    const handleComplete = () => {
-      const newCompleted = this.state.completed;
-      newCompleted[this.state.activeStep] = true;
-      this.setState({ completed: newCompleted });
-      //setCompleted(newCompleted);
-      handleNext();
-    };
-
-    const handleReset = () => {
-      //setActiveStep(0);
-      this.setState({ activeStep: 0 });
-      this.setState({ completed: {} });
-      //setCompleted({});
-    };
-
     let module = this.props.module;
     let fieldsToRender = moduleController(module, this.props.siteInfo);
+    const { classes } = this.props;
     let object = this.props.objJson;
 
     console.log(object);
@@ -168,7 +96,7 @@ class DynamicCreate extends React.Component {
       if (obj.primary) {
         objTitle = object[obj.id];
       }
-      if (obj.fk && obj.id === 'fk_createdBy') {
+      if(obj.fk && obj.id === 'fk_createdBy'){
         objCreatedBy = object['fk_createdBy'].fullName;
       }
     });
@@ -202,19 +130,19 @@ class DynamicCreate extends React.Component {
                 (
                   (fieldsToRender[index]['type'] == 'Date') &&
                   <Grid item xs={12} md={4} key={index}>
-                    <Typography variant="body2">{fieldsToRender[index]['label']}:</Typography><Typography variant="body1"><Moment format={this.props.siteInfo.dateFormat}>{object[fieldsToRender[index]['iddd']]}</Moment></Typography>
+                    <Typography variant="subtitle2">{fieldsToRender[index]['label']}:<Typography variant="body2"><Moment format={this.props.siteInfo.dateFormat}>{object[fieldsToRender[index]['iddd']]}</Moment></Typography></Typography>
                   </Grid>
                   || (fieldsToRender[index]['type'] == 'Lookup') &&
                   <Grid item xs={12} md={4} key={index}>
-                    <Typography variant="body2">{fieldsToRender[index]['label']}:</Typography><Typography variant="body1">{object[fieldsToRender[index]['id']][fieldsToRender[index]['moduleField']]}</Typography>
+                    <Typography variant="subtitle2">{fieldsToRender[index]['label']}:<Typography variant="body2">{object[fieldsToRender[index]['id']][fieldsToRender[index]['moduleField']]}</Typography></Typography>
                   </Grid>
                   || (fieldsToRender[index]['id'] != 'action') &&
                   <Grid item xs={12} md={4} key={index}>
-                    <Typography variant="body2"> {fieldsToRender[index]['label']}:</Typography><Typography variant="body1">{object[fieldsToRender[index]['id']]}</Typography>
+                    <Typography variant="subtitle2"> {fieldsToRender[index]['label']}:<Typography variant="body2">{object[fieldsToRender[index]['id']]}</Typography></Typography>
                   </Grid>
                   || (fieldsToRender[index]['id'] != 'id') &&
                   <Grid item xs={12} md={4} key={index}>
-                    <Typography variant="body2"> {fieldsToRender[index]['label']}:</Typography><Typography variant="body1">{object[fieldsToRender[index]['id']]}</Typography>
+                    <Typography variant="subtitle2"> {fieldsToRender[index]['label']}:<Typography variant="body2">{object[fieldsToRender[index]['id']]}</Typography></Typography>
                   </Grid>
                 )
               }
@@ -223,36 +151,6 @@ class DynamicCreate extends React.Component {
         }
       </Grid>
     );
-
-    const getStepContent = (step) => {
-      switch (step) {
-        case 0:
-          return renderFields;
-        case 1:
-          return 'Step 2: What is an ad group anyways?';
-        case 2:
-          return 'Step 3: This is the bit I really care about!';
-        default:
-          return 'Unknown step';
-      }
-    }
-
-    const stepRender = (<div className={classes.root}>
-      <div>
-        {allStepsCompleted() ? (
-          <div>
-            <Typography className={classes.instructions}>
-              All steps completed - you&apos;re finished
-            </Typography>
-            <Button onClick={handleReset}>Reset</Button>
-          </div>
-        ) : (
-            <div>
-              <Typography className={classes.instructions}>{getStepContent(this.state.activeStep)}</Typography>
-            </div>
-          )}
-      </div>
-    </div>);
 
     return (
       <Grid container spacing={0} key={`${Math.random()}`}>
@@ -267,19 +165,10 @@ class DynamicCreate extends React.Component {
               </div>
               <div className={classes.grow}>
               </div>
-              <Stepper nonLinear activeStep={this.state.activeStep}>
-                {steps.map((label, index) => (
-                  <Step key={label}>
-                    <StepButton onClick={handleStep(index)} completed={this.state.completed[index]}>
-                      {label}
-                    </StepButton>
-                  </Step>
-                ))}
-              </Stepper>
             </Toolbar>
           </AppBar>
           <Paper elevation={0} variant="outlined" className={classes.paperDetails}>
-            {stepRender}
+            {renderFields}
           </Paper>
         </Grid>
       </Grid >

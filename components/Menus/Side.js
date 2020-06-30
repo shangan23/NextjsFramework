@@ -102,13 +102,11 @@ function SideMenu({ display }) {
     'type': '/app/[appId]'
   },{
     'name': 'Items',
-    'link': '',
-    'icon': <AppsIcon color={(active == 'products') ? 'secondary' : 'primary'} className={(active == 'products') ? classes.active : ''} />,
-    'id': 'products',
-    'menus': [
-      { 'name': 'Single', 'link': '/app/products/items', 'icon': '', 'id': 'items' },
-      { 'name': 'Grouped', 'link': '/app/products/groupedItems', 'icon': '', 'id': 'groupedItems' }
-    ]
+    'link': '/app/items',
+    'icon': <AppsIcon color={(active == 'items') ? 'secondary' : 'primary'} className={(active == 'items') ? classes.active : ''} />,
+    'id': 'items',
+    'menus': [],
+    'type': '/app/[appId]'
   }, {
     'name': 'Inventory',
     'link': '/app/inventory/stocks',

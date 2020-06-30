@@ -63,6 +63,7 @@ const useStyles = theme => ({
     float: 'left',
     //position: 'relative',
     //right: theme.spacing(1),
+    marginLeft:theme.spacing(1),
     top: theme.spacing(0.4)
   },
   grow: {
@@ -76,7 +77,8 @@ const useStyles = theme => ({
     position: 'relative',
     float: 'left',
     right: theme.spacing(1),
-    top: theme.spacing(0.4)
+    top: theme.spacing(0.4),
+    marginLeft:theme.spacing(3),
   },
   toolbarStyle: {
     minHeight: theme.spacing(1)
@@ -99,8 +101,7 @@ const useStyles = theme => ({
   },
   toolbar: {
     //maxHeight: theme.spacing(80),
-    top: theme.mixins.toolbar.minHeight+40,
-    bottom: -theme.mixins.toolbar.minHeight,
+    top: theme.mixins.toolbar.minHeight+10,
     width:300,
   }
 });
@@ -311,7 +312,7 @@ class PageHeader extends React.Component {
                 `/app/${this.props.routerInfo.query.appId}/create`
               )} color="secondary" variant="text" startIcon={<AddBoxIcon />} disableElevation>Create</Button>
 
-              <Button size="small" color="primary" onClick={() => this.setState({ filterOpen: true })} variant="text" startIcon={<FilterListIcon />} disableElevation>
+              <Button size="small" color={this.props.routerInfo.query.filter?'secondary':'primary'} onClick={() => this.setState({ filterOpen: true })} variant="text" startIcon={<FilterListIcon />} disableElevation>
                 <Badge variant={this.props.routerInfo.query.filter?'dot':''} color="secondary">
                   Filter
                 </Badge>
@@ -345,7 +346,7 @@ class PageHeader extends React.Component {
           {confirmDeleteDialog}
           {filterDrawer}
           <AppBar elevation={1} position="fixed" color="inherit" className={classes.appBar}>
-            <Toolbar className={classes.toolbarStyle} variant="dense">
+            <Toolbar disableGutters className={classes.toolbarStyle} variant="dense">
               <div className={classes.pageTitle}>
                 <Typography color="primary" variant="subtitle1">{pageTitle}</Typography>
               </div>
@@ -366,7 +367,7 @@ class PageHeader extends React.Component {
         <CssBaseline />
         {confirmDeleteDialog}
         <AppBar elevation={1} position="fixed" color="inherit" className={classes.appBar}>
-          <Toolbar className={classes.toolbarAdminStyle} variant="dense">
+          <Toolbar disableGutters className={classes.toolbarAdminStyle} variant="dense">
             <div className={classes.adminPageTitle}>
               <Typography color="primary" variant="subtitle1">Administration</Typography>
             </div>

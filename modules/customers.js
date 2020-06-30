@@ -17,6 +17,7 @@ export default function columns(module, settings) {
     {
       name: 'name',
       label: 'Name',
+      primary:true,
       options: {
         filter: true
       },
@@ -98,8 +99,9 @@ export default function columns(module, settings) {
       name: 'fk_createdBy',
       id: 'fk_createdBy',
       fk: true,
-      //reference: { id: 'createdBy', name: 'createdBy' },
       label: 'Created By',
+      module:'users',
+      moduleField:'fullName',
       options: {
         filter: true,
         customBodyRender: (value) => {
@@ -112,9 +114,10 @@ export default function columns(module, settings) {
     },
     {
       name: 'fk_updatedBy',
-      //reference: { id: 'updatedBy', name: 'updatedBy' },
       label: 'Updated By',
       fk: true,
+      module:'users',
+      moduleField:'fullName',
       options: {
         filter: false,
         customBodyRender: (value) => {
@@ -161,22 +164,7 @@ export default function columns(module, settings) {
         }
       },
       section: 'System Information'
-    },
-    {
-      name: 'action',
-      id: 'action',
-      label: 'Action',
-      options: {
-        filter: false,
-        sort: false,
-        empty: true,
-        customBodyRender: (value, tableMeta) => {
-          return (
-            <CellEdit module={module} cellData={tableMeta} />
-          );
-        }
-      }
-    },
+    }
   ];
   return columns;
 }

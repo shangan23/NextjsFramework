@@ -142,7 +142,7 @@ class DynamicForm extends React.Component {
                     <Grid item xs={12} md={12}>
                       <Typography color="primary" variant="overline">{fieldsToRender[index]['section']}</Typography>
                     </Grid> :
-                    (fieldsToRender[index]['section'] != fieldsToRender[(index - 1)]['section']) ?
+                    (fieldsToRender[index]['section'] != fieldsToRender[(index - 1)]['section'] && fieldsToRender[index]['section'] != 'System Information') ?
                       <React.Fragment key={`layout-frag${Math.random()}`}>
                         <Grid item xs={12} md={12}>
                           <Typography color="primary" variant="overline">{fieldsToRender[index]['section']}</Typography>
@@ -153,51 +153,51 @@ class DynamicForm extends React.Component {
               }
               {
                 (
-                  (fieldsToRender[index]['type'] == 'Text') &&
+                  (fieldsToRender[index]['type'] == 'Text' && fieldsToRender[index]['section'] != 'System Information') &&
                   <Grid item xs={12} md={4} key={index}>
                     <Text index={index} fieldsToRender={fieldsToRender} />
                   </Grid>
-                  || (fieldsToRender[index]['type'] == 'Date') &&
+                  || (fieldsToRender[index]['type'] == 'Date'  && fieldsToRender[index]['section'] != 'System Information') &&
                   <Grid item xs={12} md={4} key={index}>
                     <Date index={index} fieldsToRender={fieldsToRender} />
                   </Grid>
-                  || (fieldsToRender[index]['type'] == 'Select') &&
+                  || (fieldsToRender[index]['type'] == 'Select'  && fieldsToRender[index]['section'] != 'System Information') &&
                   <Grid item xs={12} md={4} key={index}>
                     <Select index={index} fieldsToRender={fieldsToRender} />
                   </Grid>
-                  || (fieldsToRender[index]['type'] == 'Checkbox') &&
+                  || (fieldsToRender[index]['type'] == 'Checkbox'  && fieldsToRender[index]['section'] != 'System Information') &&
                   <Grid item xs={12} md={4} key={index}>
                     <Checkbox index={index} fieldsToRender={fieldsToRender} />
                   </Grid>
-                  || (fieldsToRender[index]['type'] == 'Time') &&
+                  || (fieldsToRender[index]['type'] == 'Time'  && fieldsToRender[index]['section'] != 'System Information') &&
                   <Grid item xs={12} md={4} key={index}>
                     <Time index={index} fieldsToRender={fieldsToRender} />
                   </Grid>
-                  || (fieldsToRender[index]['type'] == 'TextArea') &&
+                  || (fieldsToRender[index]['type'] == 'TextArea'  && fieldsToRender[index]['section'] != 'System Information') &&
                   <Grid item xs={12} md={12} key={index}>
                     <TextArea index={index} fieldsToRender={fieldsToRender} />
                   </Grid>
-                  || (fieldsToRender[index]['type'] == 'Radio') &&
+                  || (fieldsToRender[index]['type'] == 'Radio'  && fieldsToRender[index]['section'] != 'System Information') &&
                   <Grid item xs={12} md={4} key={index}>
                     <Radio index={index} fieldsToRender={fieldsToRender} />
                   </Grid>
-                  || (fieldsToRender[index]['type'] == 'Autocomplete') &&
+                  || (fieldsToRender[index]['type'] == 'Autocomplete'  && fieldsToRender[index]['section'] != 'System Information') &&
                   <Grid item xs={12} md={4} key={index}>
                     <Autocomplete index={index} fieldsToRender={fieldsToRender} />
                   </Grid>
-                  || (fieldsToRender[index]['type'] == 'Email') &&
+                  || (fieldsToRender[index]['type'] == 'Email'  && fieldsToRender[index]['section'] != 'System Information') &&
                   <Grid item xs={12} md={4} key={index}>
                     <Email index={index} fieldsToRender={fieldsToRender} />
                   </Grid>
-                  || (fieldsToRender[index]['type'] == 'Password') &&
+                  || (fieldsToRender[index]['type'] == 'Password'  && fieldsToRender[index]['section'] != 'System Information') &&
                   <Grid item xs={12} md={4} key={index}>
                     <Password index={index} fieldsToRender={fieldsToRender} />
                   </Grid>
-                  || (fieldsToRender[index]['type'] == 'Switch') &&
+                  || (fieldsToRender[index]['type'] == 'Switch'  && fieldsToRender[index]['section'] != 'System Information') &&
                   <Grid item xs={12} md={4} key={index}>
                     <Switch index={index} fieldsToRender={fieldsToRender} />
                   </Grid>
-                  || (fieldsToRender[index]['type'] == 'AutocompleteSingle') &&
+                  || (fieldsToRender[index]['type'] == 'AutocompleteSingle'  && fieldsToRender[index]['section'] != 'System Information') &&
                   <Grid item xs={12} md={4} key={index}>
                     <AutoCompleteSingle index={index} fieldsToRender={fieldsToRender} />
                   </Grid>
@@ -205,7 +205,7 @@ class DynamicForm extends React.Component {
                   <Grid item xs={12} md={4} key={index}>
                     <File index={index} fieldsToRender={fieldsToRender} onFileUpload={onFileUpload} />
                   </Grid>
-                  || (fieldsToRender[index]['type'] == 'Lookup') &&
+                  || (fieldsToRender[index]['type'] == 'Lookup'  && fieldsToRender[index]['section'] != 'System Information') &&
                   <Grid item xs={12} md={4} key={index}>
                     <Lookup index={index} fieldsToRender={fieldsToRender} />
                   </Grid>
@@ -225,7 +225,7 @@ class DynamicForm extends React.Component {
         resourceUrl = `${this.props.siteDetails.siteURL}api/app/${this.props.module}`;
         resourceMethod = 'POST';
       } else if (this.props.action == 'edit') {
-        resourceUrl = `${this.props.siteDetails.siteURL}api/app/${this.props.module}/${this.props.objectId}`;
+        resourceUrl = `${this.props.siteDetails.siteURL}api/app/${this.props.module}/${this.props.defaultValue.id}`;
         resourceMethod = 'PUT';
       }
 

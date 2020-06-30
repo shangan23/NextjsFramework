@@ -12,16 +12,19 @@ export default function columns(module, settings) {
       type: 'Text',
       required: false,
       id: 'id',
+      section: 'System Information',
     },
     {
       name: 'name',
       label: 'Name',
+      primary: true,
       options: {
         filter: true
       },
       type: 'Text',
       required: false,
       id: 'name',
+      section: 'Basic Information',
     },
     {
       name: 'contactName',
@@ -33,6 +36,7 @@ export default function columns(module, settings) {
       type: 'Text',
       required: true,
       id: 'contactName',
+      section: 'Basic Information',
     },
     {
       name: 'number',
@@ -44,6 +48,7 @@ export default function columns(module, settings) {
       type: 'Text',
       required: true,
       id: 'number',
+      section: 'Communication',
     },
     {
       name: 'email',
@@ -54,6 +59,7 @@ export default function columns(module, settings) {
       type: 'Email',
       required: true,
       id: 'email',
+      section: 'Communication',
     },
     {
       name: 'designation',
@@ -64,6 +70,7 @@ export default function columns(module, settings) {
       type: 'Text',
       required: false,
       id: 'designation',
+      section: 'Basic Information',
     },
     {
       name: 'address',
@@ -75,12 +82,16 @@ export default function columns(module, settings) {
       type: 'TextArea',
       required: false,
       id: 'address',
+      section: 'Communication',
     },
     {
       name: 'fk_createdBy',
       id: 'fk_createdBy',
       //reference: { id: 'createdBy', name: 'createdBy' },
       label: 'Created By',
+      section: 'System Information',
+      module: 'users',
+      moduleField: 'fullName',
       options: {
         filter: true,
         customBodyRender: (value) => {
@@ -94,6 +105,9 @@ export default function columns(module, settings) {
       name: 'fk_updatedBy',
       //reference: { id: 'updatedBy', name: 'updatedBy' },
       label: 'Updated By',
+      module: 'users',
+      section: 'System Information',
+      moduleField: 'fullName',
       options: {
         filter: false,
         customBodyRender: (value) => {
@@ -107,6 +121,9 @@ export default function columns(module, settings) {
     {
       name: 'createdAt',
       label: 'Created On',
+      id: 'createdAt',
+      name: 'createdAt',
+      section: 'System Information',
       options: {
         filter: true,
         sort: false,
@@ -122,6 +139,9 @@ export default function columns(module, settings) {
     {
       name: 'updatedAt',
       label: 'Updated On',
+      id:'updatedAt',
+      name:'updatedAt',
+      section: 'System Information',
       options: {
         filter: true,
         sort: false,
@@ -133,22 +153,7 @@ export default function columns(module, settings) {
           );
         }
       }
-    },
-    {
-      name: 'action',
-      id: 'action',
-      label: 'Action',
-      options: {
-        filter: false,
-        sort: false,
-        empty: true,
-        customBodyRender: (value, tableMeta) => {
-          return (
-            <CellEdit module={module} cellData={tableMeta} />
-          );
-        }
-      }
-    },
+    }
   ];
   return columns;
 }

@@ -20,14 +20,14 @@ const useStyles = makeStyles((theme) => ({
     minHeight: theme.spacing(63.5),
   },
   TableCell: {
-    fontSize: '0.8rem',
-    padding: theme.spacing(1)
+    fontSize: '0.82rem',
+    padding: theme.spacing(1.8)
     //paddingTop: theme.spacing(0.5),
     //paddingRight: theme.spacing(1),
     //paddingLeft: theme.spacing(3)
   },
   TableCellHead: {
-    fontSize: '0.8rem',
+    fontSize: '0.85rem',
     fontWeight: 500,
     padding: theme.spacing(1)
     //paddingTop: theme.spacing(0.5),
@@ -102,7 +102,7 @@ export default function RespTable(columns, list, module) {
                     <TableCell
                       className={classes.TableCellHead}
                       key={Math.random()}
-                      align={'left'}
+                      align={'center'}
                     //style={{ minWidth: 170 }}
                     >
                       {column.label}

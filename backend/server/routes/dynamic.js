@@ -1,6 +1,6 @@
 const models = require("../../models");
 const frame = require('../frameJson');
-const filterHelper = require('../helper');
+const helper = require('../helper');
 
 const bucket = '/api/';
 let runningModel, modelName, limit, page, filter, response, statusCode;
@@ -14,8 +14,9 @@ module.exports = function (router) {
 
         limit = (req.query.limit && req.query.limit != 'undefined') ? parseInt(req.query.limit) : 10;
         page = (req.query.page && req.query.page != 'undefined') ? parseInt(req.query.page) : 0;
-        filter = (req.query.filter && req.query.filter != 'undefined') ? filterHelper(req.query.filter) : '';
+        filter = (req.query.filter && req.query.filter != 'undefined') ? helper.filters(req.query.filter) : '';
 
+        //console.log('runningModel', Object.keys(helper.association(runningModel)));
         console.log('filter', JSON.stringify(filter));
 
         runningModel.findAndCountAll({
@@ -25,7 +26,7 @@ module.exports = function (router) {
             order: [
                 ['id', 'DESC']
             ],
-            include: ['fk_createdBy', 'fk_updatedBy'],
+            include: Object.keys(helper.association(runningModel)),
             where: filter
         })
             .then(runningModel => {
@@ -43,7 +44,7 @@ module.exports = function (router) {
 
         runningModel.findAll({
             where: { id: req.params.id },
-            include: ['fk_createdBy', 'fk_updatedBy']
+            include: Object.keys(helper.association(runningModel)),
         })
             .then(runningModel => {
                 console.log(runningModel);

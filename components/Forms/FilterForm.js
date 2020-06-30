@@ -29,54 +29,60 @@ import Toolbar from '@material-ui/core/Toolbar';
 const drawerWidth = 300;
 const useStyles = (theme) => ({
   appBar: {
-    top: theme.spacing(8),
-    //bottom: 0,
-    //padding: theme.spacing(1),
+    top: theme.spacing(8.25),
+    bottom:'auto',
+    position:'fixed',
+    zIndex: theme.zIndex.snackbar + 1200,
+    height: theme.spacing(4.8),
     [theme.breakpoints.up('md')]: {
       width: `calc(100% - calc(100% - ${drawerWidth}px))`,
     },
-    marginLeft: drawerWidth,
+  },
+  appBarBottom: {
+    top: 'auto',
+    bottom: 0,
+    height: theme.spacing(4),
+    [theme.breakpoints.up('md')]: {
+      width: `calc(100% - calc(100% - ${drawerWidth}px))`,
+    },
   },
   grow: {
     flexGrow: 1,
   },
+  pageTitle: {
+    marginLeft:theme.spacing(1),
+   // top: theme.spacing(0.4)
+  },
   paper: {
-    // maxHeight: theme.spacing(60),
     overflow: 'scroll',
     fontSize: '0.8rem',
   },
   fieldsContainer: {
-    bottom: 0
-  }, buttons: {
+    top: theme.spacing(30),
+    height: theme.spacing(77),
+    minHeight: theme.spacing(77),
+  }, 
+  buttons: {
     '& > *': {
-      margin: theme.spacing(0.5),
+      margin: theme.spacing(0.1),
     },
-    // position: 'fixed',
     top: 'auto',
     bottom: 0,
     float: 'right'
-  },
-  formTitle: {
-    float: 'left',
-    paddingLeft: theme.spacing(1),
-    paddingTop: theme.spacing(0.5),
-    //width: theme.spacing(80)
   },
   formTitleButtons: {
     '& > *': {
       margin: theme.spacing(0.5),
     },
     float: 'right'
-    // left: theme.spacing(126.5),
   },
   fields: {
     margin: theme.spacing(1),
   },
-  clear: {
-    clear: 'both'
-  }
+  toolbarStyle: {
+    minHeight: theme.spacing(1)
+  },
 });
-
 
 class FilterForm extends React.Component {
 
@@ -120,56 +126,55 @@ class FilterForm extends React.Component {
       onSubmit(values);
     };
 
-    //&& fieldsToRender[index]['options']['display']== null
     const renderFields = (
       <Grid container spacing={1} className={classes.fields} key={`grid-form${Math.random()}`}>
         {fieldsToRender.map((data, index) => (
           <React.Fragment key={`layout-frag${Math.random()}`}>
-            {(fieldsToRender[index]['type'] == 'Text') &&
+            {(fieldsToRender[index]['type'] == 'Text' && !!fieldsToRender[index]['options']['filter']) &&
               <Grid item xs={12} md={12} key={index}>
                 <Text index={index} fieldsToRender={fieldsToRender} source="filter" />
               </Grid>
-              || (fieldsToRender[index]['type'] == 'Date') &&
+              || (fieldsToRender[index]['type'] == 'Date' && !!fieldsToRender[index]['options']['filter']) &&
               <Grid item xs={12} md={12} key={index}>
                 <Date index={index} fieldsToRender={fieldsToRender} source="filter" />
               </Grid>
-              || (fieldsToRender[index]['type'] == 'Select') &&
+              || (fieldsToRender[index]['type'] == 'Select' && !!fieldsToRender[index]['options']['filter']) &&
               <Grid item xs={12} md={12} key={index}>
                 <Select index={index} fieldsToRender={fieldsToRender} source="filter" />
               </Grid>
-              || (fieldsToRender[index]['type'] == 'Checkbox') &&
+              || (fieldsToRender[index]['type'] == 'Checkbox' && !!fieldsToRender[index]['options']['filter']) &&
               <Grid item xs={12} md={12} key={index}>
                 <Checkbox index={index} fieldsToRender={fieldsToRender} source="filter" />
               </Grid>
-              || (fieldsToRender[index]['type'] == 'Time') &&
+              || (fieldsToRender[index]['type'] == 'Time' && !!fieldsToRender[index]['options']['filter']) &&
               <Grid item xs={12} md={12} key={index}>
                 <Time index={index} fieldsToRender={fieldsToRender} source="filter" />
               </Grid>
-              || (fieldsToRender[index]['type'] == 'TextArea') &&
+              || (fieldsToRender[index]['type'] == 'TextArea' && !!fieldsToRender[index]['options']['filter']) &&
               <Grid item xs={12} md={12} key={index}>
                 <TextArea index={index} fieldsToRender={fieldsToRender} source="filter" />
               </Grid>
-              || (fieldsToRender[index]['type'] == 'Radio') &&
+              || (fieldsToRender[index]['type'] == 'Radio' && !!fieldsToRender[index]['options']['filter']) &&
               <Grid item xs={12} md={12} key={index}>
                 <Radio index={index} fieldsToRender={fieldsToRender} source="filter" />
               </Grid>
-              || (fieldsToRender[index]['type'] == 'Autocomplete') &&
+              || (fieldsToRender[index]['type'] == 'Autocomplete' && !!fieldsToRender[index]['options']['filter']) &&
               <Grid item xs={12} md={12} key={index}>
                 <Autocomplete index={index} fieldsToRender={fieldsToRender} source="filter" />
               </Grid>
-              || (fieldsToRender[index]['type'] == 'Email') &&
+              || (fieldsToRender[index]['type'] == 'Email' && !!fieldsToRender[index]['options']['filter']) &&
               <Grid item xs={12} md={12} key={index}>
                 <Email index={index} fieldsToRender={fieldsToRender} source="filter" />
               </Grid>
-              || (fieldsToRender[index]['type'] == 'Password') &&
+              || (fieldsToRender[index]['type'] == 'Password' && !!fieldsToRender[index]['options']['filter']) &&
               <Grid item xs={12} md={12} key={index}>
                 <Password index={index} fieldsToRender={fieldsToRender} source="filter" />
               </Grid>
-              || (fieldsToRender[index]['type'] == 'Switch') &&
+              || (fieldsToRender[index]['type'] == 'Switch' && !!fieldsToRender[index]['options']['filter']) &&
               <Grid item xs={12} md={12} key={index}>
                 <Switch index={index} fieldsToRender={fieldsToRender} source="filter" />
               </Grid>
-              || (fieldsToRender[index]['type'] == 'AutocompleteSingle') &&
+              || (fieldsToRender[index]['type'] == 'AutocompleteSingle' && !!fieldsToRender[index]['options']['filter']) &&
               <Grid item xs={12} md={12} key={index}>
                 <AutoCompleteSingle index={index} fieldsToRender={fieldsToRender} source="filter" />
               </Grid>
@@ -177,7 +182,7 @@ class FilterForm extends React.Component {
               <Grid item xs={12} md={12} key={index}>
                 <File index={index} fieldsToRender={fieldsToRender} onFileUpload={onFileUpload} />
               </Grid>
-              || (fieldsToRender[index]['type'] == 'Lookup') &&
+              || (fieldsToRender[index]['type'] == 'Lookup' && !!fieldsToRender[index]['options']['filter']) &&
               <Grid item xs={12} md={12} key={index}>
                 <Lookup index={index} fieldsToRender={fieldsToRender} source="filter" />
               </Grid>
@@ -202,7 +207,6 @@ class FilterForm extends React.Component {
       this.props.onCancel();
     };
 
-
     const onClear = () => {
       this.setState({ modeuleObject: {} });
       Router.push(
@@ -213,16 +217,16 @@ class FilterForm extends React.Component {
     }
 
     return (
-      <Paper elevation={1} className={classes.paper}>
+      <Paper elevation={0} className={classes.paper}>
         <Form
           onSubmit={onSubmitForm} style={{ marginTop: 16 }}
           initialValues={this.state.submittedValues ? this.state.submittedValues : this.state.modeuleObject}
           render={({ handleSubmit, reset, submitting, pristine }) => (
             <form onSubmit={handleSubmit} noValidate>
-              <AppBar elevation={1} position="fixed" color="inherit" className={classes.appBar}>
-                <Toolbar className={classes.toolbarStyle} variant="dense">
+              <AppBar variant="outlined" elevation={1} position="fixed" color="inherit" className={classes.appBar}>
+                <Toolbar disableGutters className={classes.toolbarStyle} variant="dense">
                   <div className={classes.pageTitle}>
-                    <Typography color="primary" variant="subtitle1">Filter</Typography>
+                    <Typography color="primary" variant="button">Filters</Typography>
                   </div>
                   <div className={classes.grow}>
                   </div>
@@ -234,18 +238,27 @@ class FilterForm extends React.Component {
                   </div>
                 </Toolbar>
               </AppBar>
-              <div className={classes.clear}> </div>
-              <Divider />
               <div className={classes.fieldsContainer}>
-                <Grid container alignItems="flex-end" spacing={1}>
+                <div className={classes.drawerHeight}><br/><br/></div>
+                <Grid container alignItems="flex-end" elevation={0} spacing={1}>
                   {renderFields}
                 </Grid>
               </div>
-              <Divider />
-              <div className={classes.buttons}>
-                <Button size="small" type="button" onClick={onClear} disableElevation>{this.props.buttonCancelText}</Button>
-                <Button size="small" type="submit" disabled={submitting} variant="contained" color="secondary" disableElevation>{this.props.buttonSubmitText}</Button>
-              </div>
+              <AppBar elevation={1} position="fixed" color="inherit" className={classes.appBarBottom}>
+                <Toolbar disableGutters className={classes.toolbarStyle} variant="dense">
+                  <div className={classes.pageTitle}>
+                    <Typography color="primary" variant="button">Filters</Typography>
+                  </div>
+                  <div className={classes.grow}>
+                  </div>
+                  <div className={classes.pageActions}>
+                    <div className={classes.formTitleButtons}>
+                      <Button size="small" type="button" onClick={onClear} disableElevation>{this.props.buttonCancelText}</Button>
+                      <Button size="small" type="submit" disabled={submitting} variant="contained" color="secondary" disableElevation>{this.props.buttonSubmitText}</Button>
+                    </div>
+                  </div>
+                </Toolbar>
+              </AppBar>
             </form>
           )}
         />

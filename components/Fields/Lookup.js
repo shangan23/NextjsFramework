@@ -12,8 +12,13 @@ class Lookup extends React.Component {
     this.handleLoad = this.handleLoad.bind(this);
   }
 
-  getModuleObjects() {
-    fetch(`${API}/users`, {
+  getModuleObjects(value) {
+    let module = this.props.fieldsToRender[parseInt(this.props.index)]['module'];
+    let filterArray = [];
+    filterArray.push({ k: this.props.fieldsToRender[parseInt(this.props.index)]['moduleField'], o: 'contain', v: value, lo: 'AND' });
+    let filter = `?filter=${JSON.stringify(filterArray)}`;
+
+    fetch(`${API}/${module}${filter}`, {
       headers: {
         'Authorization': `Basic ${this.props.token}`
       },
@@ -38,7 +43,8 @@ class Lookup extends React.Component {
   }
 
   handleLoad() {
-    fetch(`${API}/users`, {
+    let module = this.props.fieldsToRender[parseInt(this.props.index)]['module'];
+    fetch(`${API}/${module}`, {
       headers: {
         'Authorization': `Basic ${this.props.token}`
       },
@@ -57,16 +63,19 @@ class Lookup extends React.Component {
     const index = parseInt(this.props.index);
     const options = this.state.options;
     const source = this.props.source;
+    const moduleField = attributes[index]['moduleField'];
 
     const handleChange = (event, value, reason) => {
-      this.getModuleObjects();
-      console.log('onchange triggered', reason);
-      console.log(event, value);
+      if (value.length >= 3) {
+        this.getModuleObjects(value);
+        console.log('onchange triggered', reason);
+        console.log(event, value);
+      }
     };
 
     return (
       <Autocomplete
-        source={source?source:''}
+        source={source ? source : ''}
         label={attributes[index]['label']}
         name={attributes[index]['name']}
         id={attributes[index]['id']}
@@ -79,8 +88,8 @@ class Lookup extends React.Component {
         onClose={() => {
           this.setState({ open: false });
         }}
-        getOptionSelected={(option, value) => option.fullName === value.fullName}
-        getOptionLabel={(option) => option.fullName ? option.fullName : ''}
+        getOptionSelected={(option, value) => option[moduleField] === value[moduleField]}
+        getOptionLabel={(option) => option[moduleField] ? option[moduleField] : ''}
         options={options}
         loading={this.state.loading}
       />

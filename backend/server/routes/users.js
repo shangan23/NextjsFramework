@@ -1,14 +1,19 @@
 const Msg = require('../messages').Messages;
 const User = require("../../models").Users;
 const frame = require('../frameJson');
+const helper = require('../helper');
+const Sequelize = require('sequelize');
+const Op = Sequelize.Op;
 
 const bucket = '/api/users';
 
 module.exports = function (router) {
     router.get(bucket, (req, res) => {
-        let limit, page;
+        let limit, page, filter;
         limit = (req.query.limit && req.query.limit != 'undefined') ? parseInt(req.query.limit) : 10;
         page = (req.query.page && req.query.page != 'undefined') ? parseInt(req.query.page) : 0;
+        filter = (req.query.filter && req.query.filter != 'undefined') ? helper.filters(req.query.filter) : '';
+        console.log('filter', JSON.stringify(filter));
         User.findAndCountAll({
             offset: (page * limit),
             limit: limit,
@@ -16,6 +21,7 @@ module.exports = function (router) {
             order: [
                 ['id', 'DESC']
             ],
+            where: filter
         })
             .then(users => {
                 res.json(users);
@@ -50,7 +56,7 @@ module.exports = function (router) {
 
     router.post(`${bucket}/auth`, (req, res) => {
         User.findOne({
-            attributes: ['id','uname', 'role', 'isAdmin', 'email', 'fullName', 'createdAt', 'updatedAt'],
+            attributes: ['id', 'uname', 'role', 'isAdmin', 'email', 'fullName', 'createdAt', 'updatedAt'],
             where: { uname: req.body.uname, password: req.body.password }
         }).then(users => {
             if (users != null) {

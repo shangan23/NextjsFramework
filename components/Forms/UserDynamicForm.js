@@ -12,6 +12,7 @@ import Text from '../Fields/Text';
 import TextArea from '../Fields/TextArea';
 import Time from '../Fields/Time';
 import Email from '../Fields/Email';
+import Currency from '../Fields/Currency';
 import Password from '../Fields/Password';
 import Switch from '../Fields/Switch';
 import AutoCompleteSingle from '../Fields/AutocompleteSingle';
@@ -60,7 +61,12 @@ const useStyles = (theme) => ({
   },
   fields: {
     margin: theme.spacing(1),
-  }
+  },
+  Section: {
+    backgroundColor: '#FAFAFA',
+    paddingTop: '0px !important',
+    paddingBottom: '0px !important',
+  },
 });
 
 
@@ -79,7 +85,7 @@ class DynamicForm extends React.Component {
     this.setState({ modeuleObject: defaultData });
 
     if (this.props.action === 'edit') {
-      console.log('this.props.defaultValue',this.props.defaultValue);
+      console.log('this.props.defaultValue', this.props.defaultValue);
       this.setState({ modeuleObject: this.props.defaultValue });
     }
   }
@@ -98,6 +104,7 @@ class DynamicForm extends React.Component {
     const validate = values => {
       const errors = {};
       var regex = /^\w+([-+.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$/;
+      var curencyRegex = /^(?:0|[1-9]\d*)(?:\.(?!.*000)\d+)?$/;
       fieldsToRender.map((data, index) => {
         if (fieldsToRender[index]['type']) {
           let name = (fieldsToRender[index]['name']).toString();
@@ -114,6 +121,14 @@ class DynamicForm extends React.Component {
                 errors[name] = label + ' required';
               else {
                 if (!regex.test(values[name]) && values[name])
+                  errors[name] = label + ' invalid';
+              }
+              break;
+            case 'Currency':
+              if ((!values[name]) && required)
+                errors[name] = label + ' required';
+              else {
+                if (!curencyRegex.test(values[name]) && values[name])
                   errors[name] = label + ' invalid';
               }
               break;
@@ -139,15 +154,15 @@ class DynamicForm extends React.Component {
               {
                 (
                   (index === 0) ?
-                    <Grid item xs={12} md={12}>
-                      <Typography color="primary" variant="overline">{fieldsToRender[index]['section']}</Typography>
+                    <Grid className={classes.Section} item xs={12} md={12}>
+                      <Typography color="secondary" variant="overline">{fieldsToRender[index]['section']}</Typography>
                     </Grid> :
                     (fieldsToRender[index]['section'] != fieldsToRender[(index - 1)]['section'] && fieldsToRender[index]['section'] != 'System Information') ?
-                      <React.Fragment key={`layout-frag${Math.random()}`}>
-                        <Grid item xs={12} md={12}>
-                          <Typography color="primary" variant="overline">{fieldsToRender[index]['section']}</Typography>
-                        </Grid>
-                      </React.Fragment> :
+                      <React.Fragment>
+                        <Grid item xs={12} md={12}></Grid>
+                        <Grid className={classes.Section} item xs={12} md={12}>
+                          <Typography color="secondary" variant="overline">{fieldsToRender[index]['section']}</Typography>
+                        </Grid></React.Fragment> :
                       ''
                 )
               }
@@ -157,47 +172,47 @@ class DynamicForm extends React.Component {
                   <Grid item xs={12} md={4} key={index}>
                     <Text index={index} fieldsToRender={fieldsToRender} />
                   </Grid>
-                  || (fieldsToRender[index]['type'] == 'Date'  && fieldsToRender[index]['section'] != 'System Information') &&
+                  || (fieldsToRender[index]['type'] == 'Date' && fieldsToRender[index]['section'] != 'System Information') &&
                   <Grid item xs={12} md={4} key={index}>
                     <Date index={index} fieldsToRender={fieldsToRender} />
                   </Grid>
-                  || (fieldsToRender[index]['type'] == 'Select'  && fieldsToRender[index]['section'] != 'System Information') &&
+                  || (fieldsToRender[index]['type'] == 'Select' && fieldsToRender[index]['section'] != 'System Information') &&
                   <Grid item xs={12} md={4} key={index}>
                     <Select index={index} fieldsToRender={fieldsToRender} />
                   </Grid>
-                  || (fieldsToRender[index]['type'] == 'Checkbox'  && fieldsToRender[index]['section'] != 'System Information') &&
+                  || (fieldsToRender[index]['type'] == 'Checkbox' && fieldsToRender[index]['section'] != 'System Information') &&
                   <Grid item xs={12} md={4} key={index}>
                     <Checkbox index={index} fieldsToRender={fieldsToRender} />
                   </Grid>
-                  || (fieldsToRender[index]['type'] == 'Time'  && fieldsToRender[index]['section'] != 'System Information') &&
+                  || (fieldsToRender[index]['type'] == 'Time' && fieldsToRender[index]['section'] != 'System Information') &&
                   <Grid item xs={12} md={4} key={index}>
                     <Time index={index} fieldsToRender={fieldsToRender} />
                   </Grid>
-                  || (fieldsToRender[index]['type'] == 'TextArea'  && fieldsToRender[index]['section'] != 'System Information') &&
+                  || (fieldsToRender[index]['type'] == 'TextArea' && fieldsToRender[index]['section'] != 'System Information') &&
                   <Grid item xs={12} md={12} key={index}>
                     <TextArea index={index} fieldsToRender={fieldsToRender} />
                   </Grid>
-                  || (fieldsToRender[index]['type'] == 'Radio'  && fieldsToRender[index]['section'] != 'System Information') &&
+                  || (fieldsToRender[index]['type'] == 'Radio' && fieldsToRender[index]['section'] != 'System Information') &&
                   <Grid item xs={12} md={4} key={index}>
                     <Radio index={index} fieldsToRender={fieldsToRender} />
                   </Grid>
-                  || (fieldsToRender[index]['type'] == 'Autocomplete'  && fieldsToRender[index]['section'] != 'System Information') &&
+                  || (fieldsToRender[index]['type'] == 'Autocomplete' && fieldsToRender[index]['section'] != 'System Information') &&
                   <Grid item xs={12} md={4} key={index}>
                     <Autocomplete index={index} fieldsToRender={fieldsToRender} />
                   </Grid>
-                  || (fieldsToRender[index]['type'] == 'Email'  && fieldsToRender[index]['section'] != 'System Information') &&
+                  || (fieldsToRender[index]['type'] == 'Email' && fieldsToRender[index]['section'] != 'System Information') &&
                   <Grid item xs={12} md={4} key={index}>
                     <Email index={index} fieldsToRender={fieldsToRender} />
                   </Grid>
-                  || (fieldsToRender[index]['type'] == 'Password'  && fieldsToRender[index]['section'] != 'System Information') &&
+                  || (fieldsToRender[index]['type'] == 'Password' && fieldsToRender[index]['section'] != 'System Information') &&
                   <Grid item xs={12} md={4} key={index}>
                     <Password index={index} fieldsToRender={fieldsToRender} />
                   </Grid>
-                  || (fieldsToRender[index]['type'] == 'Switch'  && fieldsToRender[index]['section'] != 'System Information') &&
+                  || (fieldsToRender[index]['type'] == 'Switch' && fieldsToRender[index]['section'] != 'System Information') &&
                   <Grid item xs={12} md={4} key={index}>
                     <Switch index={index} fieldsToRender={fieldsToRender} />
                   </Grid>
-                  || (fieldsToRender[index]['type'] == 'AutocompleteSingle'  && fieldsToRender[index]['section'] != 'System Information') &&
+                  || (fieldsToRender[index]['type'] == 'AutocompleteSingle' && fieldsToRender[index]['section'] != 'System Information') &&
                   <Grid item xs={12} md={4} key={index}>
                     <AutoCompleteSingle index={index} fieldsToRender={fieldsToRender} />
                   </Grid>
@@ -205,9 +220,13 @@ class DynamicForm extends React.Component {
                   <Grid item xs={12} md={4} key={index}>
                     <File index={index} fieldsToRender={fieldsToRender} onFileUpload={onFileUpload} />
                   </Grid>
-                  || (fieldsToRender[index]['type'] == 'Lookup'  && fieldsToRender[index]['section'] != 'System Information') &&
+                  || (fieldsToRender[index]['type'] == 'Lookup' && fieldsToRender[index]['section'] != 'System Information') &&
                   <Grid item xs={12} md={4} key={index}>
                     <Lookup index={index} fieldsToRender={fieldsToRender} />
+                  </Grid>
+                  || (fieldsToRender[index]['type'] == 'Currency' && fieldsToRender[index]['section'] != 'System Information') &&
+                  <Grid item xs={12} md={4} key={index}>
+                    <Currency index={index} fieldsToRender={fieldsToRender} />
                   </Grid>
                 )
               }

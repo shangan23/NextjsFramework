@@ -16,6 +16,7 @@ export default function columns(module, settings) {
     {
       name: 'fullName',
       label: 'Name',
+      primary: true,
       options: {
         filter: true
       },
@@ -83,7 +84,9 @@ export default function columns(module, settings) {
     },
     {
       name: 'createdAt',
+      id: 'createdAt',
       label: 'Created On',
+      type: 'Date',
       options: {
         filter: true,
         sort: false,
@@ -98,7 +101,9 @@ export default function columns(module, settings) {
     },
     {
       name: 'updatedAt',
+      id: 'updatedAt',
       label: 'Updated On',
+      type: 'Date',
       options: {
         filter: true,
         sort: false,
@@ -113,6 +118,7 @@ export default function columns(module, settings) {
     },
     {
       name: 'Action',
+      id:'action',
       options: {
         filter: false,
         sort: false,

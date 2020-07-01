@@ -14,40 +14,32 @@ export default function columns(module, settings) {
       section: 'System Information'
     },
     {
-      name: 'name',
-      label: 'Name',
-      primary: true,
+      name: 'fk_itemId',
+      id: 'fk_itemId',
+      fk: true,
+      module: 'items',
+      moduleField: 'name',
+      label: 'Item',
       options: {
-        filter: true
+        filter: true,
+        customBodyRender: (value) => {
+          return value.name;
+        }
+      },
+      type: 'Lookup',
+      required: true,
+      section: 'Purchase Details'
+    },
+    {
+      name: 'quantity',
+      label: 'Quantity',
+      options: {
+        filter: true,
       },
       type: 'Text',
       required: false,
-      id: 'name',
-      section: 'Basic Information'
-    },
-    {
-      name: 'sku',
-      label: 'SKU',
-      options: {
-        filter: false,
-        sort: false
-      },
-      type: 'Text',
-      required: true,
-      id: 'sku',
-      section: 'Basic Information'
-    },
-    {
-      name: 'units',
-      label: 'Units',
-      options: {
-        filter: true,
-        sort: false
-      },
-      type: 'Text',
-      required: true,
-      id: 'units',
-      section: 'Basic Information'
+      id: 'quantity',
+      section: 'Inventory Details'
     },
     {
       name: 'cost',
@@ -62,56 +54,6 @@ export default function columns(module, settings) {
       required: true,
       id: 'cost',
       section: 'Purchase Details'
-    },
-    {
-      name: 'fk_vendorId',
-      id: 'fk_vendorId',
-      fk: true,
-      module: 'vendors',
-      moduleField: 'name',
-      label: 'Vendor',
-      options: {
-        filter: true,
-        customBodyRender: (value) => {
-          return value.name;
-        }
-      },
-      type: 'Lookup',
-      required: true,
-      section: 'Purchase Details'
-    },
-    {
-      name: 'costDescription',
-      label: 'Description',
-      options: {
-        filter: true
-      },
-      type: 'TextArea',
-      required: true,
-      id: 'costDescription',
-      section: 'Purchase Details'
-    },
-    {
-      name: 'openingStock',
-      label: 'Opening Stock',
-      options: {
-        filter: true,
-      },
-      type: 'Text',
-      required: false,
-      id: 'openingStock',
-      section: 'Inventory Details'
-    },
-    {
-      name: 'preorderLevel',
-      label: 'Low Stock Level',
-      options: {
-        filter: false,
-      },
-      type: 'Text',
-      required: false,
-      id: 'preorderLevel',
-      section: 'Inventory Details'
     },
     {
       name: 'fk_createdBy',

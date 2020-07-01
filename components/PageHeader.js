@@ -12,12 +12,13 @@ import AdminMenu from './Menus/Admin';
 import Router from 'next/router';
 import Badge from '@material-ui/core/Badge';
 //import ViewColumnIcon from '@material-ui/icons/ViewColumn';
-import FilterListIcon from '@material-ui/icons/FilterList';
-import AddBoxIcon from '@material-ui/icons/AddBox';
-import ArrowBackSharpIcon from '@material-ui/icons/ArrowBackSharp';
-import EditIcon from '@material-ui/icons/Edit';
-import DeleteIcon from '@material-ui/icons/Delete';
-import VisibilityIcon from '@material-ui/icons/Visibility';
+import FilterListOutlinedIcon from '@material-ui/icons/FilterListOutlined';
+import AddBoxOutlinedIcon from '@material-ui/icons/AddBoxOutlined';
+import ViewListOutlinedIcon from '@material-ui/icons/ViewListOutlined';
+import ArrowBackOutlinedIcon from '@material-ui/icons/ArrowBackOutlined';
+import EditOutlinedIcon from '@material-ui/icons/EditOutlined';
+import DeleteOutlinedIcon from '@material-ui/icons/DeleteOutlined';
+import VisibilityOutlinedIcon from '@material-ui/icons/VisibilityOutlined';
 
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
@@ -63,7 +64,7 @@ const useStyles = theme => ({
     float: 'left',
     //position: 'relative',
     //right: theme.spacing(1),
-    marginLeft:theme.spacing(1),
+    marginLeft: theme.spacing(1),
     top: theme.spacing(0.4)
   },
   grow: {
@@ -78,7 +79,7 @@ const useStyles = theme => ({
     float: 'left',
     right: theme.spacing(1),
     top: theme.spacing(0.4),
-    marginLeft:theme.spacing(3),
+    marginLeft: theme.spacing(3),
   },
   toolbarStyle: {
     minHeight: theme.spacing(1)
@@ -101,8 +102,8 @@ const useStyles = theme => ({
   },
   toolbar: {
     //maxHeight: theme.spacing(80),
-    top: theme.mixins.toolbar.minHeight+10,
-    width:300,
+    top: theme.mixins.toolbar.minHeight + 10,
+    width: 300,
   }
 });
 
@@ -231,7 +232,7 @@ class PageHeader extends React.Component {
         variant={"temprorary"}
         anchor={'right'}
         docked={false}
-        classes={{ paper: classes.toolbar }} 
+        classes={{ paper: classes.toolbar }}
         open={this.state.filterOpen} >
         <div>
           <FilterForm
@@ -277,7 +278,7 @@ class PageHeader extends React.Component {
         pageTitle = this.props.routerInfo.query.appId;
         pageTitle = pageTitle.charAt(0).toUpperCase() + pageTitle.slice(1)
 
-        let backToList = <Button
+        let toList = <Button
           variant="text"
           color="secondary"
           size="small"
@@ -285,36 +286,41 @@ class PageHeader extends React.Component {
             '/app/[appId]',
             `/app/${this.props.routerInfo.query.appId}`
           )}
-          startIcon={<ArrowBackSharpIcon />}>Back To List</Button>;
+          startIcon={<ViewListOutlinedIcon />}>List</Button>;
+
+        let goBack = <Button size="small" color="primary" variant="text" onClick={() => Router.back()} startIcon={<ArrowBackOutlinedIcon />}>Back</Button>
 
         let deleteButton = <Button
           size="small"
           variant="text"
-          startIcon={<DeleteIcon />}
+          startIcon={<DeleteOutlinedIcon />}
           onClick={() => this.setState({ dialogOpen: true })}
           color="primary" disableElevation>Delete</Button>;
 
         switch (this.props.routerInfo.route) {
           case '/app/[appId]/[objId]':
+          case '/app/[appId]/[objId]/[subAppId]':
             pageHeaderActions = <div className={classes.buttons}>
-              {backToList}
+              {goBack}
+              {toList}
               <Button size="small" color="primary" variant="text" onClick={() => Router.push(
                 '/app/[appId]/[objId]/edit',
                 `/app/${this.props.routerInfo.query.appId}/${this.props.routerInfo.query.objId}/edit`
-              )} startIcon={<EditIcon />} disableElevation>Edit</Button>
+              )} startIcon={<EditOutlinedIcon />} disableElevation>Edit</Button>
               {deleteButton}
             </div>;
             break;
           case '/app/[appId]':
             pageHeaderActions = <div className={classes.buttons}>
+              {goBack}
               <Button size="small" onClick={() => Router.push(
                 '/app/[appId]/create',
                 `/app/${this.props.routerInfo.query.appId}/create`
-              )} color="secondary" variant="text" startIcon={<AddBoxIcon />} disableElevation>Create</Button>
+              )} color="secondary" variant="text" startIcon={<AddBoxOutlinedIcon />} disableElevation>Create</Button>
 
-              <Button size="small" color={this.props.routerInfo.query.filter?'secondary':'primary'} onClick={() => this.setState({ filterOpen: true })} variant="text" startIcon={<FilterListIcon />} disableElevation>
-                <Badge variant={this.props.routerInfo.query.filter?'dot':''} color="secondary">
-                  Filter
+              <Button size="small" color={this.props.routerInfo.query.filter ? 'secondary' : 'primary'} onClick={() => this.setState({ filterOpen: true })} variant="text" startIcon={<FilterListOutlinedIcon />} disableElevation>
+                <Badge variant={this.props.routerInfo.query.filter ? 'dot' : ''} color="secondary">
+                  Filter List
                 </Badge>
               </Button>
               {
@@ -324,13 +330,15 @@ class PageHeader extends React.Component {
             break;
           case '/app/[appId]/create':
             pageHeaderActions = <div className={classes.buttons}>
-              {backToList}
+              {goBack}
+              {toList}
             </div>;
             break;
           case '/app/[appId]/[objId]/edit':
             pageHeaderActions = <div className={classes.buttons}>
-              {backToList}
-              <Button size="small" variant="text" startIcon={<VisibilityIcon />} color="primary" onClick={() => Router.push(
+              {goBack}
+              {toList}
+              <Button size="small" variant="text" startIcon={<VisibilityOutlinedIcon />} color="primary" onClick={() => Router.push(
                 '/app/[appId]/[objId]',
                 `/app/${this.props.routerInfo.query.appId}/${this.props.routerInfo.query.objId}`
               )}

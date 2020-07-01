@@ -75,6 +75,9 @@ function SideMenu({ display }) {
       break;
   }
 
+  active = router.query.appId;
+  //routerActive = router.asPath;
+
   const [expanded, setExpanded] = React.useState({ clicked: active });
 
   console.log('subActive', subActive);

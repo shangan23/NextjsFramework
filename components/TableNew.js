@@ -16,7 +16,7 @@ const useStyles = makeStyles((theme) => ({
     width: '100%',
   },
   container: {
-    maxHeight: theme.spacing(63.5),
+    //maxHeight: theme.spacing(63.5),
     minHeight: theme.spacing(63.5),
   },
   TableCell: {

@@ -30,13 +30,12 @@ const drawerWidth = 300;
 const useStyles = (theme) => ({
   appBar: {
     top: theme.spacing(8.25),
-    bottom:'auto',
-    position:'fixed',
-    zIndex: theme.zIndex.snackbar + 1200,
+    zIndex: 24200,
     height: theme.spacing(4.8),
     [theme.breakpoints.up('md')]: {
       width: `calc(100% - calc(100% - ${drawerWidth}px))`,
     },
+    webkitTransform: 'translate3d(0px, 0px, 0px)'
   },
   appBarBottom: {
     top: 'auto',

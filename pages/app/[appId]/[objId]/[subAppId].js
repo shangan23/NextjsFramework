@@ -1,12 +1,11 @@
 import React from 'react';
-import initialize from '../../../utils/initialize';
+import initialize from '../../../../utils/initialize';
 import { connect } from 'react-redux';
 import absoluteUrl from "next-absolute-url";
-import { dynamicSort } from '../../../utils/helper';
 import { Grid } from '@material-ui/core';
-import { getCookie } from '../../../utils/cookie';
-import moduleController from '../../../modules/controller';
-import modules from '../../../modules/index';
+import { getCookie } from '../../../../utils/cookie';
+import moduleController from '../../../../modules/controller';
+import modules from '../../../../modules/index';
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 import Moment from 'react-moment';
@@ -16,8 +15,8 @@ import { withStyles } from '@material-ui/core/styles';
 import Stepper from '@material-ui/core/Stepper';
 import Step from '@material-ui/core/Step';
 import StepButton from '@material-ui/core/StepButton';
-import Link from 'next/Link';
 import Router from 'next/router';
+import RespTable from '../../../../components/TableNew';
 
 const useStyles = theme => ({
   root: {
@@ -25,7 +24,6 @@ const useStyles = theme => ({
   },
   appBar: {
     top: theme.spacing(0),
-    //marginLeft: theme.spacing(-2),
     position: 'relative'
   },
   toolbarStyle: {
@@ -66,17 +64,41 @@ const frameURL = async (req) => {
   headers['Content-Type'] = 'application/json';
   host = absoluteUrl(req, req.headers.host);
   urlObj = new URL(`${host.origin}${req.url}`);
-  let module, object, modulePath;
-  let { origin, pathname } = urlObj;
+  let module, object, subApp, modulePath, queryParam, data, listing;
+  let { origin, pathname, searchParams } = urlObj;
   modulePath = pathname.replace('/app/', '');
   modulePath = modulePath.split('/');
   module = modulePath[0];
   object = modulePath[1];
+  subApp = modulePath[2];
   console.log('iServer module', module);
   console.log('iServer object', object);
+  console.log('iServer subApp', subApp);
+
+  queryParam = '?'
+  queryParam += (searchParams.get('limit')) ? `limit=${searchParams.get('limit')}` : '';
+  queryParam += (searchParams.get('page')) ? `&page=${searchParams.get('page')}` : '';
+  queryParam += (searchParams.get('filter')) ? `&filter=${searchParams.get('filter')}` : '';
+  console.log('iServer filter', `${origin}/api/app/${module}${queryParam}`);
+  data = await fetch(`${origin}/api/app/${subApp}${queryParam}`, { headers: headers });
+  listing = await data.json();
+
   const objData = await fetch(`${origin}/api/app/${module}/${object}`);
   const objJson = await objData.json();
-  return { module, objJson }
+
+  let moduleMeta = await modules(module);
+  let steps = [], subApps = [];
+
+  subApps = await moduleMeta.subApp;
+
+  if (subApps) {
+    await steps.push({ label: `${module.charAt(0).toUpperCase() + module.slice(1)} Detail`, id: module });
+    await subApps.map(obj => steps.push({ label: obj.lable.plural, id: obj.id }));
+  }
+
+  let stepperIndex = await steps.findIndex(p => p.id == subApp);
+  console.log('iServer stepperIndex', stepperIndex);
+  return { listing, module, objJson, subApp, steps, stepperIndex }
 };
 
 class DynamicCreate extends React.Component {
@@ -92,37 +114,53 @@ class DynamicCreate extends React.Component {
       const fullUrl = `${window.location.protocol}//${window.location.hostname}${(window.location.port ? ':' + window.location.port : '')}`;
       let module = ctx.query.appId;
       let object = ctx.query.objId;
+      let subApp = ctx.query.subAppId;
+      console.log('iClient subApp', subApp);
       const objData = await fetch(`${fullUrl}/api/app/${module}/${object}`);
       const objJson = await objData.json();
-      return { module: module, objJson: objJson };
+      const { query } = ctx;
+      let queryParam = '?'
+      queryParam += (query.limit) ? `limit=${query.limit}` : '';
+      queryParam += (query.page) ? `&page=${query.page}` : '';
+      queryParam += (query.filter) ? `&filter=${query.filter}` : '';
+      console.log('iClient filter', `${fullUrl}/api/app/${subApp}${queryParam}`);
+      const data = await fetch(`${fullUrl}/api/app/${subApp}${queryParam}`);
+      const json = await data.json();
+      let moduleMeta = await modules(module);
+      let steps = [], subApps = [];
+      subApps = await moduleMeta.subApp;
+      if (subApps) {
+        await steps.push({ label: `${module.charAt(0).toUpperCase() + module.slice(1)} Detail`, id: module });
+        await subApps.map(obj => steps.push({ label: obj.lable.plural, id: obj.id }));
+      }
+      let stepperIndex = await steps.findIndex(p => p.id == subApp);
+      console.log('iClient stepperIndex', stepperIndex);
+      return { listing: json, module: module, objJson: objJson, subApp: subApp, steps: steps, stepperIndex: stepperIndex };
     } else {
-      const { module, objJson } = await frameURL(req);
-      return { module, objJson };
+      const { listing, module, objJson, subApp, steps, stepperIndex } = await frameURL(req);
+      return { listing, module, objJson, subApp, steps, stepperIndex };
     }
+  }
+
+  componentDidMount() {
+    console.log('----componentDidMount', this.props.stepperIndex);
+    this.setState({ activeStep: this.props.stepperIndex });
   }
 
   render() {
 
     let module = this.props.module;
-    let moduleMeta = modules(module);
-    let steps = [], subApp = [];
-
-    if (moduleMeta) {
-      subApp = moduleMeta.subApp;
-      if (subApp) {
-        steps.push({ label: `${module.charAt(0).toUpperCase() + module.slice(1)} Detail`, id: module });
-        subApp.map(obj => steps.push({ label: obj.lable.plural, id: obj.id }));
-      }
-    }
+    let steps = this.props.steps;
 
     const { classes } = this.props;
 
-    let fieldsToRender = moduleController(module, this.props.siteInfo);
+    let fieldsToRender = moduleController(this.props.subApp, this.props.siteInfo);
+    let moduleFieldsToRender = moduleController(this.props.module, this.props.siteInfo);
     let object = this.props.objJson;
 
     console.log(object);
     let objTitle, objCreatedBy;
-    fieldsToRender.filter(function (obj) {
+    moduleFieldsToRender.filter(function (obj) {
       if (obj.primary) {
         objTitle = object[obj.id];
       }
@@ -132,67 +170,23 @@ class DynamicCreate extends React.Component {
     });
 
     const handleStep = (step) => () => {
-      Router.push(
-        '/app/[appId]/[objId]/[subAppId]',
-        `/app/${module}/${object.id}/${steps[step].id}`
-      );
+      if (step == 0) {
+        Router.push(
+          '/app/[appId]/[objId]',
+          `/app/${module}/${object.id}`
+        );
+      } else {
+        Router.push(
+          '/app/[appId]/[objId]/[subAppId]',
+          `/app/${module}/${object.id}/subItems`
+        );
+      }
     };
-
-    fieldsToRender.sort(dynamicSort('section'));
-    const renderFields = (
-      <Grid container spacing={2} className={classes.fields} key={`grid-form${Math.random()}`}>
-        {
-          fieldsToRender.map((data, index) => (
-            <React.Fragment key={`layout-frag${Math.random()}`}>
-              {
-                (
-                  (index === 0) ?
-                    <Grid className={classes.Section} item xs={12} md={12}>
-                      <Typography color="secondary" variant="overline">{fieldsToRender[index]['section']}</Typography>
-                    </Grid> :
-                    (fieldsToRender[index]['section'] != fieldsToRender[(index - 1)]['section']) ?
-                      <Grid className={classes.Section} item xs={12} md={12}>
-                        <Typography color="secondary" variant="overline">{fieldsToRender[index]['section']}</Typography>
-                      </Grid>
-                      :
-                      ''
-                )
-              }
-              {
-                (
-                  (fieldsToRender[index]['type'] == 'Date') &&
-                  <Grid item xs={12} md={4} key={index}>
-                    <Typography variant="caption">{fieldsToRender[index]['label']}:</Typography><Typography variant="subtitle2"><Moment format={this.props.siteInfo.dateFormat}>{object[fieldsToRender[index]['iddd']]}</Moment></Typography>
-                  </Grid>
-                  || (fieldsToRender[index]['type'] == 'Currency') &&
-                  <Grid item xs={12} md={4} key={index}>
-                    <Typography variant="caption"> {fieldsToRender[index]['label']}:</Typography><Typography variant="subtitle2">&#8377;&nbsp;{object[fieldsToRender[index]['id']].toLocaleString('en-IN')}</Typography>
-                  </Grid>
-                  || (fieldsToRender[index]['type'] == 'Lookup') &&
-                  <Grid item xs={12} md={4} key={index}>
-                    <Typography variant="caption">{fieldsToRender[index]['label']}:</Typography>
-                    <Typography variant="subtitle2">
-                      <Link href="/app/[appId]/[objId]" as={`/app/${fieldsToRender[index]['module']}/${object[fieldsToRender[index]['id']].id}`}>
-                        <a>{object[fieldsToRender[index]['id']][fieldsToRender[index]['moduleField']]}</a>
-                      </Link>
-                    </Typography>
-                  </Grid>
-                  || (fieldsToRender[index]['id'] != 'action') &&
-                  <Grid item xs={12} md={4} key={index}>
-                    <Typography variant="caption"> {fieldsToRender[index]['label']}:</Typography><Typography variant="subtitle2">{object[fieldsToRender[index]['id']]}</Typography>
-                  </Grid>
-                )
-              }
-            </React.Fragment>
-          ))
-        }
-      </Grid>
-    );
 
     const stepRender = (<div className={classes.root}>
       <div>
         <div>
-          {renderFields}
+          <RespTable module={module} createLink={'tests'} list={this.props.listing} columns={fieldsToRender} />
         </div>
       </div>
     </div>);

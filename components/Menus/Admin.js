@@ -1,6 +1,7 @@
 import { makeStyles } from '@material-ui/core/styles';
 import React from 'react';
 import { useRouter } from 'next/router';
+import Router from 'next/router';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
 
@@ -17,7 +18,7 @@ export default function AdminMenu() {
 
   const urlIndex = {
     0: '/admin',
-    1: '/admin/users',
+    1: '/admin/users/index',
     2: '/admin/roles'
   };
 
@@ -27,7 +28,7 @@ export default function AdminMenu() {
     case '/admin':
       activeValue = 0;
       break;
-    case '/admin/users':
+    case '/admin/users/index':
     case '/admin/users/create':
       activeValue = 1;
       break;
@@ -41,8 +42,8 @@ export default function AdminMenu() {
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
-    //console.log(newValue, urlIndex[newValue]);
-    router.push(urlIndex[newValue]);
+    console.log(newValue, urlIndex[newValue]);
+    Router.push(urlIndex[newValue]);
     //console.log(urlIndex[newValue]);
   };
 

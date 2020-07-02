@@ -10,6 +10,7 @@ export default function columns(module, settings) {
       },
       type: 'Text',
       required: false,
+      disabled:true,
       id: 'id',
       section: 'System Information'
     },
@@ -28,7 +29,7 @@ export default function columns(module, settings) {
       },
       type: 'Lookup',
       required: true,
-      section: 'Purchase Details'
+      section: 'Items'
     },
     {
       name: 'quantity',
@@ -53,7 +54,7 @@ export default function columns(module, settings) {
       type: 'Currency',
       required: true,
       id: 'cost',
-      section: 'Purchase Details'
+      section: 'Items'
     },
     {
       name: 'fk_createdBy',
@@ -62,6 +63,7 @@ export default function columns(module, settings) {
       module: 'users',
       moduleField: 'fullName',
       label: 'Created By',
+      disabled:true,
       options: {
         filter: true,
         customBodyRender: (value) => {
@@ -78,6 +80,7 @@ export default function columns(module, settings) {
       fk: true,
       module: 'users',
       moduleField: 'fullName',
+      disabled:true,
       options: {
         filter: false,
         customBodyRender: (value) => {
@@ -94,6 +97,7 @@ export default function columns(module, settings) {
       id: 'createdAt',
       label: 'Created On',
       type: 'Date',
+      disabled:true,
       options: {
         filter: true,
         sort: false,
@@ -112,6 +116,7 @@ export default function columns(module, settings) {
       id: 'createdAt',
       label: 'Updated On',
       type: 'Date',
+      disabled:true,
       options: {
         filter: true,
         sort: false,

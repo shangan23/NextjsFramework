@@ -12,6 +12,8 @@ module.exports = function (router) {
         modelName = modelName.charAt(0).toUpperCase() + modelName.slice(1);
         runningModel = models[modelName];
 
+        console.log('req.query.filter', req.query.filter);
+
         limit = (req.query.limit && req.query.limit != 'undefined') ? parseInt(req.query.limit) : 10;
         page = (req.query.page && req.query.page != 'undefined') ? parseInt(req.query.page) : 0;
         filter = (req.query.filter && req.query.filter != 'undefined') ? helper.filters(req.query.filter) : '';

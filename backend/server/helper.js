@@ -22,11 +22,11 @@ const association = (model) => {
 }
 
 const filters = (filters) => {
-
 	filters = JSON.parse(filters);
+	console.log('parse filters',filters);
 	let obj = {}; //$and = [], $or = [],
 	//filters.sort(dynamicSort('lo'));
-	console.log('filterObj',filters)
+	console.log('filterObj', typeof(filters))
 	filters.map((data, index) => {
 		switch (data.o) {
 			case 'is':
@@ -41,7 +41,7 @@ const filters = (filters) => {
 			delete obj[data.k];
 		}
 	});
-	console.log('filterObj',obj);
+	console.log('filterObj', obj);
 	return obj;
 }
 

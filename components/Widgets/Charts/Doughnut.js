@@ -19,6 +19,7 @@ class SimpleDoughnutChart extends React.Component {
                         data={data}
                         //cx={300}
                         //cy={150}
+                        dataKey="value"
                         innerRadius={60}
                         outerRadius={90}
                         fill="#8884d8"
@@ -31,7 +32,7 @@ class SimpleDoughnutChart extends React.Component {
                             value="tasks left" position="centerTop" className='label'
                         />
                         {
-                            data.map((entry, index) => <Cell fill={COLORS[index % COLORS.length]} />)
+                            data.map((entry, index) => <Cell key={Math.random()} fill={COLORS[index % COLORS.length]} />)
                         }
                     </Pie>
                     <Tooltip />

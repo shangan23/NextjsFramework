@@ -16,8 +16,10 @@ import { withStyles } from '@material-ui/core/styles';
 import Stepper from '@material-ui/core/Stepper';
 import Step from '@material-ui/core/Step';
 import StepButton from '@material-ui/core/StepButton';
-import Link from 'next/Link';
 import Router from 'next/router';
+import Chip from '@material-ui/core/Chip';
+import Avatar from '@material-ui/core/Avatar';
+import { deepOrange, deepPurple } from '@material-ui/core/colors';
 
 const useStyles = theme => ({
   root: {
@@ -52,9 +54,13 @@ const useStyles = theme => ({
     marginTop: theme.spacing(1),
     marginBottom: theme.spacing(1),
   },
-  stepper:{
-    padding:0
-  }
+  stepper: {
+    padding: 0
+  },
+  purple: {
+    backgroundColor: deepPurple[500],
+    color:deepPurple[10]
+  },
 });
 
 const frameURL = async (req) => {
@@ -171,10 +177,15 @@ class DynamicCreate extends React.Component {
                   || (fieldsToRender[index]['type'] == 'Lookup') &&
                   <Grid item xs={12} md={4} key={index}>
                     <Typography variant="caption">{fieldsToRender[index]['label']}:</Typography>
-                    <Typography variant="subtitle2">
-                      <Link href="/app/[appId]/[objId]" as={`/app/${fieldsToRender[index]['module']}/${object[fieldsToRender[index]['id']].id}`}>
-                        <a>{object[fieldsToRender[index]['id']][fieldsToRender[index]['moduleField']]}</a>
-                      </Link>
+                    <Typography variant="body2">
+                      <Chip
+                        //variant=""
+                        avatar={<Avatar className={classes.purple}>{fieldsToRender[index]['module'].slice(0, 1).toUpperCase()}</Avatar>}
+                        size="small"
+                        label={`${object[fieldsToRender[index]['id']][fieldsToRender[index]['moduleField']]}`}
+                        onClick={() => Router.push('/app/[appId]/[objId]', `/app/${fieldsToRender[index]['module']}/${object[fieldsToRender[index]['id']].id}`)}
+                        clickable
+                      />
                     </Typography>
                   </Grid>
                   || (fieldsToRender[index]['id'] != 'action') &&
@@ -199,10 +210,10 @@ class DynamicCreate extends React.Component {
 
     return (
       <Grid container spacing={0} key={`${Math.random()}`}>
-        <Grid item xs={12} md={12}>
-          <AppBar elevation={0} position="fixed" color="inherit" className={classes.appBar}>
-            <Toolbar className={classes.toolbarStyle} variant="dense">
-              <div>
+        <Grid item xs={12} md={12} key={`${Math.random()}`}>
+          <AppBar key={`${Math.random()}`} elevation={0} position="fixed" color="inherit" className={classes.appBar}>
+            <Toolbar key={`${Math.random()}`} className={classes.toolbarStyle} variant="dense">
+              <div key={`${Math.random()}`}>
                 <Typography variant="h6">{objTitle}</Typography>
                 <Typography variant="caption">
                   Created on <Moment format={this.props.siteInfo.dateFormat}>{object.createdAt}</Moment> | Created By {objCreatedBy}
@@ -210,9 +221,9 @@ class DynamicCreate extends React.Component {
               </div>
               <div className={classes.grow}>
               </div>
-              <Stepper className={classes.stepper} nonLinear activeStep={this.state.activeStep}>
+              <Stepper key={Math.random()} className={classes.stepper} nonLinear activeStep={this.state.activeStep}>
                 {steps.map((label, index) => (
-                  <Step key={label}>
+                  <Step key={Math.random()}>
                     <StepButton onClick={handleStep(index)}>
                       {label.label}
                     </StepButton>

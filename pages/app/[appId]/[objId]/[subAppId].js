@@ -17,6 +17,10 @@ import Step from '@material-ui/core/Step';
 import StepButton from '@material-ui/core/StepButton';
 import Router from 'next/router';
 import RespTable from '../../../../components/TableNew';
+import Container from '@material-ui/core/Container';
+import Button from '@material-ui/core/Button';
+import AddBoxOutlinedIcon from '@material-ui/icons/AddBoxOutlined';
+import DialogForm from '../../../../components/Forms/DialogForm';
 
 const useStyles = theme => ({
   root: {
@@ -50,8 +54,8 @@ const useStyles = theme => ({
     marginTop: theme.spacing(1),
     marginBottom: theme.spacing(1),
   },
-  stepper:{
-    padding:0
+  stepper: {
+    padding: 0
   }
 });
 
@@ -74,7 +78,10 @@ const frameURL = async (req) => {
   console.log('iServer module', module);
   console.log('iServer object', object);
   console.log('iServer subApp', subApp);
-
+  let moduleMeta = await modules(module);
+  let subAppParentId = await moduleMeta.parentFieldId;
+  console.log('iServer subAppParentId',subAppParentId);
+  //searchParams.set(filter, JSON.stringify([{ k: subAppParentId, o: 'is', v: object, l: 'AND' }]));
   queryParam = '?'
   queryParam += (searchParams.get('limit')) ? `limit=${searchParams.get('limit')}` : '';
   queryParam += (searchParams.get('page')) ? `&page=${searchParams.get('page')}` : '';
@@ -86,7 +93,7 @@ const frameURL = async (req) => {
   const objData = await fetch(`${origin}/api/app/${module}/${object}`);
   const objJson = await objData.json();
 
-  let moduleMeta = await modules(module);
+
   let steps = [], subApps = [];
 
   subApps = await moduleMeta.subApp;
@@ -104,7 +111,7 @@ const frameURL = async (req) => {
 class DynamicCreate extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { activeStep: 0 };
+    this.state = { activeStep: 0, showAddDailog: false };
   }
 
   static async getInitialProps(ctx) {
@@ -115,18 +122,22 @@ class DynamicCreate extends React.Component {
       let module = ctx.query.appId;
       let object = ctx.query.objId;
       let subApp = ctx.query.subAppId;
+      let moduleMeta = await modules(module);
       console.log('iClient subApp', subApp);
       const objData = await fetch(`${fullUrl}/api/app/${module}/${object}`);
       const objJson = await objData.json();
-      const { query } = ctx;
+      let { query } = ctx;
+      let subAppParentId = await moduleMeta.parentFieldId;
+      console.log('iServer moduleMeta',moduleMeta);
+      console.log('iClient subAppParentId',subAppParentId);
+      query.filter = await { k: subAppParentId, o: 'is', v: object, lo: 'AND' };
       let queryParam = '?'
       queryParam += (query.limit) ? `limit=${query.limit}` : '';
       queryParam += (query.page) ? `&page=${query.page}` : '';
-      queryParam += (query.filter) ? `&filter=${query.filter}` : '';
+      queryParam += (query.filter) ? `&filter=${JSON.stringify([query.filter])}` : '';
       console.log('iClient filter', `${fullUrl}/api/app/${subApp}${queryParam}`);
       const data = await fetch(`${fullUrl}/api/app/${subApp}${queryParam}`);
       const json = await data.json();
-      let moduleMeta = await modules(module);
       let steps = [], subApps = [];
       subApps = await moduleMeta.subApp;
       if (subApps) {
@@ -183,6 +194,14 @@ class DynamicCreate extends React.Component {
       }
     };
 
+    const onAddOpen = () => {
+      this.setState({ showAddDailog: true });
+    };
+
+    const onAddClose = () => {
+      this.setState({ showAddDailog: false });
+    };
+
     const stepRender = (<div className={classes.root}>
       <div>
         <div>
@@ -190,6 +209,8 @@ class DynamicCreate extends React.Component {
         </div>
       </div>
     </div>);
+
+    const dailogForm = (<DialogForm module={this.props.subApp} action="new" onClose={onAddClose} isOpen={this.state.showAddDailog} />);
 
     return (
       <Grid container spacing={0} key={`${Math.random()}`}>
@@ -206,7 +227,7 @@ class DynamicCreate extends React.Component {
               </div>
               <Stepper className={classes.stepper} nonLinear activeStep={this.state.activeStep}>
                 {steps.map((label, index) => (
-                  <Step key={label}>
+                  <Step key={Math.random()}>
                     <StepButton onClick={handleStep(index)}>
                       {label.label}
                     </StepButton>
@@ -216,6 +237,8 @@ class DynamicCreate extends React.Component {
             </Toolbar>
           </AppBar>
           <Paper elevation={0} variant="outlined" className={classes.paperDetails}>
+            {dailogForm}
+            <Container maxWidth="xl"><Button style={{ float: 'right' }} onClick={onAddOpen} color="secondary" variant="text" startIcon={<AddBoxOutlinedIcon />} disableElevation>Add</Button></Container>
             {stepRender}
           </Paper>
         </Grid>

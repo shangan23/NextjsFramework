@@ -229,7 +229,7 @@ class PageHeader extends React.Component {
         onEscapeKeyDown={handleFilterClose}
         onBackdropClick={handleFilterClose}
         BackdropProps={{ invisible: true }}
-        variant={"temprorary"}
+        variant={"temporary"}
         anchor={'right'}
         docked={false}
         classes={{ paper: classes.toolbar }}
@@ -319,7 +319,7 @@ class PageHeader extends React.Component {
               )} color="secondary" variant="text" startIcon={<AddBoxOutlinedIcon />} disableElevation>Create</Button>
 
               <Button size="small" color={this.props.routerInfo.query.filter ? 'secondary' : 'primary'} onClick={() => this.setState({ filterOpen: true })} variant="text" startIcon={<FilterListOutlinedIcon />} disableElevation>
-                <Badge variant={this.props.routerInfo.query.filter ? 'dot' : ''} color="secondary">
+                <Badge variant={this.props.routerInfo.query.filter ? 'dot' : 'standard'} color="secondary">
                   Filter List
                 </Badge>
               </Button>

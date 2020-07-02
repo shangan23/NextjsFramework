@@ -234,10 +234,10 @@ function Layout({ children, title, deauthenticate, container, isAuthenticated, s
   const renderMenu = (
     <Menu
       anchorEl={anchorEl}
-      anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
+      anchorOrigin={{ vertical: 'top', horizontal: 'left' }}
       id={menuId}
       keepMounted
-      transformOrigin={{ vertical: 'bottom', horizontal: 'center' }}
+      transformOrigin={{ vertical: 'top', horizontal: 'left' }}
       open={isMenuOpen}
       onClose={handleMenuClose}
     >

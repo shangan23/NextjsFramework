@@ -3,6 +3,7 @@ import React from 'react';
 import { Autocomplete } from 'mui-rff';
 import { connect } from 'react-redux';
 import { API } from '../../config';
+import Hidden from '@material-ui/core/Hidden';
 
 class Lookup extends React.Component {
 
@@ -15,7 +16,7 @@ class Lookup extends React.Component {
   getModuleObjects(value) {
     let module = this.props.fieldsToRender[parseInt(this.props.index)]['module'];
     let filterArray = [];
-    filterArray.push({ k: this.props.fieldsToRender[parseInt(this.props.index)]['moduleField'], o: 'contain', v: value, lo: 'AND' });
+    filterArray.push({ k: this.props.fieldsToRender[parseInt(this.props.index)]['moduleField'], o: 'contain', v: escape(value), lo: 'AND' });
     let filter = `?filter=${JSON.stringify(filterArray)}`;
 
     fetch(`${API}/${module}${filter}`, {
@@ -73,12 +74,12 @@ class Lookup extends React.Component {
       }
     };
 
-    return (
+    const field = (
       <Autocomplete
-        source={source ? source : ''}
         label={attributes[index]['label']}
         name={attributes[index]['name']}
         id={attributes[index]['id']}
+        //disabled={attributes[index]['disabled']}
         open={this.state.open}
         size="small"
         onInputChange={handleChange}
@@ -94,6 +95,13 @@ class Lookup extends React.Component {
         loading={this.state.loading}
       />
     );
+
+    if (attributes[index]['disabled'] && !source)
+      return <Hidden mdDown smDown lgDown xlDown xsDown>{field}</Hidden>;
+
+    return <React.Fragment>{field}</React.Fragment>;
+
+
   }
 }
 

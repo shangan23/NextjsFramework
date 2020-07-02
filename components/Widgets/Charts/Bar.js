@@ -43,7 +43,7 @@ export default class BarChartWidget extends PureComponent {
           <Legend />
           <Bar barSize={30} dataKey="pv" fill="#8884d8">
             {
-              data.map((entry, index) => <Cell fill={COLORS[index % COLORS.length]} />)
+              data.map((entry, index) => <Cell key={Math.random()} fill={COLORS[index % COLORS.length]} />)
             }
           </Bar>
         </BarChart>

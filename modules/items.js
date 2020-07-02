@@ -9,6 +9,7 @@ export default function columns(module, settings) {
         display: false,
       },
       type: 'Text',
+      disabled:true,
       required: false,
       id: 'id',
       section: 'System Information'
@@ -127,6 +128,7 @@ export default function columns(module, settings) {
         }
       },
       type: 'Lookup',
+      disabled:true,
       required: true,
       section: 'System Information'
     },
@@ -143,6 +145,7 @@ export default function columns(module, settings) {
         }
       },
       type: 'Lookup',
+      disabled:true,
       required: true,
       id: 'fk_updatedBy',
       section: 'System Information'
@@ -152,6 +155,7 @@ export default function columns(module, settings) {
       id: 'createdAt',
       label: 'Created On',
       type: 'Date',
+      disabled:true,
       options: {
         filter: true,
         sort: false,
@@ -170,6 +174,7 @@ export default function columns(module, settings) {
       id: 'createdAt',
       label: 'Updated On',
       type: 'Date',
+      disabled:true,
       options: {
         filter: true,
         sort: false,

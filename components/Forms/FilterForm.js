@@ -17,6 +17,7 @@ import Switch from '../Fields/Switch';
 import AutoCompleteSingle from '../Fields/AutocompleteSingle';
 import File from '../Fields/File';
 import Lookup from '../Fields/Lookup';
+import Currency from '../Fields/Currency';
 import Paper from '@material-ui/core/Paper';
 import { connect } from 'react-redux';
 import actions from '../../redux/actions';
@@ -25,6 +26,7 @@ import moduleController from '../../modules/controller';
 import Router from 'next/router';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
+import { validateFields } from '../../utils/helper';
 
 const drawerWidth = 300;
 const useStyles = (theme) => ({
@@ -49,8 +51,8 @@ const useStyles = (theme) => ({
     flexGrow: 1,
   },
   pageTitle: {
-    marginLeft:theme.spacing(1),
-   // top: theme.spacing(0.4)
+    marginLeft: theme.spacing(1),
+    // top: theme.spacing(0.4)
   },
   paper: {
     overflow: 'scroll',
@@ -60,7 +62,7 @@ const useStyles = (theme) => ({
     top: theme.spacing(30),
     height: theme.spacing(77),
     minHeight: theme.spacing(77),
-  }, 
+  },
   buttons: {
     '& > *': {
       margin: theme.spacing(0.1),
@@ -125,6 +127,10 @@ class FilterForm extends React.Component {
       onSubmit(values);
     };
 
+    const validate = values => {
+      return validateFields(values, fieldsToRender, true);
+    };
+
     const renderFields = (
       <Grid container spacing={1} className={classes.fields} key={`grid-form${Math.random()}`}>
         {fieldsToRender.map((data, index) => (
@@ -185,6 +191,10 @@ class FilterForm extends React.Component {
               <Grid item xs={12} md={12} key={index}>
                 <Lookup index={index} fieldsToRender={fieldsToRender} source="filter" />
               </Grid>
+              || (fieldsToRender[index]['type'] == 'Currency' && !!fieldsToRender[index]['options']['filter']) &&
+              <Grid item xs={12} md={12} key={index}>
+                <Currency index={index} fieldsToRender={fieldsToRender} source="filter" />
+              </Grid>
             }
           </React.Fragment>
         ))}
@@ -220,6 +230,7 @@ class FilterForm extends React.Component {
         <Form
           onSubmit={onSubmitForm} style={{ marginTop: 16 }}
           initialValues={this.state.submittedValues ? this.state.submittedValues : this.state.modeuleObject}
+          validate={validate}
           render={({ handleSubmit, reset, submitting, pristine }) => (
             <form onSubmit={handleSubmit} noValidate>
               <AppBar variant="outlined" elevation={1} position="fixed" color="inherit" className={classes.appBar}>
@@ -238,7 +249,7 @@ class FilterForm extends React.Component {
                 </Toolbar>
               </AppBar>
               <div className={classes.fieldsContainer}>
-                <div className={classes.drawerHeight}><br/><br/></div>
+                <div className={classes.drawerHeight}><br /><br /></div>
                 <Grid container alignItems="flex-end" elevation={0} spacing={1}>
                   {renderFields}
                 </Grid>

@@ -1,6 +1,7 @@
 import { DatePicker } from 'mui-rff';
 import DateFnsUtils from '@date-io/date-fns';
 import { connect } from 'react-redux';
+import Hidden from '@material-ui/core/Hidden';
 
 class FieldDate extends React.Component {
 
@@ -17,13 +18,19 @@ class FieldDate extends React.Component {
     format = format.replace('DD', 'dd');
     format = format.replace('YYYY', 'yyyy');
 
-    return (<DatePicker
+    const field = (<DatePicker
       required={(!source) ? fieldsToRender[index]['required'] : false}
       name={fieldsToRender[index]['name']}
       format={format}
       label={fieldsToRender[index]['label']}
       dateFunsUtils={DateFnsUtils}
     />);
+
+    if (fieldsToRender[index]['disabled'] && !source)
+      return <Hidden mdDown smDown lgDown xlDown xsDown>{field}</Hidden>;
+
+    return <React.Fragment>{field}</React.Fragment>;
+
   }
 }
 

@@ -1,46 +1,26 @@
 import { Form } from 'react-final-form';
-import {
-  Grid, Button, Divider, Typography
-} from '@material-ui/core';
+import { Grid, Button, Divider, Typography } from '@material-ui/core';
 import React from 'react';
-import Autocomplete from '../Fields/Autocomplete';
-import Checkbox from '../Fields/Checkbox';
-import Date from '../Fields/Date';
-import Radio from '../Fields/Radio';
-import Select from '../Fields/Select';
-import Text from '../Fields/Text';
-import TextArea from '../Fields/TextArea';
-import Time from '../Fields/Time';
-import Email from '../Fields/Email';
-import Currency from '../Fields/Currency';
-import Password from '../Fields/Password';
-import Switch from '../Fields/Switch';
-import AutoCompleteSingle from '../Fields/AutocompleteSingle';
-import File from '../Fields/File';
-import Lookup from '../Fields/Lookup';
 import Paper from '@material-ui/core/Paper';
 import { connect } from 'react-redux';
 import actions from '../../redux/actions';
 import { withStyles } from '@material-ui/core/styles';
 import moduleController from '../../modules/controller';
 import Router from 'next/router';
-
-import { dynamicSort } from '../../utils/helper';
+import RenderFields from './RenderFields';
+import { validateFields } from '../../utils/helper';
 
 const useStyles = (theme) => ({
   fieldsContainer: {
     minHeight: theme.spacing(60),
     maxHeight: theme.spacing(60),
     overflow: 'scroll'
-    //height: theme.spacing(60)
   }, buttons: {
     '& > *': {
       margin: theme.spacing(0.5),
     },
     position: 'relative',
     float: 'right'
-    //left: theme.spacing(138),
-    //top: theme.spacing(0.1),
   },
   buttonClear: {
     clear: 'both'
@@ -49,7 +29,6 @@ const useStyles = (theme) => ({
     float: 'left',
     paddingLeft: theme.spacing(1),
     paddingTop: theme.spacing(0.5),
-    //width: theme.spacing(138)
   },
   formTitleButtons: {
     '& > *': {
@@ -57,18 +36,11 @@ const useStyles = (theme) => ({
     },
     position: 'relative',
     float: 'right'
-    // left: theme.spacing(126.5),
   },
   fields: {
     margin: theme.spacing(1),
-  },
-  Section: {
-    backgroundColor: '#FAFAFA',
-    paddingTop: '0px !important',
-    paddingBottom: '0px !important',
-  },
+  }
 });
-
 
 class DynamicForm extends React.Component {
 
@@ -102,139 +74,8 @@ class DynamicForm extends React.Component {
 
 
     const validate = values => {
-      const errors = {};
-      var regex = /^\w+([-+.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$/;
-      var curencyRegex = /^(?:0|[1-9]\d*)(?:\.(?!.*000)\d+)?$/;
-      fieldsToRender.map((data, index) => {
-        if (fieldsToRender[index]['type']) {
-          let name = (fieldsToRender[index]['name']).toString();
-          let label = (fieldsToRender[index]['label']).toString();
-          let type = (fieldsToRender[index]['type']).toString();
-          let required = (fieldsToRender[index]['required']);
-          switch (type) {
-            case 'Autocomplete':
-              if ((values[name].length == 0) && required)
-                errors[name] = label + ' required';
-              break;
-            case 'Email':
-              if ((!values[name]) && required)
-                errors[name] = label + ' required';
-              else {
-                if (!regex.test(values[name]) && values[name])
-                  errors[name] = label + ' invalid';
-              }
-              break;
-            case 'Currency':
-              if ((!values[name]) && required)
-                errors[name] = label + ' required';
-              else {
-                if (!curencyRegex.test(values[name]) && values[name])
-                  errors[name] = label + ' invalid';
-              }
-              break;
-            default:
-              if (!values[name] && required)
-                errors[name] = label + ' required';
-              break;
-          }
-        }
-      }
-      );
-      return errors;
+      return validateFields(values, fieldsToRender);
     };
-
-    fieldsToRender.sort(dynamicSort('section'));
-
-    //&& fieldsToRender[index]['options']['display']== null
-    const renderFields = (
-      <Grid container spacing={2} className={classes.fields} key={`grid-form${Math.random()}`}>
-        {
-          fieldsToRender.map((data, index) => (
-            <React.Fragment key={`layout-frag${Math.random()}`}>
-              {
-                (
-                  (index === 0) ?
-                    <Grid className={classes.Section} item xs={12} md={12}>
-                      <Typography color="secondary" variant="overline">{fieldsToRender[index]['section']}</Typography>
-                    </Grid> :
-                    (fieldsToRender[index]['section'] != fieldsToRender[(index - 1)]['section'] && fieldsToRender[index]['section'] != 'System Information') ?
-                      <React.Fragment>
-                        <Grid item xs={12} md={12}></Grid>
-                        <Grid className={classes.Section} item xs={12} md={12}>
-                          <Typography color="secondary" variant="overline">{fieldsToRender[index]['section']}</Typography>
-                        </Grid></React.Fragment> :
-                      ''
-                )
-              }
-              {
-                (
-                  (fieldsToRender[index]['type'] == 'Text' && fieldsToRender[index]['section'] != 'System Information') &&
-                  <Grid item xs={12} md={4} key={index}>
-                    <Text index={index} fieldsToRender={fieldsToRender} />
-                  </Grid>
-                  || (fieldsToRender[index]['type'] == 'Date' && fieldsToRender[index]['section'] != 'System Information') &&
-                  <Grid item xs={12} md={4} key={index}>
-                    <Date index={index} fieldsToRender={fieldsToRender} />
-                  </Grid>
-                  || (fieldsToRender[index]['type'] == 'Select' && fieldsToRender[index]['section'] != 'System Information') &&
-                  <Grid item xs={12} md={4} key={index}>
-                    <Select index={index} fieldsToRender={fieldsToRender} />
-                  </Grid>
-                  || (fieldsToRender[index]['type'] == 'Checkbox' && fieldsToRender[index]['section'] != 'System Information') &&
-                  <Grid item xs={12} md={4} key={index}>
-                    <Checkbox index={index} fieldsToRender={fieldsToRender} />
-                  </Grid>
-                  || (fieldsToRender[index]['type'] == 'Time' && fieldsToRender[index]['section'] != 'System Information') &&
-                  <Grid item xs={12} md={4} key={index}>
-                    <Time index={index} fieldsToRender={fieldsToRender} />
-                  </Grid>
-                  || (fieldsToRender[index]['type'] == 'TextArea' && fieldsToRender[index]['section'] != 'System Information') &&
-                  <Grid item xs={12} md={12} key={index}>
-                    <TextArea index={index} fieldsToRender={fieldsToRender} />
-                  </Grid>
-                  || (fieldsToRender[index]['type'] == 'Radio' && fieldsToRender[index]['section'] != 'System Information') &&
-                  <Grid item xs={12} md={4} key={index}>
-                    <Radio index={index} fieldsToRender={fieldsToRender} />
-                  </Grid>
-                  || (fieldsToRender[index]['type'] == 'Autocomplete' && fieldsToRender[index]['section'] != 'System Information') &&
-                  <Grid item xs={12} md={4} key={index}>
-                    <Autocomplete index={index} fieldsToRender={fieldsToRender} />
-                  </Grid>
-                  || (fieldsToRender[index]['type'] == 'Email' && fieldsToRender[index]['section'] != 'System Information') &&
-                  <Grid item xs={12} md={4} key={index}>
-                    <Email index={index} fieldsToRender={fieldsToRender} />
-                  </Grid>
-                  || (fieldsToRender[index]['type'] == 'Password' && fieldsToRender[index]['section'] != 'System Information') &&
-                  <Grid item xs={12} md={4} key={index}>
-                    <Password index={index} fieldsToRender={fieldsToRender} />
-                  </Grid>
-                  || (fieldsToRender[index]['type'] == 'Switch' && fieldsToRender[index]['section'] != 'System Information') &&
-                  <Grid item xs={12} md={4} key={index}>
-                    <Switch index={index} fieldsToRender={fieldsToRender} />
-                  </Grid>
-                  || (fieldsToRender[index]['type'] == 'AutocompleteSingle' && fieldsToRender[index]['section'] != 'System Information') &&
-                  <Grid item xs={12} md={4} key={index}>
-                    <AutoCompleteSingle index={index} fieldsToRender={fieldsToRender} />
-                  </Grid>
-                  || (fieldsToRender[index]['type'] == 'Upload') &&
-                  <Grid item xs={12} md={4} key={index}>
-                    <File index={index} fieldsToRender={fieldsToRender} onFileUpload={onFileUpload} />
-                  </Grid>
-                  || (fieldsToRender[index]['type'] == 'Lookup' && fieldsToRender[index]['section'] != 'System Information') &&
-                  <Grid item xs={12} md={4} key={index}>
-                    <Lookup index={index} fieldsToRender={fieldsToRender} />
-                  </Grid>
-                  || (fieldsToRender[index]['type'] == 'Currency' && fieldsToRender[index]['section'] != 'System Information') &&
-                  <Grid item xs={12} md={4} key={index}>
-                    <Currency index={index} fieldsToRender={fieldsToRender} />
-                  </Grid>
-                )
-              }
-            </React.Fragment>
-          ))
-        }
-      </Grid>
-    );
 
     const onSubmit = async values => {
       //window.alert(JSON.stringify(values, 0, 2));
@@ -260,17 +101,12 @@ class DynamicForm extends React.Component {
           .then(response => response.json())
           .then(data => {
             this.props.notifications(data);
-            //this.props.onClose();
-            //console.log(Router.pathname);
-            //Router.push(Router.asPath);
             Router.push(
               '/app/[appId]',
               `/app/${this.props.module}`
             )
           }).catch(error => {
             this.props.notifications(error);
-            //this.props.onClose();
-            //Router.push(Router.asPath);
             Router.push(
               '/app/[appId]',
               `/app/${this.props.module}`
@@ -300,7 +136,7 @@ class DynamicForm extends React.Component {
               <Divider />
               <div className={classes.fieldsContainer}>
                 <Grid container alignItems="flex-end" spacing={1}>
-                  {renderFields}
+                  <RenderFields fieldsToRender={fieldsToRender} />
                 </Grid>
               </div>
               <Divider />

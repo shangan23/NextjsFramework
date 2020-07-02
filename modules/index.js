@@ -24,6 +24,7 @@ export default function modules(module = null) {
       label: { singular: 'Item', plural: 'Items' },
       icon: { type: 'material', name: 'AppsIcon' },
       id: 'items',
+      parentFieldId: 'itemId',
       subApp: [
         { id: 'subItems', lable: { singular: 'Sub Item', plural: 'Sub Items' }, link: null, as: null },
         { id: 'variants', lable: { singular: 'Adjust Variant', plural: 'Adjust Variants' }, link: null, as: null }

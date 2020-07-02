@@ -31,5 +31,48 @@ export const dynamicSort = (property) => {
      */
     var result = (a[property] < b[property]) ? -1 : (a[property] > b[property]) ? 1 : 0;
     return result * sortOrder;
-  }
+  };
 }
+
+export const validateFields = (values, fieldsToRender, fromFilter = false) => {
+  const errors = {};
+  var regex = /^\w+([-+.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$/;
+  var curencyRegex = /^(?:0|[1-9]\d*)(?:\.(?!.*000)\d+)?$/;
+  fieldsToRender.map((data, index) => {
+    if (fieldsToRender[index]['type']) {
+      let name = (fieldsToRender[index]['name']).toString();
+      let label = (fieldsToRender[index]['label']).toString();
+      let type = (fieldsToRender[index]['type']).toString();
+      let required = (fieldsToRender[index]['required']);
+      required = (fromFilter) ? false : required;
+      switch (type) {
+        case 'Autocomplete':
+          if ((values[name].length == 0) && required)
+            errors[name] = label + ' required';
+          break;
+        case 'Currency':
+          if ((!values[name]) && required)
+            errors[name] = label + ' required';
+          else {
+            if (!curencyRegex.test(values[name]) && values[name])
+              errors[name] = label + ' invalid';
+          }
+          break;
+        case 'Email':
+          if ((!values[name]) && required)
+            errors[name] = label + ' required';
+          else {
+            if (!regex.test(values[name]) && values[name])
+              errors[name] = label + ' invalid';
+          }
+          break;
+        default:
+          if (!values[name] && required)
+            errors[name] = label + ' required';
+          break;
+      }
+    }
+  }
+  );
+  return errors;
+};

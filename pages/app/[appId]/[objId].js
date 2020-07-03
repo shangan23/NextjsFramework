@@ -59,7 +59,11 @@ const useStyles = theme => ({
   },
   purple: {
     backgroundColor: deepPurple[500],
-    color:deepPurple[10]
+    color:theme.palette.getContrastText(deepPurple[500])
+  },
+  orange: {
+    color: theme.palette.getContrastText(deepOrange[500]),
+    backgroundColor: deepOrange[500],
   },
 });
 
@@ -180,7 +184,7 @@ class DynamicCreate extends React.Component {
                     <Typography variant="body2">
                       <Chip
                         //variant=""
-                        avatar={<Avatar className={classes.purple}>{fieldsToRender[index]['module'].slice(0, 1).toUpperCase()}</Avatar>}
+                        //avatar={<Avatar className={classes.purple}>{fieldsToRender[index]['module'].slice(0, 1).toUpperCase()}</Avatar>}
                         size="small"
                         label={`${object[fieldsToRender[index]['id']][fieldsToRender[index]['moduleField']]}`}
                         onClick={() => Router.push('/app/[appId]/[objId]', `/app/${fieldsToRender[index]['module']}/${object[fieldsToRender[index]['id']].id}`)}

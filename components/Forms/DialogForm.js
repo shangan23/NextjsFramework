@@ -87,7 +87,7 @@ class DialogForm extends React.Component {
       let resourceUrl, resourceMethod;
 
       if (this.props.action == 'new') {
-        resourceUrl = `${this.props.siteDetails.siteURL}api/app/${this.props.module}`;
+        resourceUrl = `${this.props.siteDetails.siteURL}api/app/${Router.query.appId}/${Router.query.objId}/${Router.query.subAppId}`;
         resourceMethod = 'POST';
       } else if (this.props.action == 'edit') {
         resourceUrl = `${this.props.siteDetails.siteURL}api/app/${this.props.module}/${this.props.objectId}`;
@@ -108,11 +108,15 @@ class DialogForm extends React.Component {
             this.props.notifications(data);
             this.props.onClose();
             //console.log(Router.pathname);
-            Router.push(Router.pathname);
+            Router.push(
+              Router.pathname,
+              Router.asPath);
           }).catch(error => {
             this.props.notifications(error);
             //this.props.onClose();
-            Router.push(Router.pathname);
+            Router.push(
+              Router.pathname,
+              Router.asPath);
           });
       }
     };
@@ -121,7 +125,7 @@ class DialogForm extends React.Component {
       this.props.onClose();
     };
 
-    const dialogTitle = (this.props.action == 'new') ? `Add New ${this.props.module}` : `Edit ${this.props.module}`;
+    const dialogTitle = (this.props.action == 'new') ? `Add - ${this.props.title}` : `Edit - ${this.props.title}`;
     console.log('modeuleObject', this.state.modeuleObject);
 
     const formDialog = (

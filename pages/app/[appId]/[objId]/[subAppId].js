@@ -16,10 +16,11 @@ import Stepper from '@material-ui/core/Stepper';
 import Step from '@material-ui/core/Step';
 import StepButton from '@material-ui/core/StepButton';
 import Router from 'next/router';
-import RespTable from '../../../../components/TableNew';
+import RespTable from '../../../../components/SubAppTable';
 import Container from '@material-ui/core/Container';
 import Button from '@material-ui/core/Button';
-import AddBoxOutlinedIcon from '@material-ui/icons/AddBoxOutlined';
+import Chip from '@material-ui/core/Chip';
+import AddBoxOutlinedIcon from '@material-ui/icons/AddBox';
 import DialogForm from '../../../../components/Forms/DialogForm';
 
 const useStyles = theme => ({
@@ -56,7 +57,11 @@ const useStyles = theme => ({
   },
   stepper: {
     padding: 0
-  }
+  },
+  buttons: {
+    margin: theme.spacing(1),
+    float: 'right'
+  },
 });
 
 const frameURL = async (req) => {
@@ -80,14 +85,14 @@ const frameURL = async (req) => {
   console.log('iServer subApp', subApp);
   let moduleMeta = await modules(module);
   let subAppParentId = await moduleMeta.parentFieldId;
-  console.log('iServer subAppParentId',subAppParentId);
+  console.log('iServer subAppParentId', subAppParentId);
   //searchParams.set(filter, JSON.stringify([{ k: subAppParentId, o: 'is', v: object, l: 'AND' }]));
   queryParam = '?'
   queryParam += (searchParams.get('limit')) ? `limit=${searchParams.get('limit')}` : '';
   queryParam += (searchParams.get('page')) ? `&page=${searchParams.get('page')}` : '';
   queryParam += (searchParams.get('filter')) ? `&filter=${searchParams.get('filter')}` : '';
-  console.log('iServer filter', `${origin}/api/app/${module}${queryParam}`);
-  data = await fetch(`${origin}/api/app/${subApp}${queryParam}`, { headers: headers });
+  console.log('iServer filter', `${origin}/api/app/${module}/${object}/${subApp}${queryParam}`);
+  data = await fetch(`${origin}/api/app/${module}/${object}/${subApp}${queryParam}`, { headers: headers });
   listing = await data.json();
 
   const objData = await fetch(`${origin}/api/app/${module}/${object}`);
@@ -100,7 +105,7 @@ const frameURL = async (req) => {
 
   if (subApps) {
     await steps.push({ label: `${module.charAt(0).toUpperCase() + module.slice(1)} Detail`, id: module });
-    await subApps.map(obj => steps.push({ label: obj.lable.plural, id: obj.id }));
+    await subApps.map(obj => steps.push({ label: obj.lable.plural, id: obj.id, singular: obj.lable.singular }));
   }
 
   let stepperIndex = await steps.findIndex(p => p.id == subApp);
@@ -124,25 +129,29 @@ class DynamicCreate extends React.Component {
       let subApp = ctx.query.subAppId;
       let moduleMeta = await modules(module);
       console.log('iClient subApp', subApp);
+
       const objData = await fetch(`${fullUrl}/api/app/${module}/${object}`);
       const objJson = await objData.json();
+
       let { query } = ctx;
       let subAppParentId = await moduleMeta.parentFieldId;
-      console.log('iServer moduleMeta',moduleMeta);
-      console.log('iClient subAppParentId',subAppParentId);
-      query.filter = await { k: subAppParentId, o: 'is', v: object, lo: 'AND' };
+      console.log('iServer moduleMeta', moduleMeta);
+      console.log('iClient subAppParentId', subAppParentId);
+      //query.filter = await { k: subAppParentId, o: 'is', v: object, lo: 'AND' };
       let queryParam = '?'
       queryParam += (query.limit) ? `limit=${query.limit}` : '';
       queryParam += (query.page) ? `&page=${query.page}` : '';
       queryParam += (query.filter) ? `&filter=${JSON.stringify([query.filter])}` : '';
-      console.log('iClient filter', `${fullUrl}/api/app/${subApp}${queryParam}`);
-      const data = await fetch(`${fullUrl}/api/app/${subApp}${queryParam}`);
+
+      console.log('iClient filter', `${fullUrl}/api/app/${module}/${object}/${subApp}${queryParam}`);
+      const data = await fetch(`${fullUrl}/api/app/${module}/${object}/${subApp}${queryParam}`);
       const json = await data.json();
+
       let steps = [], subApps = [];
       subApps = await moduleMeta.subApp;
       if (subApps) {
         await steps.push({ label: `${module.charAt(0).toUpperCase() + module.slice(1)} Detail`, id: module });
-        await subApps.map(obj => steps.push({ label: obj.lable.plural, id: obj.id }));
+        await subApps.map(obj => steps.push({ label: obj.lable.plural, id: obj.id, singular: obj.lable.singular }));
       }
       let stepperIndex = await steps.findIndex(p => p.id == subApp);
       console.log('iClient stepperIndex', stepperIndex);
@@ -202,6 +211,8 @@ class DynamicCreate extends React.Component {
       this.setState({ showAddDailog: false });
     };
 
+    console.log('steps[this.state.activeStep].singular', steps[this.state.activeStep].singular, steps[this.state.activeStep])
+
     const stepRender = (<div className={classes.root}>
       <div>
         <div>
@@ -210,7 +221,7 @@ class DynamicCreate extends React.Component {
       </div>
     </div>);
 
-    const dailogForm = (<DialogForm module={this.props.subApp} action="new" onClose={onAddClose} isOpen={this.state.showAddDailog} />);
+    const dailogForm = (<DialogForm title={steps[this.state.activeStep].singular} module={this.props.subApp} action="new" onClose={onAddClose} isOpen={this.state.showAddDailog} />);
 
     return (
       <Grid container spacing={0} key={`${Math.random()}`}>
@@ -238,7 +249,16 @@ class DynamicCreate extends React.Component {
           </AppBar>
           <Paper elevation={0} variant="outlined" className={classes.paperDetails}>
             {dailogForm}
-            <Container maxWidth="xl"><Button style={{ float: 'right' }} onClick={onAddOpen} color="secondary" variant="text" startIcon={<AddBoxOutlinedIcon />} disableElevation>Add</Button></Container>
+            <Container maxWidth="xl">
+              <Chip
+                size="small"
+                color="secondary"
+                icon={<AddBoxOutlinedIcon />}
+                label="Create"
+                onClick={onAddOpen} 
+                className={classes.buttons} 
+              />
+            </Container>
             {stepRender}
           </Paper>
         </Grid>

@@ -1,4 +1,5 @@
 'use strict';
+let hookController = require('../server/hooks');
 module.exports = (sequelize, DataTypes) => {
   const SubItems = sequelize.define('SubItems', {
     quantity: DataTypes.INTEGER,
@@ -11,19 +12,7 @@ module.exports = (sequelize, DataTypes) => {
     SubItems.belongsTo(models.Users, { foreignKey: 'updatedBy', as: 'fk_updatedBy' });
   };
   SubItems.beforeCreate(async function (si, options) {
-    try {
-      var models = require('./index');
-      await models.Items.findAll({ where: { id: si.dataValues.itemId } }).then(item => {
-        si.dataValues.cost = (si.dataValues.quantity*item[0].dataValues.cost)
-        console.log('module Cost', item[0].dataValues.cost);
-        console.log(' si.dataValues.cost',  si.dataValues.cost);
-        //return item[0];
-      }).catch(err => {
-        return err
-      });
-    } catch (err) {
-      console.log('subItems', err);
-    }
+    await hookController(si, options, { sourceModel: 'subitems', hookToExec: 'beforeCreate' });
   });
   return SubItems;
 };

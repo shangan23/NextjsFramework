@@ -23,10 +23,10 @@ const association = (model) => {
 
 const filters = (filters) => {
 	filters = JSON.parse(filters);
-	console.log('parse filters',filters);
+	console.log('parse filters', filters);
 	let obj = {}; //$and = [], $or = [],
 	//filters.sort(dynamicSort('lo'));
-	console.log('filterObj', typeof(filters))
+	console.log('filterObj', typeof (filters))
 	filters.map((data, index) => {
 		switch (data.o) {
 			case 'is':
@@ -34,6 +34,9 @@ const filters = (filters) => {
 				break;
 			case 'contain':
 				obj[data.k] = { [Op.like]: `${data.v}%` };
+				break;
+			case 'ne':
+				obj[data.k] = { [Op.ne]: data.v };
 				break;
 		}
 		if (data.k.indexOf('fk_') === 0) {

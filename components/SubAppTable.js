@@ -41,11 +41,11 @@ const useStyles = makeStyles((theme) => ({
 
 export default function RespTable(columns, list, module) {
   const classes = useStyles();
-  const [page, setPage] = React.useState(0);
-  const [rowsPerPage, setRowsPerPage] = React.useState(RecordsPerPage);
+  const [page, setPage] = React.useState(Router.router.query.page ? Number(Router.router.query.page) : 0);
+  const [rowsPerPage, setRowsPerPage] = React.useState(Router.router.query.limit ? Number(Router.router.query.limit) : RecordsPerPage);
   let rows, listCount, navigatePage, limit, value, dataValue;
-  module = columns['module'];
 
+  module = columns['module'];
   list = columns['list'].rows;
   rows = list;
   listCount = columns['list'].count;
@@ -55,10 +55,10 @@ export default function RespTable(columns, list, module) {
     setPage(newPage);
     navigatePage = (Router.router.query.limit) ? `?limit=${Router.router.query.limit}&page=${newPage}` : `?limit=${RecordsPerPage}&page=${newPage}`;
     switch (Router.router.route) {
-      case '/app/[appId]':
+      case '/app/[appId]/[objId]/[subAppId]':
         Router.push(
-          `/app/[appId]${navigatePage}`,
-          `/app/${module}${navigatePage}`,
+          `/app/[appId]/[objId]/[subAppId]${navigatePage}`,
+          `/app/${Router.router.query.appId}/${Router.router.query.objId}/${Router.router.query.subAppId}${navigatePage}`,
         );
         break;
       default:
@@ -81,10 +81,10 @@ export default function RespTable(columns, list, module) {
     setPage(0);
     limit = `?limit=${+event.target.value}&page=0`;
     switch (Router.router.route) {
-      case '/app/[appId]':
+      case '/app/[appId]/[objId]/[subAppId]':
         Router.push(
-          `/app/[appId]${limit}`,
-          `/app/${module}${limit}`
+          `/app/[appId]/[objId]/[subAppId]${limit}`,
+          `/app/${Router.router.query.appId}/${Router.router.query.objId}/${Router.router.query.subAppId}${limit}`
         );
         break;
       default:

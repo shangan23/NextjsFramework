@@ -21,6 +21,7 @@ export default function columns(module, settings) {
       module: 'items',
       moduleField: 'name',
       label: 'Item',
+      isParent: true,
       options: {
         filter: true,
         customBodyRender: (value) => {

@@ -4,6 +4,7 @@ import { Autocomplete } from 'mui-rff';
 import { connect } from 'react-redux';
 import { API } from '../../config';
 import Hidden from '@material-ui/core/Hidden';
+import Router from 'next/router';
 
 class Lookup extends React.Component {
 
@@ -16,6 +17,8 @@ class Lookup extends React.Component {
   getModuleObjects(value) {
     let module = this.props.fieldsToRender[parseInt(this.props.index)]['module'];
     let filterArray = [];
+    this.props.fieldsToRender[parseInt(this.props.index)]['isParent'] ?
+      filterArray.push({ k: 'id', o: 'ne', v: Router.router.query.objId, lo: 'AND' }) : '';
     filterArray.push({ k: this.props.fieldsToRender[parseInt(this.props.index)]['moduleField'], o: 'contain', v: escape(value), lo: 'AND' });
     let filter = `?filter=${JSON.stringify(filterArray)}`;
 
@@ -45,7 +48,13 @@ class Lookup extends React.Component {
 
   handleLoad() {
     let module = this.props.fieldsToRender[parseInt(this.props.index)]['module'];
-    fetch(`${API}/${module}`, {
+
+    let filterArray = [];
+    this.props.fieldsToRender[parseInt(this.props.index)]['isParent'] ?
+      filterArray.push({ k: 'id', o: 'ne', v: Router.router.query.objId, lo: 'AND' }) : '';
+    let filter = `?filter=${JSON.stringify(filterArray)}`;
+
+    fetch(`${API}/${module}${filter}`, {
       headers: {
         'Authorization': `Basic ${this.props.token}`
       },
@@ -67,7 +76,7 @@ class Lookup extends React.Component {
     const moduleField = attributes[index]['moduleField'];
 
     const handleChange = (event, value, reason) => {
-      if (value.length >= 3) {
+      if (value.length >= 2) {
         this.getModuleObjects(value);
         console.log('onchange triggered', reason);
         console.log(event, value);

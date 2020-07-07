@@ -14,6 +14,9 @@ module.exports = (sequelize, DataTypes) => {
   SubItems.beforeCreate(async function (si, options) {
     await hookController(si, options, { sourceModel: 'subitems', hookToExec: 'beforeCreate' });
   });
+  SubItems.beforeUpdate(async function (si, options) {
+    await hookController(si, options, { sourceModel: 'subitems', hookToExec: 'beforeUpdate' });
+  });
   return SubItems;
 };
 

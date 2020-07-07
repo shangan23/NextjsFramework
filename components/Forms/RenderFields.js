@@ -51,7 +51,7 @@ class RenderFields extends React.Component {
 										<Grid className={classes.Section} item xs={12} md={12}>
 											<Typography color="secondary" variant="overline">{fieldsToRender[index]['section']}</Typography>
 										</Grid> :
-										(fieldsToRender[index]['section'] != fieldsToRender[(index - 1)]['section'] && !fieldsToRender[index]['disabled']) ?
+										(fieldsToRender[index]['section'] != fieldsToRender[(index - 1)]['section'] && !fieldsToRender[index]['readOnly'] && !fieldsToRender[index]['disabled']) ?
 											<React.Fragment>
 												<Grid item xs={12} md={12}></Grid>
 												<Grid className={classes.Section} item xs={12} md={12}>
@@ -61,63 +61,63 @@ class RenderFields extends React.Component {
 								)
 							}
 							{
-								(fieldsToRender[index]['type'] == 'Text') &&
+								(fieldsToRender[index]['type'] == 'Text' && !fieldsToRender[index]['readOnly']) &&
 								<Grid item xs={6} md={6} key={index}>
 									<Text index={index} fieldsToRender={fieldsToRender} />
 								</Grid>
-								|| (fieldsToRender[index]['type'] == 'Date') &&
+								|| (fieldsToRender[index]['type'] == 'Date' && !fieldsToRender[index]['readOnly']) &&
 								<Grid item xs={6} md={6} key={index}>
 									<Date index={index} fieldsToRender={fieldsToRender} />
 								</Grid>
-								|| (fieldsToRender[index]['type'] == 'Select') &&
+								|| (fieldsToRender[index]['type'] == 'Select' && !fieldsToRender[index]['readOnly']) &&
 								<Grid item xs={6} md={6} key={index}>
 									<Select index={index} fieldsToRender={fieldsToRender} />
 								</Grid>
-								|| (fieldsToRender[index]['type'] == 'Checkbox') &&
+								|| (fieldsToRender[index]['type'] == 'Checkbox' && !fieldsToRender[index]['readOnly']) &&
 								<Grid item xs={6} md={6} key={index}>
 									<Checkbox index={index} fieldsToRender={fieldsToRender} />
 								</Grid>
-								|| (fieldsToRender[index]['type'] == 'Time') &&
+								|| (fieldsToRender[index]['type'] == 'Time' && !fieldsToRender[index]['readOnly']) &&
 								<Grid item xs={6} md={6} key={index}>
 									<Time index={index} fieldsToRender={fieldsToRender} />
 								</Grid>
-								|| (fieldsToRender[index]['type'] == 'TextArea') &&
+								|| (fieldsToRender[index]['type'] == 'TextArea' && !fieldsToRender[index]['readOnly']) &&
 								<Grid item xs={6} md={6} key={index}>
 									<TextArea index={index} fieldsToRender={fieldsToRender} />
 								</Grid>
-								|| (fieldsToRender[index]['type'] == 'Radio') &&
+								|| (fieldsToRender[index]['type'] == 'Radio' && !fieldsToRender[index]['readOnly']) &&
 								<Grid item xs={6} md={6} key={index}>
 									<Radio index={index} fieldsToRender={fieldsToRender} />
 								</Grid>
-								|| (fieldsToRender[index]['type'] == 'Autocomplete') &&
+								|| (fieldsToRender[index]['type'] == 'Autocomplete' && !fieldsToRender[index]['readOnly']) &&
 								<Grid item xs={6} md={6} key={index}>
 									<Autocomplete index={index} fieldsToRender={fieldsToRender} />
 								</Grid>
-								|| (fieldsToRender[index]['type'] == 'Email') &&
+								|| (fieldsToRender[index]['type'] == 'Email' && !fieldsToRender[index]['readOnly']) &&
 								<Grid item xs={6} md={6} key={index}>
 									<Email index={index} fieldsToRender={fieldsToRender} />
 								</Grid>
-								|| (fieldsToRender[index]['type'] == 'Password') &&
+								|| (fieldsToRender[index]['type'] == 'Password' && !fieldsToRender[index]['readOnly']) &&
 								<Grid item xs={6} md={6} key={index}>
 									<Password index={index} fieldsToRender={fieldsToRender} />
 								</Grid>
-								|| (fieldsToRender[index]['type'] == 'Switch') &&
+								|| (fieldsToRender[index]['type'] == 'Switch' && !fieldsToRender[index]['readOnly']) &&
 								<Grid item xs={6} md={6} key={index}>
 									<Switch index={index} fieldsToRender={fieldsToRender} />
 								</Grid>
-								|| (fieldsToRender[index]['type'] == 'AutocompleteSingle') &&
+								|| (fieldsToRender[index]['type'] == 'AutocompleteSingle' && !fieldsToRender[index]['readOnly']) &&
 								<Grid item xs={6} md={6} key={index}>
 									<AutoCompleteSingle index={index} fieldsToRender={fieldsToRender} />
 								</Grid>
-								|| (fieldsToRender[index]['type'] == 'Upload') &&
+								|| (fieldsToRender[index]['type'] == 'Upload' && !fieldsToRender[index]['readOnly']) &&
 								<Grid item xs={6} md={6} key={index}>
 									<File index={index} fieldsToRender={fieldsToRender} onFileUpload={onFileUpload} />
 								</Grid>
-								|| (fieldsToRender[index]['type'] == 'Lookup') &&
+								|| (fieldsToRender[index]['type'] == 'Lookup' && !fieldsToRender[index]['readOnly']) &&
 								<Grid item xs={6} md={6} key={index}>
 									<Lookup index={index} fieldsToRender={fieldsToRender} />
 								</Grid>
-								|| (fieldsToRender[index]['type'] == 'Currency') &&
+								|| (fieldsToRender[index]['type'] == 'Currency' && !fieldsToRender[index]['readOnly']) &&
 								<Grid item xs={12} md={4} key={index}>
 									<Currency index={index} fieldsToRender={fieldsToRender} />
 								</Grid>

@@ -12,8 +12,9 @@ import { validateFields } from '../../utils/helper';
 
 const useStyles = (theme) => ({
   fieldsContainer: {
-    minHeight: theme.spacing(60),
+    minHeight: theme.spacing(65),
     maxHeight: theme.spacing(60),
+    maxWidth: '100%',
     overflow: 'scroll'
   }, buttons: {
     '& > *': {

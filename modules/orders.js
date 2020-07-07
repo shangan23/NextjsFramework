@@ -9,19 +9,85 @@ export default function columns(module, settings) {
         display: false,
       },
       type: 'Text',
+      disabled: true,
       required: false,
-      disabled:true,
       id: 'id',
       section: 'System Information'
     },
     {
-      name: 'fk_itemId',
-      id: 'fk_itemId',
+      name: 'orderId',
+      label: 'Order Id#',
+      primary: true,
+      options: {
+        filter: true
+      },
+      type: 'Text',
+      required: true,
+      id: 'orderId',
+      section: 'Order Information'
+    },
+    {
+      name: 'orderDate',
+      label: 'Order Date',
+      options: {
+        filter: false,
+        sort: false,
+        customBodyRender: (value) => {
+          return (
+            <Moment format={settings.dateFormat}>
+              {value}
+            </Moment>
+          );
+        }
+      },
+      type: 'Date',
+      required: true,
+      id: 'orderDate',
+      section: 'Order Information'
+    },
+    {
+      name: 'deliveryDate',
+      label: 'Delivery Date',
+      options: {
+        filter: true,
+        sort: false,
+        customBodyRender: (value) => {
+          return (
+            <Moment format={settings.dateFormat}>
+              {value}
+            </Moment>
+          )
+        }
+      },
+      type: 'Date',
+      required: true,
+      id: 'deliveryDate',
+      section: 'Order Information'
+    },
+    {
+      name: 'orderStatus',
+      label: 'Order Status',
+      options: {
+        filter: true,
+      },
+      data: [
+        { 'id': 'confirmed', 'value': 'confirmed' },
+        { 'id': 'underway', 'value': 'underway' },
+        { 'id': 'completed', 'value': 'completed' },
+        { 'id': 'cancelled', 'value': 'cancelled' }
+      ],
+      type: 'Select',
+      required: true,
+      id: 'orderStatus',
+      section: 'Order Information'
+    },
+    {
+      name: 'fk_customerId',
+      id: 'fk_customerId',
       fk: true,
-      module: 'items',
+      module: 'customers',
       moduleField: 'name',
-      label: 'Item',
-      isParent: true,
+      label: 'Customer',
       options: {
         filter: true,
         customBodyRender: (value) => {
@@ -30,33 +96,36 @@ export default function columns(module, settings) {
       },
       type: 'Lookup',
       required: true,
-      section: 'Inventory Details'
+      section: 'Order Information'
     },
     {
-      name: 'quantity',
-      label: 'Quantity',
-      options: {
-        filter: true,
-      },
-      type: 'Text',
-      required: true,
-      id: 'quantity',
-      section: 'Inventory Details'
-    },
-    {
-      name: 'cost',
-      label: 'Cost',
+      name: 'fk_soldBy',
+      id: 'fk_soldBy',
+      fk: true,
+      module: 'users',
+      moduleField: 'fullName',
+      label: 'Sold By',
       options: {
         filter: true,
         customBodyRender: (value) => {
-          return <span>&#8377;&nbsp;{value.toLocaleString('en-IN')}</span>;
+          return value.fullName;
         }
       },
-      type: 'Currency',
-      readOnly:true,
-      required: false,
-      id: 'cost',
-      section: 'Items'
+      type: 'Lookup',
+      required: true,
+      section: 'Order Information'
+    },
+    {
+      name: 'customerNotes',
+      label: 'Customer Notes',
+      options: {
+        filter: true,
+        display: false,
+      },
+      type: 'TextArea',
+      required: true,
+      id: 'customerNotes',
+      section: 'Order Information'
     },
     {
       name: 'fk_createdBy',
@@ -65,7 +134,6 @@ export default function columns(module, settings) {
       module: 'users',
       moduleField: 'fullName',
       label: 'Created By',
-      disabled:true,
       options: {
         filter: true,
         customBodyRender: (value) => {
@@ -73,6 +141,7 @@ export default function columns(module, settings) {
         }
       },
       type: 'Lookup',
+      disabled: true,
       required: true,
       section: 'System Information'
     },
@@ -82,7 +151,6 @@ export default function columns(module, settings) {
       fk: true,
       module: 'users',
       moduleField: 'fullName',
-      disabled:true,
       options: {
         filter: false,
         customBodyRender: (value) => {
@@ -90,6 +158,7 @@ export default function columns(module, settings) {
         }
       },
       type: 'Lookup',
+      disabled: true,
       required: true,
       id: 'fk_updatedBy',
       section: 'System Information'
@@ -99,7 +168,7 @@ export default function columns(module, settings) {
       id: 'createdAt',
       label: 'Created On',
       type: 'Date',
-      disabled:true,
+      disabled: true,
       options: {
         filter: true,
         sort: false,
@@ -118,7 +187,7 @@ export default function columns(module, settings) {
       id: 'createdAt',
       label: 'Updated On',
       type: 'Date',
-      disabled:true,
+      disabled: true,
       options: {
         filter: true,
         sort: false,

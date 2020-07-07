@@ -49,7 +49,7 @@ class DialogForm extends React.Component {
 
   componentDidMount() {
     if (this.props.action == 'edit') {
-      fetch(`${this.props.siteDetails.siteURL}api/app/${this.props.module}/${this.props.objectId}`)
+      fetch(`${this.props.siteDetails.siteURL}api/app/${Router.query.appId}/${Router.query.objId}/${Router.query.subAppId}/${this.props.subAppObjId}`)
         .then((res) => res.json())
         .then((data) => {
           this.setState({ modeuleObject: data });
@@ -90,7 +90,7 @@ class DialogForm extends React.Component {
         resourceUrl = `${this.props.siteDetails.siteURL}api/app/${Router.query.appId}/${Router.query.objId}/${Router.query.subAppId}`;
         resourceMethod = 'POST';
       } else if (this.props.action == 'edit') {
-        resourceUrl = `${this.props.siteDetails.siteURL}api/app/${this.props.module}/${this.props.objectId}`;
+        resourceUrl = `${this.props.siteDetails.siteURL}api/app/${Router.query.appId}/${Router.query.objId}/${Router.query.subAppId}/${this.props.subAppObjId}`;
         resourceMethod = 'PUT';
       }
 

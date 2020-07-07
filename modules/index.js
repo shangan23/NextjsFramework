@@ -44,6 +44,9 @@ export default function modules(module = null) {
       icon: { type: 'material', name: 'AddShoppingCartIcon' },
       id: 'orders',
       menus: [],
+      subApp: [
+        { id: 'orderedItems', lable: { singular: 'Ordered Item', plural: 'Ordered Items' }, link: null, as: null },
+      ],
       as: null
     }
   ];

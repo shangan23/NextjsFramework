@@ -112,9 +112,10 @@ module.exports = function (router) {
             });
     });
 
-    /*
-    * SubApp routers
-    */
+    /*********************
+    ** SubApp routers
+    /*********************/
+
     router.get(`${bucket}:module/:moduleId/:subModule`, (req, res) => {
 
         //Running model will be SubApp
@@ -177,13 +178,13 @@ module.exports = function (router) {
             });
     });
 
-    router.get(`${bucket}:module/:moduleId/:subModule/:id`, (req, res) => {
-        modelName = (req.params.module)
+    router.get(`${bucket}:module/:moduleId/:subModule/:subModuleId`, (req, res) => {
+        modelName = (req.params.subModule)
         modelName = modelName.charAt(0).toUpperCase() + modelName.slice(1);
         runningModel = models[modelName];
 
         runningModel.findAll({
-            where: { id: req.params.id },
+            where: { id: req.params.subModuleId },
             include: Object.keys(helper.association(runningModel)),
         })
             .then(runningModel => {
@@ -191,5 +192,41 @@ module.exports = function (router) {
                 res.json(runningModel[0]);
             })
             .catch(err => res.json(err));
+    });
+    router.delete(`${bucket}:module/:moduleId/:subModule/:subModuleId`, (req, res) => {
+        modelName = (req.params.subModule)
+        modelName = modelName.charAt(0).toUpperCase() + modelName.slice(1);
+        runningModel = models[modelName];
+
+        runningModel.destroy({ where: { id: req.params.subModuleId } })
+            .then(runningModel => {
+                response = frame(runningModel, req.method);
+                statusCode = response.httpCode;
+                delete response.httpCode;
+                response.details = runningModel;
+                res.status(statusCode).json(response);
+            })
+            .catch(err => {
+                response = frame(err, req.method);
+                res.status(response.httpCode).json(response);
+            });
+    });
+
+    router.put(`${bucket}:module/:moduleId/:subModule/:subModuleId`, (req, res) => {
+        modelName = (req.params.subModule)
+        modelName = modelName.charAt(0).toUpperCase() + modelName.slice(1);
+        runningModel = models[modelName];
+
+        runningModel.update(req.body, { where: { id: req.params.subModuleId }, individualHooks: true, })
+            .then(runningModel => {
+                response = frame(runningModel, req.method);
+                statusCode = response.httpCode;
+                delete response.httpCode;
+                response.details = runningModel;
+                res.status(statusCode).json(response);
+            }).catch(err => {
+                response = frame(err, req.method);
+                res.status(response.httpCode).json(response);
+            });
     });
 };

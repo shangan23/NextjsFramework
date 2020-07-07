@@ -251,6 +251,7 @@ class PageHeader extends React.Component {
     let pageHeaderActions, pageTitle;
     console.log('this.props.routerInfo', this.props.routerInfo);
     console.log('${this.props.routerInfo.query.appId}', this.props.routerInfo.query.appId)
+    let createType = (this.props.routerInfo.query.appId == 'orders') ? 'createWizard' : 'create';
     if (this.props.routerInfo.pathname.indexOf('/admin') != -1) {
       pageHeaderActions = <AdminMenu />;
     } else {
@@ -314,8 +315,8 @@ class PageHeader extends React.Component {
             pageHeaderActions = <div className={classes.buttons}>
               {goBack}
               <Button size="small" onClick={() => Router.push(
-                '/app/[appId]/create',
-                `/app/${this.props.routerInfo.query.appId}/create`
+                `/app/[appId]/${createType}`,
+                `/app/${this.props.routerInfo.query.appId}/${createType}`
               )} color="secondary" variant="text" startIcon={<AddBoxOutlinedIcon />} disableElevation>Create</Button>
 
               <Button size="small" color={this.props.routerInfo.query.filter ? 'secondary' : 'primary'} onClick={() => this.setState({ filterOpen: true })} variant="text" startIcon={<FilterListOutlinedIcon />} disableElevation>
@@ -329,6 +330,7 @@ class PageHeader extends React.Component {
             </div>;
             break;
           case '/app/[appId]/create':
+          case '/app/[appId]/createWizard':
             pageHeaderActions = <div className={classes.buttons}>
               {goBack}
               {toList}

@@ -39,7 +39,7 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-export default function RespTable(columns, list, module) {
+export default function RespTable(columns, list, module, onRowAction) {
   const classes = useStyles();
   const [page, setPage] = React.useState(Router.router.query.page ? Number(Router.router.query.page) : 0);
   const [rowsPerPage, setRowsPerPage] = React.useState(Router.router.query.limit ? Number(Router.router.query.limit) : RecordsPerPage);
@@ -49,6 +49,7 @@ export default function RespTable(columns, list, module) {
   list = columns['list'].rows;
   rows = list;
   listCount = columns['list'].count;
+  onRowAction = columns['onRowAction'];
   columns = columns['columns'];
 
   const handleChangePage = (event, newPage) => {
@@ -67,13 +68,13 @@ export default function RespTable(columns, list, module) {
     }
   };
 
-  const handleCellClick = (index, row) => {
-    console.log(row, index, module);
-    console.log('/app/[appId]/[objId]', `/app/${module}/${row.id}`);
-    Router.push(
-      '/app/[appId]/[objId]',
-      `/app/${module}/${row.id}`
-    )
+  const onEdit = (id) => {
+    //console.log(row, index, module);
+    onRowAction('edit', id);
+  }
+
+  const onDelete = (id) => {
+    onRowAction('delete', id);
   }
 
   const handleChangeRowsPerPage = (event) => {
@@ -141,6 +142,8 @@ export default function RespTable(columns, list, module) {
                       icon={<EditOutlinedIcon />}
                       label="Edit"
                       color="primary"
+                      clickable={true}
+                      onClick={() => onEdit(rows[index].id)}
                     />
                     &nbsp;
                     <Chip
@@ -149,6 +152,8 @@ export default function RespTable(columns, list, module) {
                       color="primary"
                       icon={<DeleteOutlinedIcon />}
                       label="Delete"
+                      clickable={true}
+                      onClick={() => onDelete(rows[index].id)}
                     />
                   </TableCell>
                 </TableRow>

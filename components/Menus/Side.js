@@ -111,21 +111,18 @@ function SideMenu({ display }) {
     'menus': [],
     'type': '/app/[appId]'
   }, {
-    'name': 'Inventory',
+    'name': 'Stock Adjustments',
     'link': '/app/inventory/stocks',
     'icon': <Icon color={(active == 'inventory') ? 'secondary' : 'primary'} className={(active == 'inventory') ? `icon fa fa-pallet ${classes.activeIconText}` : `${classes.icon} fa fa-pallet`} />,
     'id': 'inventory',
-    'menus': [
-      { 'name': 'Stocks', 'link': '/app/inventory/stocks', 'icon': '', 'id': 'stocks' },
-      { 'name': 'Adjustments', 'link': '/app/inventory/adjustments', 'icon': '', 'id': 'adjustments' }
-    ]
+    'menus': []
   }, {
     'name': 'Orders',
     'link': '/app/orders',
     'icon': <AddShoppingCartIcon color={(active == 'orders') ? 'secondary' : 'primary'} />,
     'id': 'orders',
     'menus': [],
-    'type': null
+    'type': '/app/[appId]'
   }];
 
   if (display === 'desktop') {

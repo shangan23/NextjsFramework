@@ -12,10 +12,11 @@ const hasHook = fs
 
 console.log('hasHook', hasHook);
 
-const hooksController = (...params) => {
-    const models = require('../../models');
-    //check for hooks before proceeding
+const hooksController = async (...params) => {
+    
     let controllerIndex = params.findIndex(x => x.sourceModel)
+
+    //check for hooks before proceeding
     if (!hasHook.includes(`${params[controllerIndex].sourceModel}.js`))
         return;
 
@@ -27,7 +28,11 @@ const hooksController = (...params) => {
         case 'beforeCreate':
             data = currentHook.beforeCreate(params[0], params[1]);
             break;
+        case 'beforeUpdate':
+            data = currentHook.beforeUpdate(params[0], params[1]);
+            break;
     }
+    console.log(`---${params[controllerIndex].hookToExec}--`, await data);
     console.log('----');
     return data;
 };

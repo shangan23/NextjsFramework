@@ -22,6 +22,12 @@ import Button from '@material-ui/core/Button';
 import Chip from '@material-ui/core/Chip';
 import AddBoxOutlinedIcon from '@material-ui/icons/AddBox';
 import DialogForm from '../../../../components/Forms/DialogForm';
+import Dialog from '@material-ui/core/Dialog';
+import DialogActions from '@material-ui/core/DialogActions';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogContentText from '@material-ui/core/DialogContentText';
+import DialogTitle from '@material-ui/core/DialogTitle';
+import actions from '../../../../redux/actions';
 
 const useStyles = theme => ({
   root: {
@@ -61,6 +67,10 @@ const useStyles = theme => ({
   buttons: {
     margin: theme.spacing(1),
     float: 'right'
+  },
+  wrapIcon: {
+    verticalAlign: 'bottom',
+    display: 'inline-flex'
   },
 });
 
@@ -116,7 +126,7 @@ const frameURL = async (req) => {
 class DynamicCreate extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { activeStep: 0, showAddDailog: false };
+    this.state = { activeStep: 0, showDailog: false, dailogAction: null, subAppObjId: 0, showConfirmDialog: false };
   }
 
   static async getInitialProps(ctx) {
@@ -204,24 +214,93 @@ class DynamicCreate extends React.Component {
     };
 
     const onAddOpen = () => {
-      this.setState({ showAddDailog: true });
+      this.setState({ showDailog: true, dailogAction: 'new' });
     };
 
-    const onAddClose = () => {
-      this.setState({ showAddDailog: false });
+    const onDailogClose = () => {
+      this.setState({ showDailog: false });
     };
 
-    console.log('steps[this.state.activeStep].singular', steps[this.state.activeStep].singular, steps[this.state.activeStep])
+    const onRowAction = (action, id) => {
+      if (action == 'edit')
+        this.setState({ showDailog: true, dailogAction: action, subAppObjId: id });
+      else if (action == 'delete')
+        this.setState({ showConfirmDialog: true, subAppObjId: id })
+    };
+
+    const handleCancelActionSubApp = () => {
+      this.setState({ showConfirmDialog: false });
+    };
+
+    const handleConfirmActionSubApp = () => {
+      fetch(`${this.props.siteInfo.siteURL}api/app/${Router.router.query.appId}/${Router.router.query.objId}/${Router.router.query.subAppId}/${this.state.subAppObjId}`, {
+          method: 'DELETE'
+        })
+        .then(response => response.json())
+        .then(data => {
+          this.setState({ showConfirmDialog: false });
+          this.props.notifications(data);
+          Router.push(
+            '/app/[appId]/[objId]/[subAppId]',
+            `/app/${Router.router.query.appId}/${Router.router.query.objId}/${Router.router.query.subAppId}`
+          );
+        });
+    };
+
+    //console.log('steps[this.state.activeStep].singular', steps[this.state.activeStep].singular, steps[this.state.activeStep])
 
     const stepRender = (<div className={classes.root}>
       <div>
         <div>
-          <RespTable module={module} createLink={'tests'} list={this.props.listing} columns={fieldsToRender} />
+          <RespTable
+            onRowAction={onRowAction}
+            module={module}
+            createLink={'tests'}
+            list={this.props.listing}
+            columns={fieldsToRender} />
         </div>
       </div>
     </div>);
 
-    const dailogForm = (<DialogForm title={steps[this.state.activeStep].singular} module={this.props.subApp} action="new" onClose={onAddClose} isOpen={this.state.showAddDailog} />);
+    const dailogForm = (<DialogForm
+      title={steps[this.state.activeStep].singular}
+      module={this.props.subApp}
+      action={this.state.dailogAction}
+      onClose={onDailogClose}
+      subAppObjId={this.state.subAppObjId}
+      isOpen={this.state.showDailog} />);
+
+    const confirmDeleteDialog = (
+      <Dialog
+        disableBackdropClick
+        disableEscapeKeyDown
+        open={this.state.showConfirmDialog}
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description"
+      >
+        <DialogTitle id="alert-dialog-title">
+          <Typography variant="h6" color="primary">{'Are you sure you want to delete?'}</Typography>
+        </DialogTitle>
+        <DialogContent>
+          <DialogContentText id="alert-dialog-description">
+            <div>
+              Confirming this action will delete the record permanently.
+                <Typography color="secondary" variant="body2" className={classes.wrapIcon}>
+                Warning: This action cannot be undone!
+                  </Typography>
+            </div>
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button id="cancel" onClick={handleCancelActionSubApp} color="secondary">
+            Cancel
+        </Button>
+          <Button id="cancel" onClick={handleConfirmActionSubApp} color="primary" autoFocus>
+            Confirm
+        </Button>
+        </DialogActions>
+      </Dialog>
+    );
 
     return (
       <Grid container spacing={0} key={`${Math.random()}`}>
@@ -249,14 +328,15 @@ class DynamicCreate extends React.Component {
           </AppBar>
           <Paper elevation={0} variant="outlined" className={classes.paperDetails}>
             {dailogForm}
+            {confirmDeleteDialog}
             <Container maxWidth="xl">
               <Chip
                 size="small"
                 color="secondary"
                 icon={<AddBoxOutlinedIcon />}
                 label="Create"
-                onClick={onAddOpen} 
-                className={classes.buttons} 
+                onClick={onAddOpen}
+                className={classes.buttons}
               />
             </Container>
             {stepRender}
@@ -275,5 +355,6 @@ function mapStateToProps(state) {
 }
 
 export default connect(
-  mapStateToProps
+  mapStateToProps,
+  actions
 )(withStyles(useStyles)(DynamicCreate));

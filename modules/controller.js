@@ -3,6 +3,7 @@ import customers from './customers';
 import vendors from './vendors';
 import items from './items';
 import subItems from './subItems';
+import orders from './orders';
 export default function columns(module, settings) {
   let columns = [];
   switch (module) {
@@ -20,6 +21,9 @@ export default function columns(module, settings) {
       break;
     case 'subItems':
       columns = subItems(module, settings);
+      break;
+    case 'orders':
+      columns = orders(module, settings);
       break;
   }
   return columns;

@@ -33,7 +33,7 @@ const drawerWidth = 170;
 
 const useStyles = theme => ({
   appBar: {
-    top: theme.spacing(8),
+    top: 50,
     //bottom: 0,
     //padding: theme.spacing(1),
     [theme.breakpoints.up('md')]: {

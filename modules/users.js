@@ -1,5 +1,4 @@
 import Moment from 'react-moment';
-import CellEdit from '../components/Table/CellEditDialog';
 export default function columns(module, settings) {
   let columns = [
     {
@@ -28,7 +27,7 @@ export default function columns(module, settings) {
       name: 'uname',
       label: 'Username',
       options: {
-        filter: false,
+        filter: true,
         sort: false
       },
       type: 'Text',
@@ -39,7 +38,7 @@ export default function columns(module, settings) {
       name: 'password',
       label: 'Password',
       options: {
-        filter: true,
+        filter: false,
         sort: false
       },
       type: 'Password',
@@ -115,21 +114,7 @@ export default function columns(module, settings) {
           );
         }
       }
-    },
-    {
-      name: 'Action',
-      id:'action',
-      options: {
-        filter: false,
-        sort: false,
-        empty: true,
-        customBodyRender: (value, tableMeta) => {
-          return (
-            <CellEdit module={module} cellData={tableMeta} />
-          );
-        }
-      }
-    },
+    }
   ];
   return columns;
 }

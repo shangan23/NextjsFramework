@@ -52,8 +52,8 @@ const useStyles = makeStyles(theme => ({
   },
   appBar: {
     zIndex: theme.zIndex.drawer + 1,
-    top: 2
-    //height: theme.spacing(2)
+    top: 2,
+    //height: theme.spacing(2),
     /*[theme.breakpoints.up('sm')]: {
       width: `calc(100% - ${drawerWidth}px)`,
       marginLeft: drawerWidth,
@@ -71,9 +71,16 @@ const useStyles = makeStyles(theme => ({
     width: drawerWidth,
     //backgroundColor: '#e60000'
   },
+  appToolbar:{
+    height:50,
+    minHeight:50
+  },
   content: {
     flexGrow: 1,
-    marginTop: theme.spacing(6),
+    [theme.breakpoints.down('sm')]: {
+      marginTop: theme.spacing(4),
+    },
+    marginTop: theme.spacing(3),
     paddingTop: theme.spacing(1),
     padding: theme.spacing(1),
     marginBottom: theme.spacing(5)
@@ -167,6 +174,8 @@ const useStyles = makeStyles(theme => ({
   orange: {
     color: theme.palette.getContrastText(deepOrange[500]),
     backgroundColor: deepOrange[500],
+    width: theme.spacing(4),
+    height: theme.spacing(4),
   },
   purple: {
     color: theme.palette.getContrastText(deepPurple[500]),
@@ -293,7 +302,7 @@ function Layout({ children, title, deauthenticate, container, isAuthenticated, s
       <CssBaseline />
       <PageLoader />
       <AppBar elevation={0} position="fixed" className={classes.appBar}>
-        <Toolbar>
+        <Toolbar className={classes.appToolbar}>
           <IconButton
             color="default"
             aria-label="open drawer"
@@ -336,7 +345,7 @@ function Layout({ children, title, deauthenticate, container, isAuthenticated, s
               onClick={handleProfileMenuOpen}
               color="inherit"
             >
-              <Avatar className={classes.orange}>{nameInLetter}</Avatar>
+              <Avatar variant="rounded" className={classes.orange}>{nameInLetter}</Avatar>
             </IconButton>
           </div>
           <div className={classes.sectionMobile}>
@@ -357,7 +366,7 @@ function Layout({ children, title, deauthenticate, container, isAuthenticated, s
               onClick={handleProfileMenuOpen}
               color="inherit"
             >
-              <Avatar>{isAuthenticated.details.fullName.slice(0, 1)}</Avatar>
+              <Avatar variant="rounded" className={classes.orange}>{nameInLetter}</Avatar>
             </IconButton>
           </div>
         </Toolbar>

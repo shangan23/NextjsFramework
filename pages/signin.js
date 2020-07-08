@@ -9,7 +9,8 @@ import { Typography, Divider } from '@material-ui/core';
 import { Grid } from '@material-ui/core';
 import { withStyles } from '@material-ui/core/styles';
 import Router from 'next/router';
-
+import { TextField } from 'mui-rff';
+import CssBaseline from '@material-ui/core/CssBaseline';
 import {
   Dialog,
   DialogActions,
@@ -18,15 +19,19 @@ import {
   DialogTitle,
 } from '@material-ui/core';
 import Button from '@material-ui/core/Button';
-import Text from '../components/Fields/Text';
-import Password from '../components/Fields/Password';
 import { Form } from 'react-final-form';
 import ArrowForwardSharpIcon from '@material-ui/icons/ArrowForwardSharp';
-import CssBaseline from '@material-ui/core/CssBaseline';
 
 const useStyles = theme => ({
   root: {
     height: '100vh',
+  },
+  image: {
+    backgroundImage: 'url(/bg.jpg)',
+    backgroundRepeat: 'no-repeat',
+    backgroundColor:theme.palette.primary.dark,
+    backgroundSize: 'cover',
+    backgroundPosition: 'center',
   },
   dailogTitle: {
     backgroundColor: theme.palette.primary.dark,
@@ -35,9 +40,23 @@ const useStyles = theme => ({
   },
   dailogMain: {
     backgroundColor: theme.palette.primary.dark,
-    color: theme.palette.primary.light,
-    fontColor: theme.palette.primary.light,
+    color: theme.palette.secondary.light,
+    fontColor: theme.palette.primary.dark,
   },
+  dailogFields: {
+    fontColor: theme.palette.secondary.dark,
+  },
+  dailogContentText: {
+    [theme.breakpoints.down('sm')]: {
+      display: 'none',
+    },
+    color: theme.palette.primary.light,
+  },
+  helpText: {
+    [theme.breakpoints.down('sm')]: {
+      display: 'none',
+    },
+  }
 });
 
 
@@ -157,11 +176,30 @@ class Signin extends React.Component {
     };
 
     const renderFields = (<Grid container spacing={2} key={`grid-form${Math.random()}`}>
-      <Grid item xs={6} md={12} key={0}>
-        <Text index={0} fieldsToRender={fieldsToRender} />
+      <Grid item xs={12} md={12} key={0}>
+        <TextField
+          label={fieldsToRender[0]['label']}
+          size="small"
+          disabled={fieldsToRender[0]['disabled']}
+          id={fieldsToRender[0]['id']}
+          name={fieldsToRender[0]['name']}
+          required
+          variant="filled"
+          className={classes.dailogFields}
+        />
       </Grid>
-      <Grid item xs={6} md={12} key={1}>
-        <Password index={1} fieldsToRender={fieldsToRender} />
+      <Grid item xs={12} md={12} key={1}>
+        <TextField
+          type="password"
+          size="small"
+          label={fieldsToRender[1]['label']}
+          name={fieldsToRender[1]['name']}
+          id={fieldsToRender[1]['id']}
+          margin="none"
+          required
+          variant="filled"
+          className={classes.dailogFields}
+        />
       </Grid>
     </Grid>);
 
@@ -182,7 +220,7 @@ class Signin extends React.Component {
           render={({ handleSubmit, reset, submitting, pristine }) => (
             <form onSubmit={handleSubmit} noValidate>
               <DialogContent className={classes.dailogMain}>
-                <DialogContentText className={classes.dailogMain}>
+                <DialogContentText className={classes.dailogContentText}>
                   <Typography variant="overline"> Hello there, Sign In with your registered Username and Password.
                       </Typography>
                   <Divider />
@@ -190,13 +228,12 @@ class Signin extends React.Component {
                 {renderFields}
               </DialogContent>
               <DialogActions className={classes.dailogMain} style={{ padding: 20 }}>
-                <Typography variant="overline" style={{ padding: 10 }}>
-                  Cannot Signin?  <Button variant="text" color="secondary">
-                    Forgot Password
+                <div className={classes.helpText}>Cannot Signin? </div>
+                <Button variant="text" className={classes.dailogMain} >
+                  Forgot Password
               </Button>
-                </Typography>
                 <Button disabled={submitting} endIcon={<ArrowForwardSharpIcon />} variant="contained" type="submit" color="primary">
-                  Sign In
+                  Continue
               </Button>
               </DialogActions>
 
@@ -209,6 +246,10 @@ class Signin extends React.Component {
       <div>
         {alert}{loginDailog}
         <Anonymous title="Sign In">
+          <Grid container component="main" className={classes.root}>
+            <CssBaseline />
+            <Grid item xs={12} sm={12} md={12} className={classes.image} />
+          </Grid>
         </Anonymous >
       </div>
     );

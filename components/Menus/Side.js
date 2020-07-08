@@ -18,9 +18,12 @@ import Collapse from '@material-ui/core/Collapse';
 import AddShoppingCartIcon from '@material-ui/icons/AddShoppingCart';
 import RecentActorsIcon from '@material-ui/icons/RecentActors';
 import AppsIcon from '@material-ui/icons/Apps';
+import ShowChartIcon from '@material-ui/icons/ShowChart';
 
 const useStyles = makeStyles(theme => ({
-  toolbar: theme.mixins.toolbar,
+  toolbar: {
+    height:40
+  },
   label: {
     marginLeft: theme.spacing(-3),
     fontSize: '0.70rem'
@@ -111,10 +114,10 @@ function SideMenu({ display }) {
     'menus': [],
     'type': '/app/[appId]'
   }, {
-    'name': 'Stock Adjustments',
-    'link': '/app/inventory/stocks',
-    'icon': <Icon color={(active == 'inventory') ? 'secondary' : 'primary'} className={(active == 'inventory') ? `icon fa fa-pallet ${classes.activeIconText}` : `${classes.icon} fa fa-pallet`} />,
-    'id': 'inventory',
+    'name': 'Adjustments',
+    'link': '/app/adjustments',
+    'icon': <ShowChartIcon color={(active == 'adjustments') ? 'secondary' : 'primary'} className={(active == 'adjustments') ? classes.active : ''} />,
+    'id': 'adjustments',
     'menus': []
   }, {
     'name': 'Orders',

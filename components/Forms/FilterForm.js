@@ -31,7 +31,7 @@ import { validateFields } from '../../utils/helper';
 const drawerWidth = 300;
 const useStyles = (theme) => ({
   appBar: {
-    top: theme.spacing(8.25),
+    top: 50,
     zIndex: 24200,
     height: theme.spacing(4.8),
     [theme.breakpoints.up('md')]: {

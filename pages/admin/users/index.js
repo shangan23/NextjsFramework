@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import RespTable from '../../../components/Table';
+import RespTable from '../../../components/TableNew';
 import moduleController from '../../../modules/controller';
 import Router from 'next/router';
 

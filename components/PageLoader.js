@@ -61,7 +61,7 @@ export default function PageLoader() {
 
     return (
         <div className={classes.root}>
-            <LinearProgress color="primary" variant="buffer" value={progress} valueBuffer={buffer} />
+            <LinearProgress color="secondary" variant="buffer" value={progress} valueBuffer={buffer} />
         </div>
     );
 }

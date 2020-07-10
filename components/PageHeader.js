@@ -251,7 +251,7 @@ class PageHeader extends React.Component {
     let pageHeaderActions, pageTitle;
     console.log('this.props.routerInfo', this.props.routerInfo);
     console.log('${this.props.routerInfo.query.appId}', this.props.routerInfo.query.appId)
-    let createType = (this.props.routerInfo.query.appId == 'orders') ? 'createWizard' : 'create';
+    let createType = 'create';
     if (this.props.routerInfo.pathname.indexOf('/admin') != -1) {
       pageHeaderActions = <AdminMenu />;
     } else {

@@ -14,6 +14,7 @@ import Switch from '../Fields/Switch';
 import AutoCompleteSingle from '../Fields/AutocompleteSingle';
 import Currency from '../Fields/Currency';
 import File from '../Fields/File';
+import DynamicSet from '../Fields/DynamicSet';
 import Lookup from '../Fields/Lookup';
 import { Grid, Typography } from '@material-ui/core';
 import { withStyles } from '@material-ui/core/styles';
@@ -120,6 +121,10 @@ class RenderFields extends React.Component {
 								|| (fieldsToRender[index]['type'] == 'Currency' && !fieldsToRender[index]['readOnly']) &&
 								<Grid item xs={12} md={4} key={index}>
 									<Currency index={index} fieldsToRender={fieldsToRender} />
+								</Grid>
+								|| (fieldsToRender[index]['type'] == 'DynamicSet' && !fieldsToRender[index]['readOnly']) &&
+								<Grid item xs={12} md={12} key={index}>
+									<DynamicSet index={index} fieldsToRender={fieldsToRender} />
 								</Grid>
 							}
 						</React.Fragment>

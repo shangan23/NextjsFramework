@@ -70,6 +70,7 @@ class Lookup extends React.Component {
 
   render() {
     const attributes = this.props.fieldsToRender;
+    console.log('attributes',attributes);
     const index = parseInt(this.props.index);
     const options = this.state.options;
     const source = this.props.source;
@@ -80,7 +81,9 @@ class Lookup extends React.Component {
         this.getModuleObjects(value);
         console.log('onchange triggered', reason);
         console.log(event, value);
+        //this.props.onchange(event,value);
       }
+
     };
 
     const field = (

@@ -82,6 +82,24 @@ export default function columns(module, settings) {
       section: 'Order Information'
     },
     {
+      name: 'orderedItems',
+      label: 'Ordered Items',
+      type: 'DynamicSet',
+      id: 'orderedItems',
+      options: {
+        filter: false,
+      },
+      fields: [
+        { name: 'orderedItems[0].itemId', id: 'itemId', label: 'Items', type: 'Lookup', module: 'items', moduleField: 'name',required: true, },
+        { name: 'orderedItems[0].quantity', id: 'quantity', label: 'Quantity', type: 'Text',required: true, },
+        { type: 'Action' },
+        { name: 'orderedItems[1].itemId', id: 'itemId', label: 'Items', type: 'Lookup', module: 'items', moduleField: 'name',required: true, },
+        { name: 'orderedItems[1].quantity', id: 'quantity', label: 'Quantity', type: 'Text',required: true, },
+        { type: 'Action' },
+      ],
+      section: 'Order Items'
+    },
+    {
       name: 'fk_customerId',
       id: 'fk_customerId',
       fk: true,

@@ -1,7 +1,7 @@
 import { TextField } from 'mui-rff';
 import Hidden from '@material-ui/core/Hidden';
 
-export default function FieldText({ fieldsToRender, index, source }) {
+export default function FieldText({ fieldsToRender, index, source  }) {
   const field = (<TextField
     label={fieldsToRender[index]['label']}
     size="small"

@@ -9,6 +9,7 @@ import moduleController from '../../modules/controller';
 import Router from 'next/router';
 import RenderFields from './RenderFields';
 import { validateFields } from '../../utils/helper';
+import arrayMutators from 'final-form-arrays'
 
 const useStyles = (theme) => ({
   fieldsContainer: {
@@ -79,7 +80,9 @@ class DynamicForm extends React.Component {
     };
 
     const onSubmit = async values => {
-      //window.alert(JSON.stringify(values, 0, 2));
+      window.alert(JSON.stringify(values, 0, 2));
+      console.log(JSON.stringify(values, 0, 2));
+      return;
       let resourceUrl, resourceMethod;
 
       if (this.props.action == 'new') {
@@ -122,32 +125,37 @@ class DynamicForm extends React.Component {
           onSubmit={onSubmitForm} style={{ marginTop: 16 }}
           initialValues={this.state.submittedValues ? this.state.submittedValues : this.state.modeuleObject}
           validate={validate}
-          render={({ handleSubmit, reset, submitting, pristine }) => (
-            <form onSubmit={handleSubmit} noValidate>
-              <div>
-                <div className={(this.props.formTitle) ? classes.formTitle : ''}>
-                  <Typography variant="button">{this.props.formTitle}</Typography>
+          mutators={{
+            ...arrayMutators
+          }}
+          render={({ handleSubmit, form: {
+            mutators: { push, pop }
+          }, reset, submitting, pristine }) => (
+              <form onSubmit={handleSubmit} noValidate>
+                <div>
+                  <div className={(this.props.formTitle) ? classes.formTitle : ''}>
+                    <Typography variant="button">{this.props.formTitle}</Typography>
+                  </div>
+                  <div className={(this.props.formTitle) ? classes.formTitleButtons : classes.buttons}>
+                    <Button size="small" type="button" onClick={reset} disabled={submitting || pristine} disableElevation>{this.props.buttonCancelText}</Button>
+                    <Button size="small" type="submit" disabled={submitting} variant="contained" color="secondary" disableElevation>{this.props.buttonSubmitText}</Button>
+                  </div>
+                  <div className={classes.buttonClear}></div>
                 </div>
-                <div className={(this.props.formTitle) ? classes.formTitleButtons : classes.buttons}>
+                <Divider />
+                <div className={classes.fieldsContainer}>
+                  <Grid container alignItems="flex-end" spacing={1}>
+                    <RenderFields fieldsToRender={fieldsToRender} />
+                  </Grid>
+                </div>
+                <Divider />
+                <div className={classes.buttons}>
                   <Button size="small" type="button" onClick={reset} disabled={submitting || pristine} disableElevation>{this.props.buttonCancelText}</Button>
                   <Button size="small" type="submit" disabled={submitting} variant="contained" color="secondary" disableElevation>{this.props.buttonSubmitText}</Button>
                 </div>
                 <div className={classes.buttonClear}></div>
-              </div>
-              <Divider />
-              <div className={classes.fieldsContainer}>
-                <Grid container alignItems="flex-end" spacing={1}>
-                  <RenderFields fieldsToRender={fieldsToRender} />
-                </Grid>
-              </div>
-              <Divider />
-              <div className={classes.buttons}>
-                <Button size="small" type="button" onClick={reset} disabled={submitting || pristine} disableElevation>{this.props.buttonCancelText}</Button>
-                <Button size="small" type="submit" disabled={submitting} variant="contained" color="secondary" disableElevation>{this.props.buttonSubmitText}</Button>
-              </div>
-              <div className={classes.buttonClear}></div>
-            </form>
-          )}
+              </form>
+            )}
         />
       </Paper>
     );

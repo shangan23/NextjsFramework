@@ -90,12 +90,10 @@ export default function columns(module, settings) {
         filter: false,
       },
       fields: [
-        { name: 'orderedItems[0].itemId', id: 'itemId', label: 'Items', type: 'Lookup', module: 'items', moduleField: 'name',required: true, },
-        { name: 'orderedItems[0].quantity', id: 'quantity', label: 'Quantity', type: 'Text',required: true, },
-        { type: 'Action' },
-        { name: 'orderedItems[1].itemId', id: 'itemId', label: 'Items', type: 'Lookup', module: 'items', moduleField: 'name',required: true, },
-        { name: 'orderedItems[1].quantity', id: 'quantity', label: 'Quantity', type: 'Text',required: true, },
-        { type: 'Action' },
+        [
+          { name: 'itemId', id: 'itemId', label: 'Items', type: 'Lookup', module: 'items', moduleField: 'name', required: true, },
+          { name: 'quantity', id: 'quantity', label: 'Quantity', type: 'Text', required: true, },
+          { type: 'Action' },]
       ],
       section: 'Order Items'
     },

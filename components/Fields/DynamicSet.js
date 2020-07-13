@@ -3,6 +3,27 @@ import Text from '../Fields/Text';
 import Lookup from '../Fields/Lookup';
 import { Grid, Button } from '@material-ui/core';
 
+const reloadFieldNames = (arr, id) => {
+  arr = JSON.parse(JSON.stringify(arr));
+  arr.map((data, pIdx) => {
+    data.map((fld, cIdx) => {
+      console.log(pIdx);
+      let fieldName = fld.name;
+      if (fieldName && !fieldName.startsWith(`${id}[${pIdx}].)`)) {
+        if (fieldName.indexOf('.') > 0) {
+          let fieldIsWithDot = fieldName.split('.');
+          fld.name = `${id}[${pIdx}].${fieldIsWithDot[1]}`;
+          fld.id = `${id}[${pIdx}].${fieldIsWithDot[1]}`;
+        } else {
+          fld.name = `${id}[${pIdx}].${fieldName}`;
+          fld.id = `${id}[${pIdx}].${fieldName}`;
+        }
+      }
+    })
+  });
+  return arr;
+}
+
 class DynamicSet extends React.Component {
 
   constructor(props) {
@@ -19,8 +40,10 @@ class DynamicSet extends React.Component {
     window.onload = '';
   }
 
-  handleLoad() {
-    this.setState({ fieldList: this.props.fieldsToRender[this.props.index]['fields'] });
+  async handleLoad() {
+    let newArray = await reloadFieldNames(this.props.fieldsToRender[this.props.index]['fields'], this.props.fieldsToRender[this.props.index]['id']);
+    console.log('newArray ==>', newArray)
+    this.setState({ fieldList: newArray });
   }
 
   render() {
@@ -29,40 +52,33 @@ class DynamicSet extends React.Component {
     const handleRemoveClick = index => {
       const list = this.state.fieldList;
       list.splice(index, 1);
-      list.splice(index - 1, 1);
-      list.splice(index - 2, 1);
       this.setState({ fieldList: list });
     };
 
     const handleAddClick = () => {
-      let currentFields = this.state.fieldList;
-      let fieldsToAdd = this.props.fieldsToRender[this.props.index]['fields'];
-      this.setState({ fieldList: [...currentFields, ...fieldsToAdd] });
-    };
-
-    // handle input change
-    const handleInputChange = (e, index) => {
-      const { name, value } = e.target;
-      const list = this.state.fieldList;
-      list[index][name] = value;
-      //setInputList(list);
+      let currentFieldList = this.state.fieldList;
+      let newField = this.props.fieldsToRender[this.props.index]['fields'];
+      newField = newField.concat(currentFieldList);
+      let fieldsToAdd = reloadFieldNames(newField, this.props.fieldsToRender[this.props.index]['id']);
+      console.log('newArray ==>', fieldsToAdd)
+      this.setState({ fieldList: fieldsToAdd });
     };
 
     const fields = this.state.fieldList;
 
-    const field = (type, id) => {
+    const field = (type, parentIndex, childIndex) => {
       let fieldIs;
       switch (type) {
         case 'Text':
-          fieldIs = <Text index={id} fieldsToRender={fields} onChange={e => handleInputChange(e, i)} />
+          fieldIs = <Text index={childIndex} fieldsToRender={fields[parentIndex]} />
           break;
         case 'Lookup':
-          fieldIs = <Lookup index={id} fieldsToRender={fields} onChange={e => handleInputChange(e, i)} />
+          fieldIs = <Lookup index={childIndex} fieldsToRender={fields[parentIndex]} />
           break;
         case 'Action':
           fieldIs = <React.Fragment>
-            {fields.length !== 3 && <Button onClick={() => handleRemoveClick(id)}>Remove</Button>}
-            {fields.length - 1 === id && <Button onClick={handleAddClick}>Add</Button>}
+            {fields.length !== 1 && <Button onClick={() => handleRemoveClick(parentIndex)}>Remove</Button>}
+            {fields.length - 1 === parentIndex && <Button onClick={handleAddClick}>Add</Button>}
           </React.Fragment>
           break;
       }
@@ -70,14 +86,16 @@ class DynamicSet extends React.Component {
     };
 
     const renderFields = (
-      <Grid container spacing={2} style={{ margin: 4 }} key={`grid-dialog${Math.random()}`}>
+      <Grid container spacing={2} style={{ margin: 4 }} key={`${Math.random()}`}>
         {
-          fields.map((data, idx) => (
-            <React.Fragment key={`fragment-dialog${Math.random()}`} >
+          fields.map((data, parentIndex) => (
+            <React.Fragment key={`${Math.random()}`} >
               {
-                <Grid item xs={4} md={4} key={idx}>
-                  {field(data['type'], idx)}
-                </Grid>
+                <React.Fragment key={`${Math.random()}`} >
+                  {fields[parentIndex].map((fld, childIndex) => {
+                    return <Grid item xs={4} md={4} key={`${Math.random()}`}>{field(fld['type'], parentIndex, childIndex)}</Grid>;
+                  })}
+                </React.Fragment>
               }
             </React.Fragment>
           ))

@@ -61,7 +61,7 @@ class Lookup extends React.Component {
     })
       .then((res) => res.json())
       .then((data) => {
-        console.log('data.rows ', data.rows);
+        //console.log('data.rows ', data.rows);
         this.setState({ options: data.rows });
         this.setState({ loading: false });
         //this.setState({ open: true });
@@ -70,7 +70,7 @@ class Lookup extends React.Component {
 
   render() {
     const attributes = this.props.fieldsToRender;
-    console.log('attributes',attributes);
+    //console.log('attributes',attributes);
     const index = parseInt(this.props.index);
     const options = this.state.options;
     const source = this.props.source;

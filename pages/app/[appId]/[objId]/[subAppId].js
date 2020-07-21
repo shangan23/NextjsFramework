@@ -5,7 +5,7 @@ import absoluteUrl from "next-absolute-url";
 import { Grid } from '@material-ui/core';
 import { getCookie } from '../../../../utils/cookie';
 import moduleController from '../../../../modules/controller';
-import modules from '../../../../modules/index';
+import modules from '../../../../modules/menu';
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 import Moment from 'react-moment';
@@ -114,7 +114,7 @@ const frameURL = async (req) => {
   subApps = await moduleMeta.subApp;
 
   if (subApps) {
-    await steps.push({ label: `${module.charAt(0).toUpperCase() + module.slice(1)} Detail`, id: module });
+    await steps.push({ label: `${moduleMeta.label.singular} Detail`, id: module });
     await subApps.map(obj => steps.push({ label: obj.lable.plural, id: obj.id, singular: obj.lable.singular }));
   }
 
@@ -160,7 +160,7 @@ class DynamicCreate extends React.Component {
       let steps = [], subApps = [];
       subApps = await moduleMeta.subApp;
       if (subApps) {
-        await steps.push({ label: `${module.charAt(0).toUpperCase() + module.slice(1)} Detail`, id: module });
+        await steps.push({ label: `${moduleMeta.label.singular} Detail`, id: module });
         await subApps.map(obj => steps.push({ label: obj.lable.plural, id: obj.id, singular: obj.lable.singular }));
       }
       let stepperIndex = await steps.findIndex(p => p.id == subApp);

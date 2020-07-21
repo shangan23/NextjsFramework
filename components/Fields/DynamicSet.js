@@ -41,8 +41,15 @@ class DynamicSet extends React.Component {
   }
 
   async handleLoad() {
-    let newArray = await reloadFieldNames(this.props.fieldsToRender[this.props.index]['fields'], this.props.fieldsToRender[this.props.index]['id']);
-    console.log('newArray ==>', newArray)
+    let newField = [];
+    if (this.props.defaultData[this.props.fieldsToRender[this.props.index]['id']]) {
+      this.props.defaultData[this.props.fieldsToRender[this.props.index]['id']].map((el, ix) => {
+        newField = newField.concat(this.props.fieldsToRender[this.props.index]['fields']);
+      });
+    } else {
+      newField = newField.concat(this.props.fieldsToRender[this.props.index]['fields']);
+    }
+    let newArray = await reloadFieldNames(newField, this.props.fieldsToRender[this.props.index]['id']);
     this.setState({ fieldList: newArray });
   }
 
@@ -60,7 +67,6 @@ class DynamicSet extends React.Component {
       let newField = this.props.fieldsToRender[this.props.index]['fields'];
       newField = newField.concat(currentFieldList);
       let fieldsToAdd = reloadFieldNames(newField, this.props.fieldsToRender[this.props.index]['id']);
-      console.log('newArray ==>', fieldsToAdd)
       this.setState({ fieldList: fieldsToAdd });
     };
 
@@ -93,7 +99,7 @@ class DynamicSet extends React.Component {
               {
                 <React.Fragment key={`${Math.random()}`} >
                   {fields[parentIndex].map((fld, childIndex) => {
-                    return <Grid item xs={4} md={4} key={`${Math.random()}`}>{field(fld['type'], parentIndex, childIndex)}</Grid>;
+                    return (fld['type'] != 'ReadOnly' ? <Grid item xs={4} md={4} key={`${Math.random()}`}>{field(fld['type'], parentIndex, childIndex)}</Grid> : '');
                   })}
                 </React.Fragment>
               }

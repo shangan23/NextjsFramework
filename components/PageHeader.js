@@ -28,6 +28,7 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 import actions from '../redux/actions';
 import Drawer from '@material-ui/core/Drawer';
 import FilterForm from '../components/Forms/FilterForm';
+import modules from '../modules/menu';
 
 const drawerWidth = 170;
 
@@ -36,10 +37,10 @@ const useStyles = theme => ({
     top: 50,
     //bottom: 0,
     //padding: theme.spacing(1),
-    [theme.breakpoints.up('md')]: {
+    /*[theme.breakpoints.up('md')]: { // This is for Full width without menu
       width: `calc(100% - ${drawerWidth}px)`,
-    },
-    marginLeft: drawerWidth,
+    },*/
+    //marginLeft: drawerWidth,
   },
   datePickerButtons: {
     '& > *': {
@@ -64,14 +65,16 @@ const useStyles = theme => ({
     float: 'left',
     //position: 'relative',
     //right: theme.spacing(1),
-    marginLeft: theme.spacing(1),
-    top: theme.spacing(0.4)
+    //marginLeft: theme.spacing(1),
+    top: theme.spacing(0.4),
+    paddingTop: theme.spacing(1)
   },
   grow: {
     flexGrow: 1,
   },
   pageActions: {
     float: 'right',
+    paddingTop: theme.spacing(1)
   },
   adminPageTitle: {
     width: theme.spacing(15),
@@ -80,6 +83,7 @@ const useStyles = theme => ({
     right: theme.spacing(1),
     top: theme.spacing(0.4),
     marginLeft: theme.spacing(3),
+    paddingTop: theme.spacing(0.5)
   },
   toolbarStyle: {
     minHeight: theme.spacing(1)
@@ -276,8 +280,10 @@ class PageHeader extends React.Component {
           </Button>
         </div>;
       } else if (this.props.routerInfo.pathname.indexOf('/app/') != -1) {
-        pageTitle = this.props.routerInfo.query.appId;
-        pageTitle = pageTitle.charAt(0).toUpperCase() + pageTitle.slice(1)
+        /*console.log('modules',modules(this.props.routerInfo.query.appId));
+        console.log('modules',modules(this.props.routerInfo.query.appId).label.plural);
+        pageTitle = this.props.routerInfo.query.appId;*/
+        pageTitle = modules(this.props.routerInfo.query.appId).label.plural
 
         let toList = <Button
           variant="text"
@@ -301,6 +307,7 @@ class PageHeader extends React.Component {
         switch (this.props.routerInfo.route) {
           case '/app/[appId]/[objId]':
           case '/app/[appId]/[objId]/[subAppId]':
+            pageTitle = modules(this.props.routerInfo.query.appId).label.singular
             pageHeaderActions = <div className={classes.buttons}>
               {goBack}
               {toList}
@@ -356,9 +363,9 @@ class PageHeader extends React.Component {
           {confirmDeleteDialog}
           {filterDrawer}
           <AppBar elevation={1} position="fixed" color="inherit" className={classes.appBar}>
-            <Toolbar disableGutters className={classes.toolbarStyle} variant="dense">
+            <Toolbar className={classes.toolbarStyle} variant="dense">
               <div className={classes.pageTitle}>
-                <Typography color="primary" variant="subtitle1">{pageTitle}</Typography>
+                <Typography color="secondary" variant="overline">{pageTitle}</Typography>
               </div>
               <div className={classes.grow}>
               </div>

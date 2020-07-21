@@ -12,51 +12,38 @@ const useStyles = makeStyles((theme) => ({
   root: {
     width: '100%',
   },
-  container: {
-    //maxHeight: theme.spacing(63.5),
-    //minHeight: theme.spacing(63.5),
-  },
   TableCell: {
     fontSize: '0.82rem',
     padding: theme.spacing(1.8)
-    //paddingTop: theme.spacing(0.5),
-    //paddingRight: theme.spacing(1),
-    //paddingLeft: theme.spacing(3)
   },
   TableCellHead: {
     fontSize: '0.85rem',
     fontWeight: 500,
     padding: theme.spacing(1)
-    //paddingTop: theme.spacing(0.5),
-    //paddingRight: theme.spacing(0),
-    //paddingLeft: theme.spacing(3)
   }
 }));
 
-export default function DynamicSetTable(columns, list, module) {
+export default function DynamicSetTable(columns, list) {
   const classes = useStyles();
-  let rows, listCount, navigatePage, limit, value, dataValue;
-  module = columns['module'];
+  let rows, value, dataValue, dataType;
 
-  list = columns['list'].rows;
+  list = columns['list'];
   rows = list;
-  listCount = columns['list'].count;
   columns = columns['columns'];
 
   return (
-    <Paper className={classes.root} elevation={0} variant="outlined">
+    <Paper className={classes.root} elevation={0} variant="elevation">
       <TableContainer className={classes.container}>
         <Table stickyHeader size="small" aria-label="a dense table">
           <TableHead>
             <TableRow>
               {columns.map((column) => {
-                if (column.options.display != false) {
+                if (column.options.display != false && column.type != 'Action') {
                   return (
                     <TableCell
                       className={classes.TableCellHead}
                       key={Math.random()}
                       align={'center'}
-                    //style={{ minWidth: 170 }}
                     >
                       {column.label}
                     </TableCell>
@@ -72,13 +59,19 @@ export default function DynamicSetTable(columns, list, module) {
                   {columns.map((col) => {
                     if (col.options.display != false) {
                       dataValue = rows[index][col.id];
+                      if (dataValue instanceof Object) {
+                        dataValue = rows[index][col.id].name
+                      }
+                      dataType = col.type;
                       dataValue = (col.fk) ? rows[index][col.id] : dataValue
                       value = (col.options.customBodyRender) ? col.options.customBodyRender(dataValue, rows[index]) : dataValue;
-                      return (
-                        <TableCell className={classes.TableCell} key={Math.random()} align={'left'}>
-                          {value}
-                        </TableCell>
-                      );
+                      if (dataType != 'Action') {
+                        return (
+                          <TableCell className={classes.TableCell} key={Math.random()} align={'center'}>
+                            {value}
+                          </TableCell>
+                        );
+                      }
                     }
                   })}
                 </TableRow>

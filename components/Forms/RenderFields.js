@@ -124,7 +124,7 @@ class RenderFields extends React.Component {
 								</Grid>
 								|| (fieldsToRender[index]['type'] == 'DynamicSet' && !fieldsToRender[index]['readOnly']) &&
 								<Grid item xs={12} md={12} key={index}>
-									<DynamicSet index={index} fieldsToRender={fieldsToRender} />
+									<DynamicSet index={index} fieldsToRender={fieldsToRender} defaultData={this.props.defaultData} />
 								</Grid>
 							}
 						</React.Fragment>

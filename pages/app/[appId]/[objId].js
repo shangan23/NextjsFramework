@@ -6,7 +6,7 @@ import { dynamicSort } from '../../../utils/helper';
 import { Grid } from '@material-ui/core';
 import { getCookie } from '../../../utils/cookie';
 import moduleController from '../../../modules/controller';
-import modules from '../../../modules/index';
+import modules from '../../../modules/menu';
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 import Moment from 'react-moment';
@@ -20,6 +20,7 @@ import Router from 'next/router';
 import Chip from '@material-ui/core/Chip';
 import Avatar from '@material-ui/core/Avatar';
 import { deepOrange, deepPurple } from '@material-ui/core/colors';
+import DynamicSetTable from '../../../components/DynamicSetTable';
 
 const useStyles = theme => ({
   root: {
@@ -59,12 +60,21 @@ const useStyles = theme => ({
   },
   purple: {
     backgroundColor: deepPurple[500],
-    color:theme.palette.getContrastText(deepPurple[500])
+    color: theme.palette.getContrastText(deepPurple[500])
   },
   orange: {
     color: theme.palette.getContrastText(deepOrange[500]),
     backgroundColor: deepOrange[500],
   },
+  TableCell: {
+    fontSize: '0.82rem',
+    padding: theme.spacing(1.8)
+  },
+  TableCellHead: {
+    fontSize: '0.85rem',
+    fontWeight: 500,
+    padding: theme.spacing(1)
+  }
 });
 
 const frameURL = async (req) => {
@@ -120,7 +130,7 @@ class DynamicCreate extends React.Component {
     if (moduleMeta) {
       subApp = moduleMeta.subApp;
       if (subApp) {
-        steps.push({ label: `${module.charAt(0).toUpperCase() + module.slice(1)} Detail`, id: module });
+        steps.push({ label: `${moduleMeta.label.singular} Detail`, id: module });
         subApp.map(obj => steps.push({ label: obj.lable.plural, id: obj.id }));
       }
     }
@@ -173,6 +183,11 @@ class DynamicCreate extends React.Component {
                   (fieldsToRender[index]['type'] == 'Date') &&
                   <Grid item xs={12} md={4} key={index}>
                     <Typography variant="caption">{fieldsToRender[index]['label']}:</Typography><Typography variant="subtitle2"><Moment format={this.props.siteInfo.dateFormat}>{object[fieldsToRender[index]['iddd']]}</Moment></Typography>
+                  </Grid>
+                  || (fieldsToRender[index]['type'] == 'DynamicSet') &&
+                  <Grid item xs={12} md={4} key={index}>
+                    <Typography variant="caption"> {fieldsToRender[index]['label']}:</Typography>
+                    <DynamicSetTable columns={fieldsToRender[index]['fields'][0]} list={object[fieldsToRender[index]['id']]} />
                   </Grid>
                   || (fieldsToRender[index]['type'] == 'Currency') &&
                   <Grid item xs={12} md={4} key={index}>

@@ -58,6 +58,11 @@ export const validateFields = (values, fieldsToRender, fromFilter = false) => {
               errors[name] = label + ' invalid';
           }
           break;
+        case 'DynamicSet':
+          //window.alert(JSON.stringify(values[name],0,2));
+         // if (!values[name] && required)
+          //  errors[name] = label + ' required';
+          break;
         case 'Email':
           if ((!values[name]) && required)
             errors[name] = label + ' required';

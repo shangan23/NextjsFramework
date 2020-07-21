@@ -80,10 +80,40 @@ class DynamicForm extends React.Component {
     };
 
     const onSubmit = async values => {
-      //window.alert(JSON.stringify(values, 0, 2));
-      //console.log(JSON.stringify(values, 0, 2));
-      //return;
-      let resourceUrl, resourceMethod;
+
+      let resourceUrl, resourceMethod, dynamicSetId, dynamicSetLookupId;
+
+      /*
+      // Dynamic Set Logic - Starts here supports only one DynamicSet per module;
+      dynamicSetId = fieldsToRender.filter(fld => {
+        if (fld.type == "DynamicSet") {
+          return fld;
+        }
+      });
+
+      if (dynamicSetId[0].id) {
+        dynamicSetLookupId = JSON.parse(JSON.stringify(dynamicSetId[0].fields));
+        dynamicSetLookupId = dynamicSetLookupId.map((dt, idx) => {
+          return dt.filter(flds => {
+            if (flds.type == 'Lookup') {
+              return flds.id;
+            }
+          })[0];
+        });
+
+        dynamicSetId = dynamicSetId[0].id
+
+        if (dynamicSetLookupId[0].id) {
+          dynamicSetLookupId = dynamicSetLookupId[0].id;
+          values[dynamicSetId].filter((fldVal) => {
+            return fldVal[dynamicSetLookupId] = fldVal[dynamicSetLookupId].id;
+          });
+        }
+      }
+      //window.alert(JSON.stringify(dynamicSetLookupId, 0, 2));
+      //window.alert(JSON.stringify(dynamicSetId, 0, 2));
+      console.log(JSON.stringify(values, 0, 2));
+      return;*/
 
       if (this.props.action == 'new') {
         resourceUrl = `${this.props.siteDetails.siteURL}api/app/${this.props.module}`;
@@ -145,7 +175,7 @@ class DynamicForm extends React.Component {
                 <Divider />
                 <div className={classes.fieldsContainer}>
                   <Grid container alignItems="flex-end" spacing={1}>
-                    <RenderFields fieldsToRender={fieldsToRender} />
+                    <RenderFields fieldsToRender={fieldsToRender} defaultData={this.state.submittedValues ? this.state.submittedValues : this.state.modeuleObject} />
                   </Grid>
                 </div>
                 <Divider />

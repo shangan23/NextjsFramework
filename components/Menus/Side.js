@@ -114,13 +114,13 @@ function SideMenu({ display }) {
     'menus': [],
     'type': '/app/[appId]'
   }, {
-    'name': 'Adjustments',
+    'name': 'BOM',
     'link': '/app/adjustments',
     'icon': <ShowChartIcon color={(active == 'adjustments') ? 'secondary' : 'primary'} className={(active == 'adjustments') ? classes.active : ''} />,
     'id': 'adjustments',
     'menus': []
   }, {
-    'name': 'Orders',
+    'name': 'Sales Orders',
     'link': '/app/orders',
     'icon': <AddShoppingCartIcon color={(active == 'orders') ? 'secondary' : 'primary'} />,
     'id': 'orders',

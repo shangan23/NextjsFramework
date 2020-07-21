@@ -13,7 +13,7 @@ const hasHook = fs
 console.log('hasHook', hasHook);
 
 const hooksController = async (...params) => {
-    
+
     let controllerIndex = params.findIndex(x => x.sourceModel)
 
     //check for hooks before proceeding
@@ -30,6 +30,15 @@ const hooksController = async (...params) => {
             break;
         case 'beforeUpdate':
             data = currentHook.beforeUpdate(params[0], params[1]);
+            break;
+        case 'afterCreate':
+            data = currentHook.afterCreate(params[0], params[1]);
+            break;
+        case 'afterUpdate':
+            data = currentHook.afterUpdate(params[0], params[1]);
+            break;
+        case 'afterDestroy':
+            data = currentHook.afterDestroy(params[0], params[1]);
             break;
     }
     console.log(`---${params[controllerIndex].hookToExec}--`, await data);

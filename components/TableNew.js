@@ -122,7 +122,7 @@ export default function RespTable(columns, list, module) {
                       dataValue = (col.fk) ? rows[index][col.id] : dataValue
                       value = (col.options.customBodyRender) ? col.options.customBodyRender(dataValue, rows[index]) : dataValue;
                       return (
-                        <TableCell className={classes.TableCell} key={Math.random()} align={'left'}>
+                        <TableCell className={classes.TableCell} key={Math.random()} align={'center'}>
                           {value}
                         </TableCell>
                       );

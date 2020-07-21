@@ -1,4 +1,6 @@
 import { getCookie } from '../../../utils/cookie';
+import moduleController from '../../../modules/controller';
+
 export const check = handler => {
     return (req, res) => {
         if (typeof (req.headers['x-api-key']) === 'undefined' || !req.headers['x-api-key']) {
@@ -8,13 +10,47 @@ export const check = handler => {
         switch (req.method) {
             case 'PUT':
             case 'POST':
-                console.log('req.body', req.body);
+                console.log('req.body<', req.body);
                 req.body = helper(req.body);
+                //req.body = hasDynamicSet(req.query, req.body);
+                console.log('req.body>', req.body);
                 break;
         }
 
         return handler(req, res);
     }
+}
+
+export const hasDynamicSet = (query, data) => {
+    let fieldsToRender, dynamicSetId, dynamicSetLookupId;
+    fieldsToRender = moduleController(query.appId, {});
+
+    dynamicSetId = fieldsToRender.filter(fld => {
+        if (fld.type == "DynamicSet") {
+            return fld;
+        }
+    });
+
+    if (dynamicSetId[0].id) {
+        dynamicSetLookupId = JSON.parse(JSON.stringify(dynamicSetId[0].fields));
+        dynamicSetLookupId = dynamicSetLookupId.map((dt, idx) => {
+            return dt.filter(flds => {
+                if (flds.type == 'Lookup') {
+                    return flds.id;
+                }
+            })[0];
+        });
+
+        dynamicSetId = dynamicSetId[0].id
+
+        if (dynamicSetLookupId[0].id) {
+            dynamicSetLookupId = dynamicSetLookupId[0].id;
+            data[dynamicSetId].filter((fldVal) => {
+                return fldVal[dynamicSetLookupId] = fldVal[dynamicSetLookupId].id;
+            });
+        }
+    }
+    return data;
 }
 
 export const helper = (data) => {

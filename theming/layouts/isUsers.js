@@ -37,6 +37,8 @@ import initialize from '../../utils/initialize';
 import SearchIcon from '@material-ui/icons/Search';
 import InputBase from '@material-ui/core/InputBase';
 
+import HorizontalMenu from '../../components/Menus/Horizontal';
+
 const drawerWidth = 170;
 
 const useStyles = makeStyles(theme => ({
@@ -71,9 +73,9 @@ const useStyles = makeStyles(theme => ({
     width: drawerWidth,
     //backgroundColor: '#e60000'
   },
-  appToolbar:{
-    height:50,
-    minHeight:50
+  appToolbar: {
+    height: 55,
+    minHeight: 55
   },
   content: {
     flexGrow: 1,
@@ -81,7 +83,7 @@ const useStyles = makeStyles(theme => ({
       marginTop: theme.spacing(4),
     },
     marginTop: theme.spacing(3),
-    paddingTop: theme.spacing(1),
+    paddingTop: theme.spacing(2),
     padding: theme.spacing(1),
     marginBottom: theme.spacing(5)
   },
@@ -314,6 +316,7 @@ function Layout({ children, title, deauthenticate, container, isAuthenticated, s
           </IconButton>
           <Typography variant="h5">{siteDetails.title}</Typography>
           <div className={classes.grow}>
+            <HorizontalMenu />
           </div>
           {/*<div className={classes.search}>
             <div className={classes.searchIcon}>
@@ -373,40 +376,42 @@ function Layout({ children, title, deauthenticate, container, isAuthenticated, s
       </AppBar>
       {renderMobileMenu}
       {renderMenu}
-      <nav elevation={0} className={classes.drawer}>
-        {/* The implementation can be swapped with js to avoid SEO duplication of links. */}
-        <Hidden smUp implementation="css">
-          <Drawer
-            container={container}
-            variant="temporary"
-            anchor={theme.direction === 'rtl' ? 'right' : 'left'}
-            open={mobileOpen}
-            onClose={handleDrawerToggle}
-            classes={{
-              paper: classes.drawerPaper,
-            }}
-            ModalProps={{
-              keepMounted: true, // Better open performance on mobile.
-            }}
-          >
-            <SideMenu display="mobile" />
-          </Drawer>
-        </Hidden>
-        <Hidden xsDown implementation="css">
-          <Drawer
-            classes={{
-              paper: classes.drawerPaper,
-            }}
-            variant="permanent"
-            open
-          >
-            <SideMenu key={Math.random()} display="desktop" />
-          </Drawer>
-        </Hidden>
-      </nav>
+      {
+        /*<nav elevation={0} className={classes.drawer}>
+          <Hidden smUp implementation="css">
+            <Drawer
+              container={container}
+              variant="temporary"
+              anchor={theme.direction === 'rtl' ? 'right' : 'left'}
+              open={mobileOpen}
+              onClose={handleDrawerToggle}
+              classes={{
+                paper: classes.drawerPaper,
+              }}
+              ModalProps={{
+                keepMounted: true, // Better open performance on mobile.
+              }}
+            >
+              <SideMenu display="mobile" />
+            </Drawer>
+          </Hidden>
+          <Hidden xsDown implementation="css">
+            <Drawer
+                classes={{
+                  paper: classes.drawerPaper,
+                }}
+                variant="permanent"
+                open
+              >
+                <SideMenu key={Math.random()} display="desktop" />
+              </Drawer>
+          </Hidden>
+        </nav>
+        */
+      }
       <main className={classes.content}>
         <PageHeader pageHeader={title} routerInfo={routerInfo} />
-        <div className={classes.toolbar} />
+        <div className={classes.toolbar}></div>
         {children}
         <Snackbar
           autoHideDuration={4000}

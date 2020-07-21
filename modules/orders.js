@@ -22,7 +22,7 @@ export default function columns(module, settings) {
         filter: true
       },
       type: 'Text',
-      required: true,
+      required: false,
       id: 'orderId',
       section: 'Order Information'
     },
@@ -41,7 +41,7 @@ export default function columns(module, settings) {
         }
       },
       type: 'Date',
-      required: true,
+      required: false,
       id: 'orderDate',
       section: 'Order Information'
     },
@@ -60,7 +60,7 @@ export default function columns(module, settings) {
         }
       },
       type: 'Date',
-      required: true,
+      required: false,
       id: 'deliveryDate',
       section: 'Order Information'
     },
@@ -77,7 +77,7 @@ export default function columns(module, settings) {
         { 'id': 'cancelled', 'value': 'cancelled' }
       ],
       type: 'Select',
-      required: true,
+      required: false,
       id: 'orderStatus',
       section: 'Order Information'
     },
@@ -86,14 +86,19 @@ export default function columns(module, settings) {
       label: 'Ordered Items',
       type: 'DynamicSet',
       id: 'orderedItems',
+      required: true,
       options: {
         filter: false,
+        customBodyRender: (value) => {
+          return value ? value.length : 0;
+        }
       },
       fields: [
         [
-          { name: 'itemId', id: 'itemId', label: 'Items', type: 'Lookup', module: 'items', moduleField: 'name', required: true, },
-          { name: 'quantity', id: 'quantity', label: 'Quantity', type: 'Text', required: true, },
-          { type: 'Action' },]
+          { name: 'itemId', options: {}, id: 'itemId', label: 'Items', type: 'Lookup', module: 'items', moduleField: 'name', required: true, },
+          { name: 'quantity', options: {}, id: 'quantity', label: 'Quantity', type: 'Text', required: true, },
+        //  { type: 'ReadOnly', options: {},label:'Cost' },
+          { type: 'Action', options: {}, },]
       ],
       section: 'Order Items'
     },
@@ -139,7 +144,7 @@ export default function columns(module, settings) {
         display: false,
       },
       type: 'TextArea',
-      required: true,
+      required: false,
       id: 'customerNotes',
       section: 'Order Information'
     },

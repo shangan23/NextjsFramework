@@ -46,7 +46,7 @@ export default function modules(module = null) {
       subApp: [
         { id: 'bomItem', lable: { singular: 'BOM Item', plural: 'BOM Items' }, link: null, as: null },
       ],
-      as: null
+      as: '/app/[appId]'
     }, {
       name: 'SalesOrders',
       label: { singular: 'Sales Order', plural: 'Sales Orders' },
@@ -54,10 +54,10 @@ export default function modules(module = null) {
       icon: { type: 'material', name: 'ShoppingCartIcon' },
       id: 'orders',
       menus: [],
-      as: null
+      as: '/app/[appId]'
     }, {
       name: 'ProductionOrders',
-      label: { singular: 'Purchase Order', plural: 'Production Orders' },
+      label: { singular: 'Production Order', plural: 'Production Orders' },
       link: '/app/productionOrders',
       icon: { type: 'material', name: 'BuildIcon' },
       id: 'ProductionOrders',

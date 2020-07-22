@@ -11,7 +11,7 @@ const useStyles = makeStyles((theme) => ({
         '& > * + *': {
             //marginTop: theme.spacing(13),
         },
-    }
+    },
 }));
 
 export default function PageLoader() {

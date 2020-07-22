@@ -10,12 +10,14 @@ module.exports = {
       },
       moduleId: {
         type: Sequelize.INTEGER,
+        uniqu:true,
         references: {
           model: 'BillsOfMaterials',
           key: 'id'
         }
       },
       itemId: {
+        uniqu:true,
         type: Sequelize.INTEGER,
         references: {
           model: 'Items',

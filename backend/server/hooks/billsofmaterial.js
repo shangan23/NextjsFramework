@@ -14,7 +14,7 @@ const afterCreate = async (model, options) => {
                     first.dataValues.updatedBy = model.dataValues.updatedBy;
                     await models.BomItem.create(first.dataValues);
 
-                    /*await prepareBomObjects(models.SubItems, first.dataValues.itemId)
+                    await prepareBomObjects(models.SubItems, first.dataValues.itemId)
                         .then((secondLevel) => {
                             secondLevel.map(async (second, sIdx) => {
                                 bomItems.push(second.dataValues);
@@ -25,7 +25,7 @@ const afterCreate = async (model, options) => {
                                 second.dataValues.updatedBy = model.dataValues.updatedBy;
                                 await models.BomItem.create(second.dataValues);
 
-                                await prepareBomObjects(models.SubItems, first.dataValues.itemId)
+                                await prepareBomObjects(models.SubItems, second.dataValues.itemId)
                                     .then((thirdLevel) => {
                                         thirdLevel.map(async (third, tIdx) => {
                                             bomItems.push(third.dataValues);
@@ -38,7 +38,7 @@ const afterCreate = async (model, options) => {
                                         });
                                     });
                             });
-                        });*/
+                        });
                 })
             })
             .then(() => {

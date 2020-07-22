@@ -6,6 +6,7 @@ import subItems from './subItems';
 import orders from './orders';
 import inventory from './inventory';
 import billsOfMaterial from './billsOfMaterial';
+import bomItem from './bomItem';
 export default function columns(module, settings) {
   let columns = [];
   switch (module) {
@@ -32,6 +33,9 @@ export default function columns(module, settings) {
       break;
     case 'billsOfMaterial':
       columns = billsOfMaterial(module, settings);
+      break;
+    case 'bomItem':
+      columns = bomItem(module, settings);
       break;
   }
   return columns;

@@ -44,7 +44,7 @@ export default function modules(module = null) {
       id: 'billsOfMaterial',
       menus: [],
       subApp: [
-        { id: 'bomItems', lable: { singular: 'BOM Item', plural: 'BOM Items' }, link: null, as: null },
+        { id: 'bomItem', lable: { singular: 'BOM Item', plural: 'BOM Items' }, link: null, as: null },
       ],
       as: null
     }, {

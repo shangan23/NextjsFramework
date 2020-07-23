@@ -38,7 +38,7 @@ class SimplePieChart extends React.Component {
             fill="#8884d8"
           >
             {
-              data.map((entry, index) => <Cell fill={COLORS[index % COLORS.length]} />)
+              data.map((entry, index) => <Cell key={Math.random()} fill={COLORS[index % COLORS.length]} />)
             }
           </Pie>
           <Tooltip />

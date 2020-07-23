@@ -1,5 +1,5 @@
 import Moment from 'react-moment';
-import CellEdit from '../components/Table/CellEdit';
+import CellEdit from '../components/Table/CellEditDialog';
 export default function columns(module, settings) {
   let columns = [
     {
@@ -7,90 +7,89 @@ export default function columns(module, settings) {
       label: 'ID',
       options: {
         filter: false,
-        display: 'excluded',
+        display: false,
       },
       type: 'Text',
       required: false,
       id: 'id',
+      section: 'System Information'
     },
     {
-      name: 'name',
-      label: 'Name',
-      options: {
-        filter: true
-      },
-      type: 'Text',
-      required: false,
-      id: 'name',
-    },
-    {
-      name: 'contactName',
-      label: 'Contact Name',
-      options: {
-        filter: false,
-        sort: false
-      },
-      type: 'Text',
-      required: true,
-      id: 'contactName',
-    },
-    {
-      name: 'contactMobile',
-      label: 'Mobile',
+      name: 'fk_itemId',
+      id: 'fk_itemId',
+      fk: true,
+      module: 'items',
+      moduleField: 'name',
+      primary:true,
+      label: 'Items',
       options: {
         filter: true,
-        sort: false
+        customBodyRender: (value) => {
+          return value.name;
+        }
       },
-      type: 'Text',
+      type: 'Lookup',
       required: true,
-      id: 'contactMobile',
+      section: 'Stock Details'
     },
     {
-      name: 'contactTelephone',
-      label: 'Telephone',
-      options: {
-        filter: true
-      },
-      type: 'Text',
-      required: true,
-      id: 'contactTelephone',
-    },
-    {
-      name: 'contactEmail',
-      label: 'Email',
-      options: {
-        filter: true
-      },
-      type: 'Email',
-      required: true,
-      id: 'contactEmail',
-    },
-    {
-      name: 'contactDesignation',
-      label: 'Contact Designation',
+      name: 'fk_itemId',
+      id: 'fk_itemId',
+      fk: true,
+      module: 'items',
+      moduleField: 'sku',
+      subPrimary:true,
+      label: 'Item Code',
       options: {
         filter: true,
+        customBodyRender: (value) => {
+          return value.sku;
+        }
+      },
+      type: 'Lookup',
+      required: true,
+      section: 'Stock Details'
+    },
+    {
+      name: 'onAvailable',
+      label: 'On Available',
+      options: {
+        filter: false,
+      },
+      type: 'Text',
+      required: true,
+      id: 'onAvailable',
+      section: 'Stock Details'
+    },
+    {
+      name: 'onOrder',
+      label: 'On Order',
+      options: {
+        filter: false,
       },
       type: 'Text',
       required: false,
-      id: 'contactDesignation',
+      id: 'onOrder',
+      section: 'Stock Details'
     },
     {
-      name: 'address',
-      label: 'Address',
+      name: 'onHand',
+      label: 'On Hand',
       options: {
         filter: false,
-        display: 'excluded',
       },
-      type: 'TextArea',
+      type: 'Text',
       required: false,
-      id: 'address',
+      id: 'onHand',
+      section: 'Stock Details'
     },
     {
       name: 'fk_createdBy',
       id: 'fk_createdBy',
-      //reference: { id: 'createdBy', name: 'createdBy' },
+      fk: true,
       label: 'Created By',
+      module: 'users',
+      moduleField: 'fullName',
       options: {
         filter: true,
         customBodyRender: (value) => {
@@ -99,11 +98,14 @@ export default function columns(module, settings) {
       },
       type: 'Lookup',
       required: true,
+      section: 'System Information'
     },
     {
       name: 'fk_updatedBy',
-      //reference: { id: 'updatedBy', name: 'updatedBy' },
       label: 'Updated By',
+      fk: true,
+      module: 'users',
+      moduleField: 'fullName',
       options: {
         filter: false,
         customBodyRender: (value) => {
@@ -113,10 +115,13 @@ export default function columns(module, settings) {
       type: 'Lookup',
       required: true,
       id: 'fk_updatedBy',
+      section: 'System Information'
     },
     {
       name: 'createdAt',
+      id: 'createdAt',
       label: 'Created On',
+      type: 'Date',
       options: {
         filter: true,
         sort: false,
@@ -127,11 +132,14 @@ export default function columns(module, settings) {
             </Moment>
           );
         }
-      }
+      },
+      section: 'System Information'
     },
     {
       name: 'updatedAt',
+      id: 'createdAt',
       label: 'Updated On',
+      type: 'Date',
       options: {
         filter: true,
         sort: false,
@@ -142,21 +150,9 @@ export default function columns(module, settings) {
             </Moment>
           );
         }
-      }
-    },
-    {
-      name: 'Action',
-      options: {
-        filter: false,
-        sort: false,
-        empty: true,
-        customBodyRender: (value, tableMeta) => {
-          return (
-            <CellEdit module={module} cellData={tableMeta} />
-          );
-        }
-      }
-    },
+      },
+      section: 'System Information'
+    }
   ];
   return columns;
 }

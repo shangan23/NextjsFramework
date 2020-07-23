@@ -1,8 +1,9 @@
 import { Autocomplete } from 'mui-rff';
 
-export default function FieldAutoComplete({fieldsToRender, index}) {
+export default function FieldAutoComplete({fieldsToRender, index, source}) {
   return (<Autocomplete
-    required={fieldsToRender[index]['required']}
+    required={(!source)?fieldsToRender[index]['required']:false}
+    size="small"
     label={fieldsToRender[index]['label']}
     options={fieldsToRender[index]['data']}
     getOptionValue={option => option.id}
@@ -10,4 +11,6 @@ export default function FieldAutoComplete({fieldsToRender, index}) {
     name={fieldsToRender[index]['name']}
     multiple
   />);
+
+
 }

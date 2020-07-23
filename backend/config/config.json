@@ -7,12 +7,18 @@
     "dialect": "postgres",
     "operatorsAliases": false
   },
-  "test": {
-    "username": "dba",
-    "password": "dba@123",
-    "database": "gcrm",
-    "host": "127.0.0.1",
+  "stage": {
+    "username": "abudtitmktyjxd",
+    "password": "fa339a5129a363fb436ed74a0e2f074c02f2b876d4e77999272f8bdf504202bf",
+    "database": "d19q667u77arjp",
+    "host": "ec2-34-230-149-169.compute-1.amazonaws.com",
     "dialect": "postgres",
+    "dialectOptions": {
+      "ssl": {
+        "require": true,
+        "rejectUnauthorized": false
+      }
+    },
     "operatorsAliases": false
   },
   "production": {

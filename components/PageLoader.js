@@ -7,7 +7,7 @@ const useStyles = makeStyles((theme) => ({
     root: {
         width: '100%',
         zIndex: 2000,
-        position:'fixed',
+        position: 'fixed',
         '& > * + *': {
             //marginTop: theme.spacing(13),
         },
@@ -21,7 +21,7 @@ export default function PageLoader() {
     const [buffer, setBuffer] = React.useState(10);
 
     const progressRef = React.useRef(() => { });
-    
+
     const onLoad = () => {
         progressRef.current = () => {
             const diff = Math.random() * 10;

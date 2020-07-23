@@ -17,7 +17,7 @@ import MenuItem from '@material-ui/core/MenuItem';
 import Badge from '@material-ui/core/Badge';
 import NotificationsIcon from '@material-ui/icons/Notifications';
 import MoreIcon from '@material-ui/icons/MoreVert';
-import { makeStyles, useTheme } from '@material-ui/core/styles';
+import { fade, makeStyles, useTheme } from '@material-ui/core/styles';
 import SideMenu from '../../components/Menus/Side';
 import { connect, useDispatch } from 'react-redux';
 import actions from '../../redux/actions';
@@ -34,6 +34,10 @@ import PageLoader from '../../components/PageLoader';
 import { deepOrange, deepPurple } from '@material-ui/core/colors';
 import Link from 'next/link';
 import initialize from '../../utils/initialize';
+import SearchIcon from '@material-ui/icons/Search';
+import InputBase from '@material-ui/core/InputBase';
+
+import HorizontalMenu from '../../components/Menus/Horizontal';
 
 const drawerWidth = 170;
 
@@ -50,8 +54,8 @@ const useStyles = makeStyles(theme => ({
   },
   appBar: {
     zIndex: theme.zIndex.drawer + 1,
-    top: 2
-    //height: theme.spacing(2)
+    top: 2,
+    //height: theme.spacing(2),
     /*[theme.breakpoints.up('sm')]: {
       width: `calc(100% - ${drawerWidth}px)`,
       marginLeft: drawerWidth,
@@ -69,12 +73,22 @@ const useStyles = makeStyles(theme => ({
     width: drawerWidth,
     //backgroundColor: '#e60000'
   },
+  appToolbar: {
+    height: 55,
+    minHeight: 55
+  },
   content: {
     flexGrow: 1,
-    marginTop: theme.spacing(5),
-    paddingTop: theme.spacing(1),
+    [theme.breakpoints.down('sm')]: {
+      marginTop: theme.spacing(4),
+    },
+    marginTop: theme.spacing(3),
+    paddingTop: theme.spacing(2),
     padding: theme.spacing(1),
-    marginBottom: theme.spacing(5)
+    marginBottom: theme.spacing(5),
+    margin: theme.spacing(5),
+    marginLeft: theme.spacing(2),
+    marginRight: theme.spacing(2),
   },
   grow: {
     flexGrow: 1,
@@ -85,15 +99,41 @@ const useStyles = makeStyles(theme => ({
       display: 'block',
     },
   },
+  search: {
+    position: 'relative',
+    borderRadius: theme.shape.borderRadius,
+    backgroundColor: fade(theme.palette.common.white, 0.15),
+    '&:hover': {
+      backgroundColor: fade(theme.palette.common.white, 0.25),
+    },
+    marginRight: theme.spacing(2),
+    marginLeft: 0,
+    width: '100%',
+    [theme.breakpoints.up('sm')]: {
+      marginLeft: theme.spacing(3),
+      width: 'auto',
+    },
+  },
+  searchIcon: {
+    padding: theme.spacing(0, 2),
+    height: '100%',
+    position: 'absolute',
+    pointerEvents: 'none',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
   inputRoot: {
     color: 'inherit',
   },
   inputInput: {
-    padding: theme.spacing(1, 1, 1, 7),
+    padding: theme.spacing(1, 1, 1, 0),
+    // vertical padding + font size from searchIcon
+    paddingLeft: `calc(1em + ${theme.spacing(4)}px)`,
     transition: theme.transitions.create('width'),
     width: '100%',
     [theme.breakpoints.up('md')]: {
-      width: 200,
+      width: '20ch',
     },
   },
   sectionDesktop: {
@@ -139,6 +179,8 @@ const useStyles = makeStyles(theme => ({
   orange: {
     color: theme.palette.getContrastText(deepOrange[500]),
     backgroundColor: deepOrange[500],
+    width: theme.spacing(4),
+    height: theme.spacing(4),
   },
   purple: {
     color: theme.palette.getContrastText(deepPurple[500]),
@@ -195,7 +237,7 @@ function Layout({ children, title, deauthenticate, container, isAuthenticated, s
 
   let nameInLetter = isAuthenticated.details.fullName.split(' ');
   nameInLetter = (nameInLetter[1]) ? nameInLetter[0].slice(0, 1) + nameInLetter[1].slice(0, 1) : nameInLetter[0].slice(0, 1);
-  //const siteLogo = IMGPath + siteDetails.logo;
+  const siteLogo = IMGPath + siteDetails.logo;
 
   let adminMenu;
   if (isAuthenticated.details.isAdmin) {
@@ -206,10 +248,10 @@ function Layout({ children, title, deauthenticate, container, isAuthenticated, s
   const renderMenu = (
     <Menu
       anchorEl={anchorEl}
-      anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
+      anchorOrigin={{ vertical: 'top', horizontal: 'left' }}
       id={menuId}
       keepMounted
-      transformOrigin={{ vertical: 'bottom', horizontal: 'center' }}
+      transformOrigin={{ vertical: 'top', horizontal: 'left' }}
       open={isMenuOpen}
       onClose={handleMenuClose}
     >
@@ -265,7 +307,7 @@ function Layout({ children, title, deauthenticate, container, isAuthenticated, s
       <CssBaseline />
       <PageLoader />
       <AppBar elevation={0} position="fixed" className={classes.appBar}>
-        <Toolbar>
+        <Toolbar className={classes.appToolbar}>
           <IconButton
             color="default"
             aria-label="open drawer"
@@ -275,15 +317,31 @@ function Layout({ children, title, deauthenticate, container, isAuthenticated, s
           >
             <MenuIcon />
           </IconButton>
-          <Typography variant="h5">{siteDetails.title}</Typography>
+          <img src={siteLogo} alt={siteDetails.title} height="20" width="110"></img>
+          { //<Typography variant="h5">{siteDetails.title}</Typography>
+          }
           <div className={classes.grow}>
+            <HorizontalMenu />
           </div>
+          {/*<div className={classes.search}>
+            <div className={classes.searchIcon}>
+              <SearchIcon />
+            </div>
+            <InputBase
+              placeholder="Search…"
+              classes={{
+                root: classes.inputRoot,
+                input: classes.inputInput,
+              }}
+              inputProps={{ 'aria-label': 'search' }}
+            />
+            </div>*/}
           <div className={classes.sectionDesktop}>
             <IconButton aria-label="show 4 new mails" color="default">
               <AddCircleSharpIcon />
             </IconButton>
             <IconButton aria-label="show 17 new notifications" color="default">
-              <Badge badgeContent={17} color="secondary">
+              <Badge badgeContent={17} color="secondary" >
                 <NotificationsIcon />
               </Badge>
             </IconButton>
@@ -295,7 +353,7 @@ function Layout({ children, title, deauthenticate, container, isAuthenticated, s
               onClick={handleProfileMenuOpen}
               color="inherit"
             >
-              <Avatar className={classes.orange}>{nameInLetter}</Avatar>
+              <Avatar variant="rounded" className={classes.orange}>{nameInLetter}</Avatar>
             </IconButton>
           </div>
           <div className={classes.sectionMobile}>
@@ -316,47 +374,49 @@ function Layout({ children, title, deauthenticate, container, isAuthenticated, s
               onClick={handleProfileMenuOpen}
               color="inherit"
             >
-              <Avatar>{isAuthenticated.details.fullName.slice(0, 1)}</Avatar>
+              <Avatar variant="rounded" className={classes.orange}>{nameInLetter}</Avatar>
             </IconButton>
           </div>
         </Toolbar>
       </AppBar>
       {renderMobileMenu}
       {renderMenu}
-      <nav elevation={0} className={classes.drawer}>
-        {/* The implementation can be swapped with js to avoid SEO duplication of links. */}
-        <Hidden smUp implementation="css">
-          <Drawer
-            container={container}
-            variant="temporary"
-            anchor={theme.direction === 'rtl' ? 'right' : 'left'}
-            open={mobileOpen}
-            onClose={handleDrawerToggle}
-            classes={{
-              paper: classes.drawerPaper,
-            }}
-            ModalProps={{
-              keepMounted: true, // Better open performance on mobile.
-            }}
-          >
-            <SideMenu display="mobile" />
-          </Drawer>
-        </Hidden>
-        <Hidden xsDown implementation="css">
-          <Drawer
-            classes={{
-              paper: classes.drawerPaper,
-            }}
-            variant="permanent"
-            open
-          >
-            <SideMenu key={Math.random()} display="desktop" />
-          </Drawer>
-        </Hidden>
-      </nav>
+      {
+        /*<nav elevation={0} className={classes.drawer}>
+          <Hidden smUp implementation="css">
+            <Drawer
+              container={container}
+              variant="temporary"
+              anchor={theme.direction === 'rtl' ? 'right' : 'left'}
+              open={mobileOpen}
+              onClose={handleDrawerToggle}
+              classes={{
+                paper: classes.drawerPaper,
+              }}
+              ModalProps={{
+                keepMounted: true, // Better open performance on mobile.
+              }}
+            >
+              <SideMenu display="mobile" />
+            </Drawer>
+          </Hidden>
+          <Hidden xsDown implementation="css">
+            <Drawer
+                classes={{
+                  paper: classes.drawerPaper,
+                }}
+                variant="permanent"
+                open
+              >
+                <SideMenu key={Math.random()} display="desktop" />
+              </Drawer>
+          </Hidden>
+        </nav>
+        */
+      }
       <main className={classes.content}>
-        <PageHeader pageHeader={title} routerInfo={routerInfo.pathname} />
-        <div className={classes.toolbar} />
+        <PageHeader pageHeader={title} routerInfo={routerInfo} />
+        <div className={classes.toolbar}></div>
         {children}
         <Snackbar
           autoHideDuration={4000}

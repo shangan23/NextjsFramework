@@ -3,6 +3,8 @@ import React from 'react';
 import { Autocomplete } from 'mui-rff';
 import { connect } from 'react-redux';
 import { API } from '../../config';
+import Hidden from '@material-ui/core/Hidden';
+import Router from 'next/router';
 
 class Lookup extends React.Component {
 
@@ -12,8 +14,15 @@ class Lookup extends React.Component {
     this.handleLoad = this.handleLoad.bind(this);
   }
 
-  getModuleObjects() {
-    fetch(`${API}/users`, {
+  getModuleObjects(value) {
+    let module = this.props.fieldsToRender[parseInt(this.props.index)]['module'];
+    let filterArray = [];
+    this.props.fieldsToRender[parseInt(this.props.index)]['isParent'] ?
+      filterArray.push({ k: 'id', o: 'ne', v: Router.router.query.objId, lo: 'AND' }) : '';
+    filterArray.push({ k: this.props.fieldsToRender[parseInt(this.props.index)]['moduleField'], o: 'contain', v: escape(value), lo: 'AND' });
+    let filter = `?filter=${JSON.stringify(filterArray)}`;
+
+    fetch(`${API}/${module}${filter}`, {
       headers: {
         'Authorization': `Basic ${this.props.token}`
       },
@@ -38,14 +47,21 @@ class Lookup extends React.Component {
   }
 
   handleLoad() {
-    fetch(`${API}/users`, {
+    let module = this.props.fieldsToRender[parseInt(this.props.index)]['module'];
+
+    let filterArray = [];
+    this.props.fieldsToRender[parseInt(this.props.index)]['isParent'] ?
+      filterArray.push({ k: 'id', o: 'ne', v: Router.router.query.objId, lo: 'AND' }) : '';
+    let filter = `?filter=${JSON.stringify(filterArray)}`;
+
+    fetch(`${API}/${module}${filter}`, {
       headers: {
         'Authorization': `Basic ${this.props.token}`
       },
     })
       .then((res) => res.json())
       .then((data) => {
-        console.log('data.rows ', data.rows);
+        //console.log('data.rows ', data.rows);
         this.setState({ options: data.rows });
         this.setState({ loading: false });
         //this.setState({ open: true });
@@ -54,22 +70,30 @@ class Lookup extends React.Component {
 
   render() {
     const attributes = this.props.fieldsToRender;
+    //console.log('attributes',attributes);
     const index = parseInt(this.props.index);
     const options = this.state.options;
+    const source = this.props.source;
+    const moduleField = attributes[index]['moduleField'];
 
     const handleChange = (event, value, reason) => {
-      this.getModuleObjects();
-      console.log('onchange triggered', reason);
-      console.log(event, value);
+      if (value.length >= 2) {
+        this.getModuleObjects(value);
+        console.log('onchange triggered', reason);
+        console.log(event, value);
+        //this.props.onchange(event,value);
+      }
+
     };
 
-    return (
+    const field = (
       <Autocomplete
-        required={attributes[index]['required']}
         label={attributes[index]['label']}
         name={attributes[index]['name']}
         id={attributes[index]['id']}
+        //disabled={attributes[index]['disabled']}
         open={this.state.open}
+        size="small"
         onInputChange={handleChange}
         onOpen={() => {
           this.setState({ open: true });
@@ -77,12 +101,19 @@ class Lookup extends React.Component {
         onClose={() => {
           this.setState({ open: false });
         }}
-        getOptionSelected={(option, value) => option.fullName === value.fullName}
-        getOptionLabel={(option) => option.fullName?option.fullName:''}
+        getOptionSelected={(option, value) => option[moduleField] === value[moduleField]}
+        getOptionLabel={(option) => option[moduleField] ? option[moduleField] : ''}
         options={options}
         loading={this.state.loading}
       />
     );
+
+    if (attributes[index]['disabled'] && !source)
+      return <Hidden mdDown smDown lgDown xlDown xsDown>{field}</Hidden>;
+
+    return <React.Fragment>{field}</React.Fragment>;
+
+
   }
 }
 

@@ -16,20 +16,21 @@ const useStyles = makeStyles((theme) => ({
     width: '100%',
   },
   container: {
-    maxHeight: theme.spacing(63.5),
+    //maxHeight: theme.spacing(63.5),
     minHeight: theme.spacing(63.5),
   },
   TableCell: {
-    fontSize: '0.85rem',
-    padding:theme.spacing(1)
+    fontSize: '0.82rem',
+    padding: theme.spacing(1.8)
     //paddingTop: theme.spacing(0.5),
     //paddingRight: theme.spacing(1),
     //paddingLeft: theme.spacing(3)
   },
   TableCellHead: {
     fontSize: '0.85rem',
-    fontWeight: 500,
-    padding:theme.spacing(1)
+    color:theme.palette.primary.dark,
+    fontWeight: 400,
+    padding: theme.spacing(1)
     //paddingTop: theme.spacing(0.5),
     //paddingRight: theme.spacing(0),
     //paddingLeft: theme.spacing(3)
@@ -51,14 +52,43 @@ export default function RespTable(columns, list, module) {
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
     navigatePage = (Router.router.query.limit) ? `?limit=${Router.router.query.limit}&page=${newPage}` : `?limit=${RecordsPerPage}&page=${newPage}`;
-    Router.push(`${Router.router.route}${navigatePage}`);
+    switch (Router.router.route) {
+      case '/app/[appId]':
+        Router.push(
+          `/app/[appId]${navigatePage}`,
+          `/app/${module}${navigatePage}`,
+        );
+        break;
+      default:
+        Router.push(`${Router.router.route}${navigatePage}`);
+        break;
+    }
   };
 
+  const handleCellClick = (index, row) => {
+    console.log(row, index, module);
+    console.log('/app/[appId]/[objId]', `/app/${module}/${row.id}`);
+    Router.push(
+      '/app/[appId]/[objId]',
+      `/app/${module}/${row.id}`
+    )
+  }
+
   const handleChangeRowsPerPage = (event) => {
-    setRowsPerPage(+event.target.value);
+    setRowsPerPage((+event.target.value)?+event.target.value:RecordsPerPage);
     setPage(0);
     limit = `?limit=${+event.target.value}&page=0`;
-    Router.push(`${Router.router.route}${limit}`);
+    switch (Router.router.route) {
+      case '/app/[appId]':
+        Router.push(
+          `/app/[appId]${limit}`,
+          `/app/${module}${limit}`
+        );
+        break;
+      default:
+        Router.push(`${Router.router.route}${limit}`);
+        break;
+    }
   };
 
   return (
@@ -73,7 +103,7 @@ export default function RespTable(columns, list, module) {
                     <TableCell
                       className={classes.TableCellHead}
                       key={Math.random()}
-                      align={'left'}
+                      align={'center'}
                     //style={{ minWidth: 170 }}
                     >
                       {column.label}
@@ -86,14 +116,14 @@ export default function RespTable(columns, list, module) {
           <TableBody>
             {rows.map((row, index) => {
               return (
-                <TableRow hover role="checkbox" tabIndex={-1} key={Math.random()}>
+                <TableRow hover role="checkbox" tabIndex={-1} key={Math.random()} onClick={() => handleCellClick(index, rows[index])}>
                   {columns.map((col) => {
                     if (col.options.display != false) {
                       dataValue = rows[index][col.id];
                       dataValue = (col.fk) ? rows[index][col.id] : dataValue
-                      value = (col.options.customBodyRender) ? col.options.customBodyRender(dataValue,rows[index]) : dataValue;
+                      value = (col.options.customBodyRender) ? col.options.customBodyRender(dataValue, rows[index]) : dataValue;
                       return (
-                        <TableCell className={classes.TableCell} key={Math.random()} align={'left'}>
+                        <TableCell className={classes.TableCell} key={Math.random()} align={'center'}>
                           {value}
                         </TableCell>
                       );

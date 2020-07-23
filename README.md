@@ -1,2 +1,6 @@
-# nextjs-material-ui
-A Framework on top of Nextjs and MaterialUI as frontend and Express and Sequelize
+# NextJsCRM
+A simple CRM/ERP built on top of the #nextjs, #materialUi, #expressjs. 
+
+## Work in progress ...
+
+Happy Coding :)

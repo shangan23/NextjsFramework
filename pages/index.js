@@ -1,7 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import actions from '../redux/actions';
-//import { API } from '../config';
 import Router from 'next/router';
 
 class Index extends React.Component {
@@ -35,9 +34,9 @@ class Index extends React.Component {
 
   render() {
     return (
-      <p>
+      <React.Fragment>
         Loading ...
-      </p>
+      </React.Fragment>
     );
   }
 }

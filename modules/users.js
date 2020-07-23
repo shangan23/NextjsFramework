@@ -1,5 +1,4 @@
 import Moment from 'react-moment';
-import CellEdit from '../components/Table/CellEdit';
 export default function columns(module, settings) {
   let columns = [
     {
@@ -10,12 +9,14 @@ export default function columns(module, settings) {
         display: 'excluded',
       },
       type: 'Text',
+      subPrimary: true,
       required: false,
       id: 'id',
     },
     {
       name: 'fullName',
       label: 'Name',
+      primary: true,
       options: {
         filter: true
       },
@@ -27,7 +28,7 @@ export default function columns(module, settings) {
       name: 'uname',
       label: 'Username',
       options: {
-        filter: false,
+        filter: true,
         sort: false
       },
       type: 'Text',
@@ -38,7 +39,7 @@ export default function columns(module, settings) {
       name: 'password',
       label: 'Password',
       options: {
-        filter: true,
+        filter: false,
         sort: false
       },
       type: 'Password',
@@ -83,7 +84,9 @@ export default function columns(module, settings) {
     },
     {
       name: 'createdAt',
+      id: 'createdAt',
       label: 'Created On',
+      type: 'Date',
       options: {
         filter: true,
         sort: false,
@@ -98,7 +101,9 @@ export default function columns(module, settings) {
     },
     {
       name: 'updatedAt',
+      id: 'updatedAt',
       label: 'Updated On',
+      type: 'Date',
       options: {
         filter: true,
         sort: false,
@@ -110,20 +115,7 @@ export default function columns(module, settings) {
           );
         }
       }
-    },
-    {
-      name: 'Action',
-      options: {
-        filter: false,
-        sort: false,
-        empty: true,
-        customBodyRender: (value, tableMeta) => {
-          return (
-            <CellEdit module={module} cellData={tableMeta} />
-          );
-        }
-      }
-    },
+    }
   ];
   return columns;
 }

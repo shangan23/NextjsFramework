@@ -4,7 +4,8 @@ import { check, set } from '../middlewares/headers';
 const get = (req, res) => {
 
     const headers = {
-        'x-api-key': req.headers['x-api-key']
+        'x-api-key': req.headers['x-api-key'],
+        'Content-Type':'application/json'
     }
 
     if (req.headers['Authorization'])
@@ -19,6 +20,7 @@ const get = (req, res) => {
             let parameters = `?`
             parameters += (query.limit) ? `limit=${query.limit}` : '';
             parameters += (query.page) ? `&page=${query.page}` : '';
+            parameters += (query.filter) ? `&filter=${query.filter}` : '';
             parameters = (parameters == '?') ? `?limit=${RecordsPerPage}` : parameters;
             fetch(`${API}/${query.appId}${parameters}`, { headers })
                 .then((res) => res.json())
@@ -30,7 +32,11 @@ const get = (req, res) => {
                 });
             break;
         case 'POST':
-            fetch(`${API}/${query.appId}`, { method: req.method, headers: headers, body: JSON.stringify(req.body) })
+            console.log('payload --', JSON.stringify(req.body));
+            console.log('req.method --', req.method);
+            console.log('req.headers --', headers);
+            console.log('req.url --', `${API}/${query.appId}`);
+            fetch(`${API}/${query.appId}`, { method: req.method, headers: headers, body: JSON.stringify(req.body)})
                 .then((res) => res.json())
                 .then((data) => {
                     res.status(200).json(data)

@@ -18,9 +18,12 @@ import Collapse from '@material-ui/core/Collapse';
 import AddShoppingCartIcon from '@material-ui/icons/AddShoppingCart';
 import RecentActorsIcon from '@material-ui/icons/RecentActors';
 import AppsIcon from '@material-ui/icons/Apps';
+import ShowChartIcon from '@material-ui/icons/ShowChart';
 
 const useStyles = makeStyles(theme => ({
-  toolbar: theme.mixins.toolbar,
+  toolbar: {
+    height:40
+  },
   label: {
     marginLeft: theme.spacing(-3),
     fontSize: '0.70rem'
@@ -59,7 +62,8 @@ function SideMenu({ display }) {
   }, []);
 
   let active, subActive, displayWith = '';
-  let routerActive = (router.pathname).split('/');
+  //let routerActive = (router.pathname).split('/');
+  let routerActive = (router.asPath).split('/');
 
   switch (routerActive.length) {
     case 2:
@@ -73,6 +77,9 @@ function SideMenu({ display }) {
       subActive = routerActive[3];
       break;
   }
+
+  active = router.query.appId;
+  //routerActive = router.asPath;
 
   const [expanded, setExpanded] = React.useState({ clicked: active });
 
@@ -101,29 +108,24 @@ function SideMenu({ display }) {
     'type': '/app/[appId]'
   },{
     'name': 'Items',
-    'link': '',
-    'icon': <AppsIcon color={(active == 'products') ? 'secondary' : 'primary'} className={(active == 'products') ? classes.active : ''} />,
-    'id': 'products',
-    'menus': [
-      { 'name': 'Single', 'link': '/app/products/items', 'icon': '', 'id': 'items' },
-      { 'name': 'Grouped', 'link': '/app/products/groupedItems', 'icon': '', 'id': 'groupedItems' }
-    ]
+    'link': '/app/items',
+    'icon': <AppsIcon color={(active == 'items') ? 'secondary' : 'primary'} className={(active == 'items') ? classes.active : ''} />,
+    'id': 'items',
+    'menus': [],
+    'type': '/app/[appId]'
   }, {
-    'name': 'Inventory',
-    'link': '/app/inventory/stocks',
-    'icon': <Icon color={(active == 'inventory') ? 'secondary' : 'primary'} className={(active == 'inventory') ? `icon fa fa-pallet ${classes.activeIconText}` : `${classes.icon} fa fa-pallet`} />,
-    'id': 'inventory',
-    'menus': [
-      { 'name': 'Stocks', 'link': '/app/inventory/stocks', 'icon': '', 'id': 'stocks' },
-      { 'name': 'Adjustments', 'link': '/app/inventory/adjustments', 'icon': '', 'id': 'adjustments' }
-    ]
+    'name': 'BOM',
+    'link': '/app/adjustments',
+    'icon': <ShowChartIcon color={(active == 'adjustments') ? 'secondary' : 'primary'} className={(active == 'adjustments') ? classes.active : ''} />,
+    'id': 'adjustments',
+    'menus': []
   }, {
-    'name': 'Orders',
+    'name': 'Sales Orders',
     'link': '/app/orders',
     'icon': <AddShoppingCartIcon color={(active == 'orders') ? 'secondary' : 'primary'} />,
     'id': 'orders',
     'menus': [],
-    'type': null
+    'type': '/app/[appId]'
   }];
 
   if (display === 'desktop') {

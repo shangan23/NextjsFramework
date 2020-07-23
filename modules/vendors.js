@@ -1,5 +1,5 @@
 import Moment from 'react-moment';
-import CellEdit from '../components/Table/CellEdit';
+import CellEdit from '../components/Table/CellEditDialog';
 export default function columns(module, settings) {
   let columns = [
     {
@@ -7,21 +7,25 @@ export default function columns(module, settings) {
       label: 'ID',
       options: {
         filter: false,
-        display: 'excluded',
+        display: false,
       },
+      subPrimary:true,
       type: 'Text',
       required: false,
       id: 'id',
+      section: 'System Information',
     },
     {
       name: 'name',
       label: 'Name',
+      primary: true,
       options: {
         filter: true
       },
       type: 'Text',
       required: false,
       id: 'name',
+      section: 'Basic Information',
     },
     {
       name: 'contactName',
@@ -33,27 +37,19 @@ export default function columns(module, settings) {
       type: 'Text',
       required: true,
       id: 'contactName',
+      section: 'Basic Information',
     },
     {
-      name: 'mobile',
-      label: 'Mobile',
+      name: 'number',
+      label: 'Number',
       options: {
         filter: true,
         sort: false
       },
       type: 'Text',
       required: true,
-      id: 'mobile',
-    },
-    {
-      name: 'telephone',
-      label: 'Telephone',
-      options: {
-        filter: true
-      },
-      type: 'Text',
-      required: true,
-      id: 'telephone',
+      id: 'number',
+      section: 'Communication',
     },
     {
       name: 'email',
@@ -64,6 +60,7 @@ export default function columns(module, settings) {
       type: 'Email',
       required: true,
       id: 'email',
+      section: 'Communication',
     },
     {
       name: 'designation',
@@ -74,6 +71,7 @@ export default function columns(module, settings) {
       type: 'Text',
       required: false,
       id: 'designation',
+      section: 'Basic Information',
     },
     {
       name: 'address',
@@ -85,12 +83,16 @@ export default function columns(module, settings) {
       type: 'TextArea',
       required: false,
       id: 'address',
+      section: 'Communication',
     },
     {
       name: 'fk_createdBy',
       id: 'fk_createdBy',
       //reference: { id: 'createdBy', name: 'createdBy' },
       label: 'Created By',
+      section: 'System Information',
+      module: 'users',
+      moduleField: 'fullName',
       options: {
         filter: true,
         customBodyRender: (value) => {
@@ -104,6 +106,9 @@ export default function columns(module, settings) {
       name: 'fk_updatedBy',
       //reference: { id: 'updatedBy', name: 'updatedBy' },
       label: 'Updated By',
+      module: 'users',
+      section: 'System Information',
+      moduleField: 'fullName',
       options: {
         filter: false,
         customBodyRender: (value) => {
@@ -117,6 +122,9 @@ export default function columns(module, settings) {
     {
       name: 'createdAt',
       label: 'Created On',
+      id: 'createdAt',
+      name: 'createdAt',
+      section: 'System Information',
       options: {
         filter: true,
         sort: false,
@@ -132,6 +140,9 @@ export default function columns(module, settings) {
     {
       name: 'updatedAt',
       label: 'Updated On',
+      id:'updatedAt',
+      name:'updatedAt',
+      section: 'System Information',
       options: {
         filter: true,
         sort: false,
@@ -143,20 +154,7 @@ export default function columns(module, settings) {
           );
         }
       }
-    },
-    {
-      name: 'Action',
-      options: {
-        filter: false,
-        sort: false,
-        empty: true,
-        customBodyRender: (value, tableMeta) => {
-          return (
-            <CellEdit module={module} cellData={tableMeta} />
-          );
-        }
-      }
-    },
+    }
   ];
   return columns;
 }

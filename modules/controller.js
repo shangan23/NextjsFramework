@@ -1,6 +1,12 @@
 import users from './users';
 import customers from './customers';
 import vendors from './vendors';
+import items from './items';
+import subItems from './subItems';
+import orders from './orders';
+import inventory from './inventory';
+import billsOfMaterial from './billsOfMaterial';
+import bomItem from './bomItem';
 export default function columns(module, settings) {
   let columns = [];
   switch (module) {
@@ -12,6 +18,24 @@ export default function columns(module, settings) {
       break;
     case 'vendors':
       columns = vendors(module, settings);
+      break;
+    case 'items':
+      columns = items(module, settings);
+      break;
+    case 'subItems':
+      columns = subItems(module, settings);
+      break;
+    case 'orders':
+      columns = orders(module, settings);
+      break;
+    case 'inventory':
+      columns = inventory(module, settings);
+      break;
+    case 'billsOfMaterial':
+      columns = billsOfMaterial(module, settings);
+      break;
+    case 'bomItem':
+      columns = bomItem(module, settings);
       break;
   }
   return columns;

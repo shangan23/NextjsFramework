@@ -23,10 +23,13 @@ const frameURL = async (req) => {
   console.log(urlObj);
   let { origin, searchParams, pathname } = urlObj;
   module = pathname.replace('/app/', '');
+  console.log('iServer query',searchParams);
   console.log('iServer module',module);
   queryParam = '?'
   queryParam += (searchParams.get('limit')) ? `limit=${searchParams.get('limit')}` : '';
   queryParam += (searchParams.get('page')) ? `&page=${searchParams.get('page')}` : '';
+  queryParam += (searchParams.get('filter')) ? `&filter=${searchParams.get('filter')}` : '';
+  console.log('iServer filter',`${origin}/api/app/${module}${queryParam}`);
   data = await fetch(`${origin}/api/app/${module}${queryParam}`, { headers: headers });
   listing = await data.json();
   columnsList = await moduleController(module, cleanSettings);
@@ -43,13 +46,16 @@ class DynamicList extends React.Component {
     const { req } = ctx;
     if (!req) {
       const fullUrl = `${window.location.protocol}//${window.location.hostname}${(window.location.port ? ':' + window.location.port : '')}`;
-      const { query } = Router;
-      let module = ctx.query.appId;
+      const { query } = ctx;
+      let module = query.appId;
       console.log('iClient Router module',module);
       console.log('iClient ctx',ctx.query.appId);
+      console.log('iClient query',query);
       let queryParam = '?'
       queryParam += (query.limit) ? `limit=${query.limit}` : '';
       queryParam += (query.page) ? `&page=${query.page}` : '';
+      queryParam += (query.filter) ? `&filter=${query.filter}` : '';
+      console.log('iClient filter',`${fullUrl}/api/app/${module}${queryParam}`);
       const data = await fetch(`${fullUrl}/api/app/${module}${queryParam}`);
       const json = await data.json();
       return { listing: json, module: module };
@@ -63,7 +69,7 @@ class DynamicList extends React.Component {
     let module = this.props.module;
     let columnsList = moduleController(module, this.props.siteInfo);
     return (
-      <RespTable module={module} list={this.props.listing} columns={columnsList} />
+      <RespTable module={module} createLink={'tests'} list={this.props.listing} columns={columnsList} />
     );
   }
 }

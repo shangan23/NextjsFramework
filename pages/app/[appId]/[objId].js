@@ -22,6 +22,48 @@ import Avatar from '@material-ui/core/Avatar';
 import { deepOrange, deepPurple } from '@material-ui/core/colors';
 import DynamicSetTable from '../../../components/DynamicSetTable';
 
+import AccountCircleIcon from '@material-ui/icons/AccountCircle';
+import RecentActorsIcon from '@material-ui/icons/RecentActors';
+import ContactsIcon from '@material-ui/icons/Contacts';
+import AppsIcon from '@material-ui/icons/Apps';
+import AssignmentIcon from '@material-ui/icons/Assignment';
+import PlaylistAddCheckIcon from '@material-ui/icons/PlaylistAddCheck';
+import ShoppingCartIcon from '@material-ui/icons/ShoppingCart';
+import BuildIcon from '@material-ui/icons/Build';
+
+const iconDisplay = (module) => {
+  let iconMeta = modules(module).icon;
+  //console.log
+  let icon;
+  switch (iconMeta.name) {
+    case 'AccountCircleIcon':
+      icon = <AccountCircleIcon />
+      break;
+    case 'RecentActorsIcon':
+      icon = <RecentActorsIcon />
+      break;
+    case 'ContactsIcon':
+      icon = <ContactsIcon />
+      break;
+    case 'AppsIcon':
+      icon = <AppsIcon />
+      break;
+    case 'AssignmentIcon':
+      icon = <AssignmentIcon />
+      break;
+    case 'ShoppingCartIcon':
+      icon = <ShoppingCartIcon />
+      break;
+    case 'PlaylistAddCheckIcon':
+      icon = <PlaylistAddCheckIcon />
+      break;
+    case 'BuildIcon':
+      icon = <BuildIcon />
+      break;
+  }
+  return icon;
+};
+
 const useStyles = theme => ({
   root: {
     width: '100%',
@@ -141,11 +183,22 @@ class DynamicCreate extends React.Component {
     let object = this.props.objJson;
 
     console.log(object);
-    let objTitle, objCreatedBy;
+    let objTitle, objCreatedBy, objSubTitle;
     fieldsToRender.filter(function (obj) {
       if (obj.primary) {
         objTitle = object[obj.id];
+        if (obj.fk) {
+          objTitle = object[obj.id][obj.moduleField];
+        }
       }
+
+      if (obj.subPrimary) {
+        objSubTitle = object[obj.id]
+        if (obj.fk) {
+          objSubTitle = object[obj.id][obj.moduleField];
+        }
+      }
+
       if (obj.fk && obj.id === 'fk_createdBy') {
         objCreatedBy = object['fk_createdBy'].fullName;
       }
@@ -198,6 +251,7 @@ class DynamicCreate extends React.Component {
                     <Typography variant="caption">{fieldsToRender[index]['label']}:</Typography>
                     <Typography variant="body2">
                       <Chip
+                        icon={iconDisplay(fieldsToRender[index]['module'])}
                         //variant=""
                         //avatar={<Avatar className={classes.purple}>{fieldsToRender[index]['module'].slice(0, 1).toUpperCase()}</Avatar>}
                         size="small"
@@ -230,11 +284,11 @@ class DynamicCreate extends React.Component {
     return (
       <Grid container spacing={0} key={`${Math.random()}`}>
         <Grid item xs={12} md={12} key={`${Math.random()}`}>
-          <AppBar key={`${Math.random()}`} elevation={0} position="fixed" color="inherit" className={classes.appBar}>
-            <Toolbar key={`${Math.random()}`} className={classes.toolbarStyle} variant="dense">
+          <AppBar key={`${Math.random()}`} elevation={0}  color="transparent" position="fixed" className={classes.appBar}>
+            <Toolbar  key={`${Math.random()}`} className={classes.toolbarStyle} variant="dense">
               <div key={`${Math.random()}`}>
-                <Typography variant="h6">{objTitle}</Typography>
-                <Typography variant="caption">
+                <Typography color="primary" variant="h6">{objTitle} ({objSubTitle})</Typography>
+                <Typography color="textSecondary" variant="caption">
                   Created on <Moment format={this.props.siteInfo.dateFormat}>{object.createdAt}</Moment> | Created By {objCreatedBy}
                 </Typography>
               </div>

@@ -9,6 +9,7 @@ export default function columns(module, settings) {
         filter: false,
         display: false,
       },
+      subPrimary:true,
       type: 'Text',
       required: false,
       id: 'id',

@@ -33,6 +33,10 @@ import modules from '../modules/menu';
 const drawerWidth = 170;
 
 const useStyles = theme => ({
+  buttonText: {
+    //textTransform: 'capitalize',
+    fontWeight:'normal'
+  },
   appBar: {
     top: 50,
     //bottom: 0,
@@ -287,6 +291,7 @@ class PageHeader extends React.Component {
 
         let toList = <Button
           variant="text"
+          className={classes.buttonText}
           color="secondary"
           size="small"
           onClick={() => Router.push(
@@ -295,9 +300,10 @@ class PageHeader extends React.Component {
           )}
           startIcon={<ViewListOutlinedIcon />}>List</Button>;
 
-        let goBack = <Button size="small" color="primary" variant="text" onClick={() => Router.back()} startIcon={<ArrowBackOutlinedIcon />}>Back</Button>
+        let goBack = <Button className={classes.buttonText} size="small" color="primary" variant="text" onClick={() => Router.back()} startIcon={<ArrowBackOutlinedIcon />}>Back</Button>
 
         let deleteButton = <Button
+          className={classes.buttonText}
           size="small"
           variant="text"
           startIcon={<DeleteOutlinedIcon />}
@@ -311,7 +317,7 @@ class PageHeader extends React.Component {
             pageHeaderActions = <div className={classes.buttons}>
               {goBack}
               {toList}
-              <Button size="small" color="primary" variant="text" onClick={() => Router.push(
+              <Button className={classes.buttonText} size="small" color="primary" variant="text" onClick={() => Router.push(
                 '/app/[appId]/[objId]/edit',
                 `/app/${this.props.routerInfo.query.appId}/${this.props.routerInfo.query.objId}/edit`
               )} startIcon={<EditOutlinedIcon />} disableElevation>Edit</Button>
@@ -321,12 +327,17 @@ class PageHeader extends React.Component {
           case '/app/[appId]':
             pageHeaderActions = <div className={classes.buttons}>
               {goBack}
-              <Button size="small" onClick={() => Router.push(
-                `/app/[appId]/${createType}`,
-                `/app/${this.props.routerInfo.query.appId}/${createType}`
-              )} color="secondary" variant="text" startIcon={<AddBoxOutlinedIcon />} disableElevation>Create</Button>
+              <Button
+                className={classes.buttonText}
+                size="small"
+                onClick={() => Router.push(
+                  `/app/[appId]/${createType}`,
+                  `/app/${this.props.routerInfo.query.appId}/${createType}`
+                )} color="secondary" variant="text" startIcon={<AddBoxOutlinedIcon />} disableElevation>
+                Create
+                </Button>
 
-              <Button size="small" color={this.props.routerInfo.query.filter ? 'secondary' : 'primary'} onClick={() => this.setState({ filterOpen: true })} variant="text" startIcon={<FilterListOutlinedIcon />} disableElevation>
+              <Button className={classes.buttonText} size="small" color={this.props.routerInfo.query.filter ? 'secondary' : 'primary'} onClick={() => this.setState({ filterOpen: true })} variant="text" startIcon={<FilterListOutlinedIcon />} disableElevation>
                 <Badge variant={this.props.routerInfo.query.filter ? 'dot' : 'standard'} color="secondary">
                   Filter List
                 </Badge>
@@ -347,7 +358,7 @@ class PageHeader extends React.Component {
             pageHeaderActions = <div className={classes.buttons}>
               {goBack}
               {toList}
-              <Button size="small" variant="text" startIcon={<VisibilityOutlinedIcon />} color="primary" onClick={() => Router.push(
+              <Button className={classes.buttonText} size="small" variant="text" startIcon={<VisibilityOutlinedIcon />} color="primary" onClick={() => Router.push(
                 '/app/[appId]/[objId]',
                 `/app/${this.props.routerInfo.query.appId}/${this.props.routerInfo.query.objId}`
               )}
@@ -365,7 +376,7 @@ class PageHeader extends React.Component {
           <AppBar elevation={1} position="fixed" color="inherit" className={classes.appBar}>
             <Toolbar className={classes.toolbarStyle} variant="dense">
               <div className={classes.pageTitle}>
-                <Typography color="secondary" variant="overline">{pageTitle}</Typography>
+                <Typography color="secondary" variant="body1">{pageTitle}</Typography>
               </div>
               <div className={classes.grow}>
               </div>

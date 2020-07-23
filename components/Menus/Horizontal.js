@@ -20,6 +20,9 @@ import DashboardOutlinedIcon from '@material-ui/icons/DashboardOutlined';
 import ShoppingCartIcon from '@material-ui/icons/ShoppingCart';
 import ShoppingCartOutlinedIcon from '@material-ui/icons/ShoppingCartOutlined';
 
+import AccountCircleIcon from '@material-ui/icons/AccountCircle';
+import AccountCircleOutlinedIcon from '@material-ui/icons/AccountCircleOutlined';
+
 import BuildIcon from '@material-ui/icons/Build';
 import BuildOutlinedIcon from '@material-ui/icons/BuildOutlined';
 
@@ -58,7 +61,7 @@ const useStyles = makeStyles((theme) => ({
 function HorizontalMenu() {
   const router = useRouter();
   const menuList = moduleMenu(null);
-  let activeMenu = 0;
+  let activeMenu = 1;
   let activeMenuId = 'dashboard';
   const classes = useStyles();
 
@@ -116,11 +119,16 @@ function HorizontalMenu() {
           <ShoppingCartIcon /> :
           <ShoppingCartOutlinedIcon />
         break;
-        case 'BuildIcon':
+      case 'BuildIcon':
+        iconToUse = (menuId == activeMenuId) ?
+          <BuildIcon /> :
+          <BuildOutlinedIcon />
+        break;
+      case 'AccountCircleIcon':
           iconToUse = (menuId == activeMenuId) ?
-            <BuildIcon /> :
-            <BuildOutlinedIcon />
-          break;
+          <AccountCircleIcon /> :
+          <AccountCircleOutlinedIcon />
+        break;
     }
     return iconToUse;
   }
@@ -162,6 +170,8 @@ function HorizontalMenu() {
               icon={menuIcon}
               label={<Typography className={classes.label} variant="caption">{menuLabel}</Typography>}
               className={(menu.id == activeMenuId) ? `${classes.activeMenu} , ${classes.menu}` : classes.menu}
+              disabled={!!!menu.display}
+              style={{display:(!menu.display)?'none':'block'}}
             //wrapped
             />
           )

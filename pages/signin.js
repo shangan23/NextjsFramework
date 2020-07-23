@@ -32,14 +32,15 @@ const useStyles = theme => ({
     backgroundColor:theme.palette.primary.dark,
     backgroundSize: 'cover',
     backgroundPosition: 'center',
+    opacity: 0.9
   },
   dailogTitle: {
-    backgroundColor: theme.palette.primary.dark,
+    //backgroundColor: theme.palette.primary.dark,
     color: theme.palette.primary.light,
     fontColor: theme.palette.primary.dark,
   },
   dailogMain: {
-    backgroundColor: theme.palette.primary.dark,
+    //backgroundColor: theme.palette.primary.dark,
     color: theme.palette.secondary.light,
     fontColor: theme.palette.primary.dark,
   },
@@ -56,6 +57,10 @@ const useStyles = theme => ({
     [theme.breakpoints.down('sm')]: {
       display: 'none',
     },
+  },
+  siteTitle:{
+    right: theme.spacing(1),
+    position: 'absolute'
   }
 });
 
@@ -107,7 +112,7 @@ class Signin extends React.Component {
     }
 
     if (this.props.siteDetails) {
-      siteLogo = <img src={IMGPath + this.props.siteDetails.logo} alt={this.props.siteDetails.title} height="40" width="125"></img>;
+      siteLogo = <img src={IMGPath + this.props.siteDetails.logo} alt={this.props.siteDetails.title} height="40" width="220"></img>;
     }
 
     let fieldsToRender = [
@@ -210,7 +215,10 @@ class Signin extends React.Component {
         fullScreen={this.props.fullScreen}>
         <DialogTitle className={classes.dailogTitle}>
           <Grid container direction="row" alignItems="center">
-            <Typography variant="h3">DigitalAppX </Typography>
+            {siteLogo}
+            {
+            //<Typography className={classes.siteTitle} variant="h5">DigitalAppX </Typography>
+            }
           </Grid>
         </DialogTitle>
         <Form
@@ -221,7 +229,7 @@ class Signin extends React.Component {
             <form onSubmit={handleSubmit} noValidate>
               <DialogContent className={classes.dailogMain}>
                 <DialogContentText className={classes.dailogContentText}>
-                  <Typography variant="overline"> Hello there, Sign In with your registered Username and Password.
+                  <Typography variant="subtitle1"> Hello there! Sign In with your registered Username and Password.
                       </Typography>
                   <Divider />
                 </DialogContentText>
@@ -232,7 +240,7 @@ class Signin extends React.Component {
                 <Button variant="text" className={classes.dailogMain} >
                   Forgot Password
               </Button>
-                <Button disabled={submitting} endIcon={<ArrowForwardSharpIcon />} variant="contained" type="submit" color="primary">
+                <Button disabled={submitting} size="small" endIcon={<ArrowForwardSharpIcon />} variant="contained" type="submit" color="primary">
                   Continue
               </Button>
               </DialogActions>

@@ -10,14 +10,12 @@ module.exports = {
       },
       moduleId: {
         type: Sequelize.INTEGER,
-        uniqu:true,
         references: {
           model: 'BillsOfMaterials',
           key: 'id'
         }
       },
       itemId: {
-        uniqu:true,
         type: Sequelize.INTEGER,
         references: {
           model: 'Items',
@@ -52,7 +50,11 @@ module.exports = {
           key: 'id'
         }
       },
-    });
+    })
+      .then(() => queryInterface.addConstraint('BomItems', ['moduleId', 'itemId'], {
+        type: 'unique',
+        name: 'composite_key_name'
+      }));
   },
   down: (queryInterface, Sequelize) => {
     return queryInterface.dropTable('BomItems');

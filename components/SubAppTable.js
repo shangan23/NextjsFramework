@@ -30,8 +30,9 @@ const useStyles = makeStyles((theme) => ({
     paddingLeft: theme.spacing(1)
   },
   TableCellHead: {
+    color:theme.palette.primary.light,
     fontSize: '0.85rem',
-    fontWeight: 500,
+    fontWeight: 400,
     padding: theme.spacing(1),
     //paddingTop: theme.spacing(0.5),
     //paddingRight: theme.spacing(0),
@@ -95,7 +96,7 @@ export default function RespTable(columns, list, module, onRowAction) {
   };
 
   return (
-    <Paper className={classes.root} elevation={0} variant="outlined">
+    <Paper className={classes.root} elevation={0} >
       <TableContainer className={classes.container}>
         <Table stickyHeader size="small" aria-label="a dense table">
           <TableHead>
@@ -114,7 +115,7 @@ export default function RespTable(columns, list, module, onRowAction) {
                   )
                 }
               })}
-              <TableCell className={classes.TableCell} key={Math.random()} align={'center'}>
+              <TableCell className={classes.TableCellHead} key={Math.random()} align={'center'}>
                 {'Action'}
               </TableCell>
             </TableRow>

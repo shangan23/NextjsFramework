@@ -29,6 +29,7 @@ export default function columns(module, settings) {
     {
       name: 'sku',
       label: 'SKU',
+      subPrimary:true,
       options: {
         filter: false,
         sort: false

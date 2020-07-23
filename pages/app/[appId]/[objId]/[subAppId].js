@@ -189,11 +189,22 @@ class DynamicCreate extends React.Component {
     let object = this.props.objJson;
 
     console.log(object);
-    let objTitle, objCreatedBy;
+    let objTitle, objCreatedBy, objSubTitle;
     moduleFieldsToRender.filter(function (obj) {
       if (obj.primary) {
         objTitle = object[obj.id];
+        if (obj.fk) {
+          objTitle = object[obj.id][obj.moduleField];
+        }
       }
+      if (obj.subPrimary) {
+        objSubTitle = object[obj.id]
+        if (obj.fk) {
+          objSubTitle = object[obj.id][obj.moduleField];
+          console.log('objSubTitle', object[obj.id][obj.moduleField]);
+        }
+      }
+
       if (obj.fk && obj.id === 'fk_createdBy') {
         objCreatedBy = object['fk_createdBy'].fullName;
       }
@@ -234,8 +245,8 @@ class DynamicCreate extends React.Component {
 
     const handleConfirmActionSubApp = () => {
       fetch(`${this.props.siteInfo.siteURL}api/app/${Router.router.query.appId}/${Router.router.query.objId}/${Router.router.query.subAppId}/${this.state.subAppObjId}`, {
-          method: 'DELETE'
-        })
+        method: 'DELETE'
+      })
         .then(response => response.json())
         .then(data => {
           this.setState({ showConfirmDialog: false });
@@ -249,18 +260,14 @@ class DynamicCreate extends React.Component {
 
     //console.log('steps[this.state.activeStep].singular', steps[this.state.activeStep].singular, steps[this.state.activeStep])
 
-    const stepRender = (<div className={classes.root}>
-      <div>
-        <div>
-          <RespTable
-            onRowAction={onRowAction}
-            module={module}
-            createLink={'tests'}
-            list={this.props.listing}
-            columns={fieldsToRender} />
-        </div>
-      </div>
-    </div>);
+    const stepRender = (
+      <RespTable
+        onRowAction={onRowAction}
+        module={module}
+        createLink={'tests'}
+        list={this.props.listing}
+        columns={fieldsToRender} />
+    );
 
     const dailogForm = (<DialogForm
       title={steps[this.state.activeStep].singular}
@@ -305,11 +312,11 @@ class DynamicCreate extends React.Component {
     return (
       <Grid container spacing={0} key={`${Math.random()}`}>
         <Grid item xs={12} md={12}>
-          <AppBar elevation={0} position="fixed" color="inherit" className={classes.appBar}>
+          <AppBar elevation={0} position="fixed" color="transparent" className={classes.appBar}>
             <Toolbar className={classes.toolbarStyle} variant="dense">
               <div>
-                <Typography variant="h6">{objTitle}</Typography>
-                <Typography variant="caption">
+                <Typography color="primary" variant="h6">{objTitle} ({objSubTitle})</Typography>
+                <Typography color="textSecondary" variant="caption">
                   Created on <Moment format={this.props.siteInfo.dateFormat}>{object.createdAt}</Moment> | Created By {objCreatedBy}
                 </Typography>
               </div>
@@ -317,7 +324,7 @@ class DynamicCreate extends React.Component {
               </div>
               <Stepper className={classes.stepper} nonLinear activeStep={this.state.activeStep}>
                 {steps.map((label, index) => (
-                  <Step key={Math.random()}>
+                  <Step key={Math.random()} >
                     <StepButton onClick={handleStep(index)}>
                       {label.label}
                     </StepButton>

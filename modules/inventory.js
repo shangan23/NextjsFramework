@@ -20,6 +20,7 @@ export default function columns(module, settings) {
       fk: true,
       module: 'items',
       moduleField: 'name',
+      primary:true,
       label: 'Items',
       options: {
         filter: true,
@@ -37,6 +38,7 @@ export default function columns(module, settings) {
       fk: true,
       module: 'items',
       moduleField: 'sku',
+      subPrimary:true,
       label: 'Item Code',
       options: {
         filter: true,

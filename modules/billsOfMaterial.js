@@ -21,6 +21,7 @@ export default function columns(module, settings) {
       module: 'items',
       moduleField: 'name',
       label: 'Items',
+      subPrimary:true,
       options: {
         filter: true,
         customBodyRender: (value) => {

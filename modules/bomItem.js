@@ -15,6 +15,24 @@ export default function columns(module, settings) {
       section: 'System Information'
     },
     {
+      name: 'fk_moduleId',
+      id: 'fk_moduleId',
+      fk: true,
+      module: 'billOfMaterial',
+      moduleField: 'code',
+      label: 'Bill Code',
+      isParent: true,
+      options: {
+        filter: true,
+        customBodyRender: (value) => {
+          return `${value.code}`;
+        }
+      },
+      type: 'Lookup',
+      required: true,
+      section: 'Inventory Details'
+    },
+    {
       name: 'fk_itemId',
       id: 'fk_itemId',
       fk: true,

@@ -10,6 +10,7 @@ export default function columns(module, settings) {
         display: false,
       },
       type: 'Text',
+      subPrimary:true,
       required: false,
       id: 'id',
       section: 'System Information'

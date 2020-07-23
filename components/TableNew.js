@@ -28,7 +28,8 @@ const useStyles = makeStyles((theme) => ({
   },
   TableCellHead: {
     fontSize: '0.85rem',
-    fontWeight: 500,
+    color:theme.palette.primary.dark,
+    fontWeight: 400,
     padding: theme.spacing(1)
     //paddingTop: theme.spacing(0.5),
     //paddingRight: theme.spacing(0),

@@ -85,7 +85,10 @@ const useStyles = makeStyles(theme => ({
     marginTop: theme.spacing(3),
     paddingTop: theme.spacing(2),
     padding: theme.spacing(1),
-    marginBottom: theme.spacing(5)
+    marginBottom: theme.spacing(5),
+    margin: theme.spacing(5),
+    marginLeft: theme.spacing(2),
+    marginRight: theme.spacing(2),
   },
   grow: {
     flexGrow: 1,
@@ -234,7 +237,7 @@ function Layout({ children, title, deauthenticate, container, isAuthenticated, s
 
   let nameInLetter = isAuthenticated.details.fullName.split(' ');
   nameInLetter = (nameInLetter[1]) ? nameInLetter[0].slice(0, 1) + nameInLetter[1].slice(0, 1) : nameInLetter[0].slice(0, 1);
-  //const siteLogo = IMGPath + siteDetails.logo;
+  const siteLogo = IMGPath + siteDetails.logo;
 
   let adminMenu;
   if (isAuthenticated.details.isAdmin) {
@@ -314,7 +317,9 @@ function Layout({ children, title, deauthenticate, container, isAuthenticated, s
           >
             <MenuIcon />
           </IconButton>
-          <Typography variant="h5">{siteDetails.title}</Typography>
+          <img src={siteLogo} alt={siteDetails.title} height="20" width="110"></img>
+          { //<Typography variant="h5">{siteDetails.title}</Typography>
+          }
           <div className={classes.grow}>
             <HorizontalMenu />
           </div>

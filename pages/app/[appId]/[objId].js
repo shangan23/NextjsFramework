@@ -1,44 +1,28 @@
 import React from 'react';
-import initialize from '../../../utils/initialize';
 import { connect } from 'react-redux';
 import absoluteUrl from "next-absolute-url";
+import Moment from 'react-moment';
+import Router from 'next/router';
+
 import { dynamicSort } from '../../../utils/helper';
-import { Grid } from '@material-ui/core';
 import { getCookie } from '../../../utils/cookie';
+import initialize from '../../../utils/initialize';
 import moduleController from '../../../modules/controller';
 import modules from '../../../modules/menu';
-import Paper from '@material-ui/core/Paper';
-import Typography from '@material-ui/core/Typography';
-import Moment from 'react-moment';
-import AppBar from '@material-ui/core/AppBar';
-import Toolbar from '@material-ui/core/Toolbar';
-import { withStyles } from '@material-ui/core/styles';
-import Stepper from '@material-ui/core/Stepper';
-import Step from '@material-ui/core/Step';
-import StepButton from '@material-ui/core/StepButton';
-import Router from 'next/router';
-import Chip from '@material-ui/core/Chip';
-import { deepOrange, deepPurple } from '@material-ui/core/colors';
 import DynamicSetTable from '../../../components/DynamicSetTable';
+import TooltipWindow from '../../../components/TooltipWindow';
 
-import AccountCircleIcon from '@material-ui/icons/AccountCircle';
-import RecentActorsIcon from '@material-ui/icons/RecentActors';
-import ContactsIcon from '@material-ui/icons/Contacts';
-import AppsIcon from '@material-ui/icons/Apps';
-import AssignmentIcon from '@material-ui/icons/Assignment';
-import PlaylistAddCheckIcon from '@material-ui/icons/PlaylistAddCheck';
-import ShoppingCartIcon from '@material-ui/icons/ShoppingCart';
-import BuildIcon from '@material-ui/icons/Build';
+import {
+  Grid,
+  Paper,
+  Typography, withStyles, Toolbar, Stepper, Step, StepButton, Chip, AppBar, Tooltip
+} from '@material-ui/core';
 
-import Table from '@material-ui/core/Table';
-import TableBody from '@material-ui/core/TableBody';
-import TableCell from '@material-ui/core/TableCell';
-import TableContainer from '@material-ui/core/TableContainer';
-import TableHead from '@material-ui/core/TableHead';
-import TablePagination from '@material-ui/core/TablePagination';
-import TableRow from '@material-ui/core/TableRow';
-
-import Popover from '@material-ui/core/Popover';
+import {
+  AccountCircle,
+  RecentActors,
+  Contacts, Apps, Assignment, PlaylistAddCheck, ShoppingCart, Build
+} from '@material-ui/icons';
 
 const useStyles = theme => ({
   root: {
@@ -81,14 +65,6 @@ const useStyles = theme => ({
   stepper: {
     padding: 0
   },
-  purple: {
-    backgroundColor: deepPurple[500],
-    color: theme.palette.getContrastText(deepPurple[500])
-  },
-  orange: {
-    color: theme.palette.getContrastText(deepOrange[500]),
-    backgroundColor: deepOrange[500],
-  },
   TableCell: {
     fontSize: '0.82rem',
     padding: theme.spacing(1.8)
@@ -103,6 +79,19 @@ const useStyles = theme => ({
     color: theme.palette.primary.main
   }
 });
+
+const HtmlTooltip = withStyles((theme) => ({
+  tooltip: {
+    //backgroundColor: '#f5f5f9',
+    backgroundColor: theme.palette.text.primary,
+    color: theme.palette.primary.light,
+    maxWidth: 420,
+    //maxHeight: 220,
+    overflow:'scroll',
+    fontSize: theme.typography.pxToRem(20),
+    border: '1px solid #dadde9',
+  },
+}))(Tooltip);
 
 const frameURL = async (req) => {
   let user, host, cleanUser, urlObj, headers = {};
@@ -156,17 +145,7 @@ class DynamicCreate extends React.Component {
       object = this.props.objJson,
       objTitle, objCreatedBy, objSubTitle, steps = [], subApp = [];
 
-    const { classes } = this.props,
-      open = Boolean(this.state.anchorEl);
-
-    const handlePopoverOpen = (event, module) => {
-      console.log('event.currentTarget',event.currentTarget)
-      this.setState({ anchorEl: event.currentTarget, currentPopModule: module });
-    };
-
-    const handlePopoverClose = () => {
-      this.setState({ anchorEl: null });
-    };
+    const { classes } = this.props;
 
     if (moduleMeta) {
       subApp = moduleMeta.subApp;
@@ -181,28 +160,28 @@ class DynamicCreate extends React.Component {
       let icon;
       switch (iconMeta.name) {
         case 'AccountCircleIcon':
-          icon = <AccountCircleIcon className={classes.chipIconBg} />
+          icon = <AccountCircle className={classes.chipIconBg} />
           break;
         case 'RecentActorsIcon':
-          icon = <RecentActorsIcon className={classes.chipIconBg} />
+          icon = <RecentActors className={classes.chipIconBg} />
           break;
         case 'ContactsIcon':
-          icon = <ContactsIcon className={classes.chipIconBg} />
+          icon = <Contacts className={classes.chipIconBg} />
           break;
         case 'AppsIcon':
-          icon = <AppsIcon className={classes.chipIconBg} />
+          icon = <Apps className={classes.chipIconBg} />
           break;
         case 'AssignmentIcon':
-          icon = <AssignmentIcon className={classes.chipIconBg} />
+          icon = <Assignment className={classes.chipIconBg} />
           break;
         case 'ShoppingCartIcon':
-          icon = <ShoppingCartIcon className={classes.chipIconBg} />
+          icon = <ShoppingCart className={classes.chipIconBg} />
           break;
         case 'PlaylistAddCheckIcon':
-          icon = <PlaylistAddCheckIcon className={classes.chipIconBg} />
+          icon = <PlaylistAddCheck className={classes.chipIconBg} />
           break;
         case 'BuildIcon':
-          icon = <BuildIcon className={classes.chipIconBg} />
+          icon = <Build className={classes.chipIconBg} />
           break;
       }
       return icon;
@@ -236,100 +215,6 @@ class DynamicCreate extends React.Component {
     };
 
     fieldsToRender.sort(dynamicSort('section')); // Gropu/rearrange fields by Sections
-
-    const tabelPopOver = (
-      <Paper className={classes.root} elevation={0} variant="outlined">
-        <TableContainer className={classes.container}>
-          <Table stickyHeader size="small" aria-label="a dense table">
-            <TableHead>
-              <TableRow>
-                <TableCell
-                  className={classes.TableCellHead}
-                  key={Math.random()}
-                  align={'center'}
-                >
-                  Item
-                </TableCell>
-                <TableCell
-                  className={classes.TableCellHead}
-                  key={Math.random()}
-                  align={'center'}
-                >
-                  Item Code
-                </TableCell>
-                <TableCell
-                  className={classes.TableCellHead}
-                  key={Math.random()}
-                  align={'center'}
-                >
-                  On Available
-                </TableCell>
-                <TableCell
-                  className={classes.TableCellHead}
-                  key={Math.random()}
-                  align={'center'}
-                >
-                  On Order
-                </TableCell>
-                <TableCell
-                  className={classes.TableCellHead}
-                  key={Math.random()}
-                  align={'center'}
-                >
-                  On Hand
-                </TableCell>
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              <TableRow hover role="checkbox" tabIndex={-1} key={Math.random()} >
-                <TableCell className={classes.TableCell} key={Math.random()} align={'center'}>
-                  Bike
-                </TableCell>
-                <TableCell className={classes.TableCell} key={Math.random()} align={'center'}>
-                  B123
-                </TableCell>
-                <TableCell className={classes.TableCell} key={Math.random()} align={'center'}>
-                  0
-                </TableCell>
-                <TableCell className={classes.TableCell} key={Math.random()} align={'center'}>
-                  0
-                </TableCell>
-                <TableCell className={classes.TableCell} key={Math.random()} align={'center'}>
-                  20
-                </TableCell>
-              </TableRow>
-            </TableBody>
-          </Table>
-        </TableContainer>
-      </Paper>
-    );
-
-    const popOver = (id) => {
-      return (<Popover
-        id={id}
-        className={classes.popover}
-        classes={{
-          paper: classes.paper,
-        }}
-        open={open}
-        anchorEl={this.state.anchorEl}
-        anchorOrigin={{
-          vertical: 'bottom',
-          horizontal: 'right',
-        }}
-        transformOrigin={{
-          vertical: 'bottom',
-          horizontal: 'right',
-        }}
-        onClose={handlePopoverClose}
-        disableRestoreFocus
-      >
-        <Typography variant="overline" color="secondary"> Inventory - {this.state.currentPopModule}</Typography>
-       {tabelPopOver}
-      {/*  <Typography variant="overline" color="secondary"> Inventory - {this.state.currentPopModule}</Typography>
-      {tabelPopOver} */}
-      </Popover>)
-    };
 
     const renderFields = (
       <Grid container spacing={2} className={classes.fields} key={`grid-form${Math.random()}`}>
@@ -368,22 +253,17 @@ class DynamicCreate extends React.Component {
                   || (fieldsToRender[index]['type'] == 'Lookup') &&
                   <Grid item xs={12} md={4} key={index}>
                     <Typography variant="caption">{fieldsToRender[index]['label']}:</Typography>
-                    <Typography
-                      aria-owns={open ? `mouse-over-popover${index}` : undefined}
-                      aria-haspopup="true"
-                      variant="body2"
-                      onMouseEnter={(e) => handlePopoverOpen(e, fieldsToRender[index]['module'])}
-                      onMouseLeave={handlePopoverClose}
-                    >
-                      <Chip
-                        icon={iconDisplay(fieldsToRender[index]['module'])}
-                        size="small"
-                        label={`${object[fieldsToRender[index]['id']][fieldsToRender[index]['moduleField']]}`}
-                        onClick={() => Router.push('/app/[appId]/[objId]', `/app/${fieldsToRender[index]['module']}/${object[fieldsToRender[index]['id']].id}`)}
-                        clickable
-                      />
-                    </Typography>
-                    {popOver(`mouse-over-popover${index}`)}
+                    <HtmlTooltip placement="bottom-start" title={<TooltipWindow id={object[fieldsToRender[index]['id']].id} module={fieldsToRender[index]['module']} />} color="secondary">
+                      <Typography variant="body2">
+                        <Chip
+                          icon={iconDisplay(fieldsToRender[index]['module'])}
+                          size="small"
+                          label={`${object[fieldsToRender[index]['id']][fieldsToRender[index]['moduleField']]}`}
+                          onClick={() => Router.push('/app/[appId]/[objId]', `/app/${fieldsToRender[index]['module']}/${object[fieldsToRender[index]['id']].id}`)}
+                          clickable
+                        />
+                      </Typography>
+                    </HtmlTooltip>
                   </Grid>
                   || (fieldsToRender[index]['id'] != 'action') &&
                   <Grid item xs={12} md={4} key={index}>
@@ -444,4 +324,4 @@ function mapStateToProps(state) {
 
 export default connect(
   mapStateToProps
-)(withStyles(useStyles)(DynamicCreate));
+)(withStyles(useStyles, HtmlTooltip)(DynamicCreate));

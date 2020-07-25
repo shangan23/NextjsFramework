@@ -12,6 +12,7 @@ export default function columns(module, settings) {
       subPrimary: true,
       required: false,
       id: 'id',
+      section: 'System Information'
     },
     {
       name: 'fullName',
@@ -23,6 +24,7 @@ export default function columns(module, settings) {
       type: 'Text',
       required: false,
       id: 'fullName',
+      section: 'Basic Information'
     },
     {
       name: 'uname',
@@ -34,6 +36,7 @@ export default function columns(module, settings) {
       type: 'Text',
       required: true,
       id: 'uname',
+      section: 'Basic Information'
     },
     {
       name: 'password',
@@ -45,6 +48,7 @@ export default function columns(module, settings) {
       type: 'Password',
       required: true,
       id: 'password',
+      section: 'Basic Information'
     },
     {
       name: 'role',
@@ -55,6 +59,7 @@ export default function columns(module, settings) {
       type: 'Text',
       required: true,
       id: 'role',
+      section: 'Basic Information'
     },
     {
       name: 'email',
@@ -65,6 +70,7 @@ export default function columns(module, settings) {
       type: 'Email',
       required: true,
       id: 'email',
+      section: 'Basic Information'
     },
     {
       name: 'isAdmin',
@@ -81,6 +87,7 @@ export default function columns(module, settings) {
       data: [
         { label: '', value: '1' }
       ],
+      section: 'Basic Information'
     },
     {
       name: 'createdAt',
@@ -97,7 +104,8 @@ export default function columns(module, settings) {
             </Moment>
           );
         }
-      }
+      },
+      section: 'System Information'
     },
     {
       name: 'updatedAt',
@@ -114,7 +122,8 @@ export default function columns(module, settings) {
             </Moment>
           );
         }
-      }
+      },
+      section: 'System Information'
     }
   ];
   return columns;
